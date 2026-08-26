@@ -156,7 +156,7 @@ h1 em, .section-heading h2 em, .method-intro h2 em, .contact-section h2 em { col
 .capa-telon { position: absolute; z-index: 9; inset: 0; pointer-events: none; transition: opacity .9s ease .2s; }
 .capa-telon video { width: 100%; height: 100%; object-fit: cover; }
 .capa-telon--abierto { opacity: 0; }
-.portfolio-voltio { position: absolute; z-index: 8; left: 2vw; bottom: 0; width: min(24vw, 330px); pointer-events: none; filter: drop-shadow(0 22px 25px rgba(0,0,0,.64)); }
+.portfolio-voltio { position: absolute; z-index: 8; left: 0; bottom: 0; width: min(43vw, 592px); pointer-events: none; filter: drop-shadow(0 22px 25px rgba(0,0,0,.64)); }
 .portfolio-voltio img, .portfolio-voltio video { width: 100%; height: auto; }
 .portfolio-voltio span { position: absolute; left: 70%; top: 32%; width: max-content; padding: 8px 12px; border: 1px solid rgba(212,175,85,.46); background: rgba(9,8,7,.78); color: var(--gold); font-family: Georgia, serif; font-size: 11px; font-style: italic; }
 .portfolio-track { position: relative; z-index: 4; width: max-content; display: flex; gap: 8vw; padding: 9vh 8vw 10vh 31vw; }
@@ -193,8 +193,8 @@ h1 em, .section-heading h2 em, .method-intro h2 em, .contact-section h2 em { col
 .voyage-story { position: relative; margin-top: 70px; }
 .voyage-stage { position: relative; height: 92vh; min-height: 620px; overflow: hidden; }
 .voyage-stage::before { content: ""; position: absolute; inset: 0; z-index: 0;
-  background: radial-gradient(90% 60% at 70% 20%, rgba(212,175,85,.10), transparent 60%),
-              repeating-linear-gradient(0deg, transparent 0 6px, rgba(255,255,255,.012) 7px); }
+  background: linear-gradient(180deg, rgba(6,6,5,.15), rgba(6,6,5,.55) 78%, #060605),
+              url("/img/travesia-fondo.jpg") center top / cover no-repeat, #0b0d14; }
 .voyage-flag { position: absolute; z-index: 2; right: 3vw; bottom: 30%; width: min(30vw, 420px); opacity: 0; pointer-events: none; }
 .voyage-chest { position: absolute; z-index: 4; right: 9vw; bottom: 22%; width: min(20vw, 270px); opacity: 0; pointer-events: none; }
 .voyage-ship { position: absolute; z-index: 3; left: 0; bottom: 22%; width: min(52vw, 720px); transform: translateX(-30%); pointer-events: none;
@@ -335,7 +335,7 @@ footer a { justify-self: end; }
   .portfolio-story { height: auto; }
   .portfolio-stage { min-height: 680px; }
   .portfolio-track { gap: 8vw; padding: 8vh 6vw 9vh 30vw; animation: none; }
-  .portfolio-voltio { left: 0; width: 34vw; }
+  .portfolio-voltio { left: -6vw; width: 62vw; }
   .portfolio-voltio span { display: none; }
   .site-frame { width: 86vw; }
   .site-browserbar { height: 54px; grid-template-columns: auto 1fr auto; gap: 12px; padding-inline: 14px; }

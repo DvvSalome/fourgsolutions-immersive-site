@@ -33,8 +33,12 @@ ESCENAS = {
                    {"crop": "crop=1280:572:0:74,", "tol": "0.13:0.03",
                     "despill": ",despill=type=green:mix=0.7"}),
         "v2.mp4": ("olas-loop.webm", True, True),
-        "v3.mp4": ("cofre-loop.webm", True, True),
-        "v4.mp4": ("bandera-loop.webm", True, True),
+        # cofre y bandera tambien llevan despill: las chispas doradas del cofre y el
+        # borde de la tela quedaban con halo verde (feedback del usuario sobre la escena)
+        "v3.mp4": ("cofre-loop.webm", True, True,
+                   {"tol": "0.14:0.04", "despill": ",despill=type=green:mix=0.6"}),
+        "v4.mp4": ("bandera-loop.webm", True, True,
+                   {"despill": ",despill=type=green:mix=0.6"}),
     },
 }
 # colorkey, NO chromakey. chromakey compara solo crominancia (UV) y el negro lacado con
@@ -47,7 +51,9 @@ TOLERANCIA = "0.16:0.05"   # similarity:blend — subir a 0.22 si queda halo ver
 # solo el 23% del ancho (bbox medido sobre el alfa: x 506..806): sin recorte, el CSS lo
 # escala como paisaje y el personaje queda diminuto. Medir con el decoder libvpx-vp9 —
 # el nativo IGNORA el canal alfa y el bbox da el cuadro entero.
-CROPS = {"v1.mp4": "crop=348:720:482:0,"}
+# bbox medido en TODOS los frames (2fps), no en 3 muestras: el saludo inicial
+# estira los brazos hasta x 360..944 y el recorte viejo (482..830) cortaba la mano.
+CROPS = {"v1.mp4": "crop=624:720:340:0,"}
 
 
 def sh(cmd):
