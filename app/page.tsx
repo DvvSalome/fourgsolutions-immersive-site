@@ -223,6 +223,7 @@ export default function Home() {
                   src="/video/layers/telon-abre.webm"
                   poster="/video/layers/telon-abre-poster.png"
                   umbral={0.55}
+                  unaVez
                   onPlay={() => {
                     // barrido de tela al abrir, una sola vez (onPlay tambien se
                     // dispara al reanudar tras una pausa por scroll)
@@ -241,9 +242,16 @@ export default function Home() {
                 <CapaVideo src="/video/layers/audiencia-loop.webm" poster="/video/layers/audiencia-loop-poster.png" loop />
               </div>
               <div className="telon-cenefa" aria-hidden="true" />
-              <div className="portfolio-track" aria-label="Sitios web creados por 4GS">
-                {selectedWork.map((item) => (
-                  <article className="site-frame" key={item.number}>
+              {/* SALA DE CINE (feedback): una sola pantalla fija y los clientes se
+                  PROYECTAN en ella — crossfade por scroll, cada uno ocupa 1/10 del
+                  tramo fijado (animation-range inline). Nada de carrusel lateral. */}
+              <div className="portfolio-screen" aria-label="Sitios web creados por 4GS">
+                {selectedWork.map((item, i) => (
+                  <article
+                    className="site-frame"
+                    key={item.number}
+                    style={{ animationRange: `contain ${i * 10}% contain ${(i + 1) * 10}%` }}
+                  >
                     <div className="site-browserbar">
                       <span className="traffic-lights" aria-hidden="true"><i /><i /><i /></span>
                       <b>{item.domain}</b>

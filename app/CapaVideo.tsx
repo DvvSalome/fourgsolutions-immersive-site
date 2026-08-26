@@ -15,6 +15,7 @@ export default function CapaVideo({
   poster,
   loop = false,
   umbral,
+  unaVez = false,
   className,
   onEnded,
   onPlay,
@@ -25,6 +26,10 @@ export default function CapaVideo({
   /** Fraccion visible para arrancar (0-1). El telon la usa para no abrirse
    *  mientras la escena apenas se asoma al hacer scroll. */
   umbral?: number;
+  /** No volver a reproducir despues de terminar (telon). Sin esto, play() sobre un
+   *  video terminado REBOBINA y la capa se re-anima cada vez que reentra al viewport.
+   *  Voltio NO la usa: el saludo se repite al volver, que se vea vivo. */
+  unaVez?: boolean;
   className?: string;
   onEnded?: () => void;
   onPlay?: () => void;
@@ -39,9 +44,7 @@ export default function CapaVideo({
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          // play() sobre un video terminado REBOBINA: el telon se re-abriria
-          // cada vez que la escena vuelve a entrar al viewport
-          if (!loop && video.ended) return;
+          if (unaVez && video.ended) return;
           // un play() rechazado (autoplay bloqueado) no debe romper la escena
           video.play().catch(() => {});
         } else {
@@ -52,7 +55,7 @@ export default function CapaVideo({
     );
     observer.observe(video);
     return () => observer.disconnect();
-  }, [loop, umbral]);
+  }, [unaVez, umbral]);
 
   return (
     <video

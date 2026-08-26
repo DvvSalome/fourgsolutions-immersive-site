@@ -179,3 +179,14 @@ Auditoria tras feedback ("mal integrado, pantalla verde, se ve basico"):
   mudo en el clic de entrada — sin eso Chrome bloquea los play() por scroll.
 - Olas de la travesia con `mask-image` degradado arriba (el master llena su cuadro y
   cortaba la cresta en una linea recta).
+
+### Teatro v3 · SALA DE CINE (feedback: "no que hiciera scroll a la derecha")
+
+El carrusel horizontal murio: ahora hay UNA pantalla fija (`.portfolio-screen`) entre la
+cenefa y el publico, y los 10 clientes se PROYECTAN en ella con crossfade por scroll —
+cada uno ocupa 1/10 del tramo fijado via `animation-range` inline por slide, con
+`visibility` acompanando al `opacity` para que los slides invisibles no roben clics.
+La pantalla se estira al alto disponible (flex; el pantallazo es `flex: 1`), asi no se
+recorta abajo en ninguna altura de ventana. El telon va con `object-fit: fill`: con
+cover, en ventanas cortas y anchas las patas recogidas se comian 20vw de pantalla.
+Fallback sin animation-timeline: galeria plana sin capas de teatro.

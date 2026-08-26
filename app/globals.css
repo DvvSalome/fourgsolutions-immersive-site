@@ -144,7 +144,7 @@ h1 em, .section-heading h2 em, .method-intro h2 em, .contact-section h2 em { col
 .section-heading--center h2 { font-size: clamp(3.2rem, 6.2vw, 6.8rem); }
 .section-heading--center > p:last-child { margin-inline: auto; color: rgba(246,232,196,.52); }
 .portfolio-story { position: relative; z-index: 3; }
-.portfolio-stage { position: relative; min-height: 860px; overflow-x: auto; overflow-y: hidden; scrollbar-color: var(--gold-soft) #090807;
+.portfolio-stage { position: relative; min-height: 860px; overflow: hidden;
   /* el rubor vinotinto arriba es la luz que rebota del telon: ancla las cortinas al escenario */
   background: radial-gradient(130% 66% at 50% -6%, rgba(96,24,19,.5), rgba(96,24,19,0) 62%), linear-gradient(180deg, #14100c, #060605 80%); }
 .portfolio-stage::before { content: ""; position: absolute; inset: 0; opacity: .2; background: linear-gradient(90deg, transparent 49.8%, rgba(212,175,85,.32) 50%, transparent 50.2%), repeating-linear-gradient(0deg, transparent 0 78px, rgba(212,175,85,.12) 79px, transparent 80px); }
@@ -163,7 +163,10 @@ h1 em, .section-heading h2 em, .method-intro h2 em, .contact-section h2 em { col
    la audiencia mira el telon). Abierto se QUEDA como patas del escenario, ya no se
    desvanece. Se desborda -7vw para que las cortinas recogidas asomen solo en los bordes. */
 .capa-telon { position: absolute; z-index: 5; inset: 0 -7vw; pointer-events: none; }
-.capa-telon video { width: 100%; height: 100%; object-fit: cover; object-position: bottom; }
+/* fill, no cover: en ventanas cortas y anchas cover escala por ancho y las patas
+   recogidas se comen 20vw de pantalla. Los pliegues verticales disimulan el estirado
+   y la intrusion de las patas queda constante en vw a cualquier tamano. */
+.capa-telon video { width: 100%; height: 100%; object-fit: fill; }
 .telon-cenefa { position: absolute; z-index: 8; top: 0; left: 0; right: 0; height: 11%; min-height: 84px; pointer-events: none;
   background:
     repeating-linear-gradient(90deg, rgba(12,3,2,.5) 0 10px, transparent 18px 24px, rgba(150,44,32,.18) 30px 38px, transparent 44px 52px, rgba(12,3,2,.4) 58px 64px),
@@ -174,13 +177,17 @@ h1 em, .section-heading h2 em, .method-intro h2 em, .contact-section h2 em { col
 .telon-cenefa::after { content: ""; position: absolute; left: 0; right: 0; top: 100%; height: 26px;
   background: radial-gradient(33px 26px at 32px 0, #430f0b 60%, #26080631 67%, transparent 70%) repeat-x;
   background-size: 64px 26px; filter: drop-shadow(0 8px 10px rgba(0,0,0,.45)); }
-.portfolio-voltio { position: absolute; z-index: 6; left: 0; bottom: 0; width: min(43vw, 592px); pointer-events: none; filter: drop-shadow(0 22px 25px rgba(0,0,0,.64)); }
+.portfolio-voltio { position: absolute; z-index: 6; left: -2vw; bottom: 0; width: min(38vw, 520px); pointer-events: none; filter: drop-shadow(0 22px 25px rgba(0,0,0,.64)); }
 .portfolio-voltio img, .portfolio-voltio video { width: 100%; height: auto; }
-.portfolio-voltio span { position: absolute; left: 70%; top: 32%; width: max-content; padding: 8px 12px; border: 1px solid rgba(212,175,85,.46); background: rgba(9,8,7,.78); color: var(--gold); font-family: Georgia, serif; font-size: 11px; font-style: italic; }
-/* max(13vh, 132px): en pantallas cortas 12vh quedaba DEBAJO de la cenefa (min 84px
-   + festones) y la barra del navegador del cliente salia tapada */
-.portfolio-track { position: relative; z-index: 4; width: max-content; display: flex; gap: 8vw; padding: max(13vh, 132px) 8vw 10vh 28vw; }
-.site-frame { width: min(70vw, 1050px); flex: 0 0 auto; overflow: hidden; border: 1px solid rgba(212,175,85,.48); border-radius: 16px; background: #0d0c0a; box-shadow: 0 40px 90px rgba(0,0,0,.58), 0 0 0 8px rgba(212,175,85,.04); }
+/* abajo a la derecha de Voltio, sobre el piso del escenario: con la pantalla de cine
+   a su derecha, la posicion vieja (70%/32%) pisaba la proyeccion */
+.portfolio-voltio span { position: absolute; left: 56%; bottom: 7%; width: max-content; padding: 8px 12px; border: 1px solid rgba(212,175,85,.46); background: rgba(9,8,7,.78); color: var(--gold); font-family: Georgia, serif; font-size: 11px; font-style: italic; }
+/* SALA DE CINE: una sola pantalla fija entre la cenefa (top) y el publico (bottom);
+   los clientes se proyectan en ella con crossfade por scroll. La pantalla se estira
+   al alto disponible, asi NUNCA se recorta abajo, a cualquier alto de ventana. */
+.portfolio-screen { position: absolute; z-index: 4; top: max(13vh, 132px); bottom: 19%; left: max(23vw, 330px); right: 13vw; max-width: 1250px; margin-inline: auto; }
+.site-frame { position: absolute; inset: 0; display: flex; flex-direction: column; opacity: 0; visibility: hidden; overflow: hidden; border: 1px solid rgba(212,175,85,.48); border-radius: 16px; background: #0d0c0a; box-shadow: 0 40px 90px rgba(0,0,0,.58), 0 0 0 8px rgba(212,175,85,.04); }
+.site-frame:first-child { opacity: 1; visibility: visible; }
 .site-browserbar { height: 64px; padding: 0 22px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; border-bottom: 1px solid rgba(212,175,85,.22); background: #17130e; }
 .traffic-lights { display: flex; gap: 7px; }
 .traffic-lights i { width: 11px; height: 11px; border-radius: 50%; background: #ed6a5e; }
@@ -188,11 +195,13 @@ h1 em, .section-heading h2 em, .method-intro h2 em, .contact-section h2 em { col
 .traffic-lights i:nth-child(3) { background: #58b789; }
 .site-browserbar b { padding: 10px 18px; border: 1px solid rgba(212,175,85,.2); border-radius: 8px; color: rgba(246,232,196,.58); background: #090807; font-family: monospace; font-size: 11px; font-weight: 400; }
 .site-browserbar a { justify-self: end; color: var(--gold); font-size: 9px; font-weight: 800; letter-spacing: .16em; }
-.site-shot { position: relative; display: block; height: min(50vh, 560px); overflow: hidden; background: #111; }
+.site-shot { position: relative; display: block; flex: 1; min-height: 0; overflow: hidden; background: #111; }
 .site-shot::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, transparent 64%, rgba(8,7,6,.88)); }
-.site-shot img { object-fit: cover; object-position: top; transition: transform 5s cubic-bezier(.2,.7,.2,1); }
-.site-frame:hover .site-shot img { transform: translateY(calc(-100% + min(50vh, 560px))); }
-.site-caption { min-height: 104px; padding: 20px 24px; display: flex; align-items: end; justify-content: space-between; gap: 24px; }
+/* recorrer el pantallazo al hover moviendo el encuadre (object-position), que no
+   depende del alto del contenedor como el viejo translateY */
+.site-shot img { object-fit: cover; object-position: top; transition: object-position 6s cubic-bezier(.2,.7,.2,1); }
+.site-frame:hover .site-shot img { object-position: bottom; }
+.site-caption { min-height: 78px; padding: 14px 22px; display: flex; align-items: end; justify-content: space-between; gap: 24px; }
 .site-caption span { color: var(--gold); font-size: 9px; letter-spacing: .16em; }
 .site-caption h3 { margin: 5px 0 0; font-family: Georgia, serif; font-size: clamp(1.8rem, 3vw, 3rem); font-weight: 400; }
 .site-caption p { margin: 0; color: rgba(246,232,196,.42); font-family: monospace; font-size: 10px; }
@@ -201,11 +210,26 @@ h1 em, .section-heading h2 em, .method-intro h2 em, .contact-section h2 em { col
 
 @supports (animation-timeline: view()) {
   .portfolio-story { height: 720vh; view-timeline-name: --portfolio; view-timeline-axis: block; }
-  .portfolio-stage { position: sticky; top: 0; height: 100vh; min-height: 0; overflow: hidden; }
-  /* contain, NO entry/exit: el pan solo corre mientras el escenario esta FIJADO.
-     Con entry 0% el track ya llevaba ~87vw recorridos al fijarse (12% de 720vh se
-     scrollea antes del pin) y el primer cliente llegaba recortado o de salida. */
-  .portfolio-track { position: absolute; left: 0; top: 0; animation: portfolio-pan linear both; animation-timeline: --portfolio; animation-range: contain 0% contain 100%; }
+  .portfolio-stage { position: sticky; top: 0; height: 100vh; min-height: 0; }
+  /* contain, NO entry/exit: la proyeccion solo cambia mientras la sala esta FIJADA
+     (con entry, al fijarse ya iba 12% del recorrido y el cliente 01 llegaba de salida).
+     El rango por slide va inline en el JSX; visibility acompana al opacity para que
+     los slides invisibles no roben los clics del visible. */
+  .site-frame { animation: cine-slide linear both; animation-timeline: --portfolio; }
+  .site-frame:first-child { animation-name: cine-slide-primera; }
+  .site-frame:last-child { animation-name: cine-slide-ultima; }
+}
+@keyframes cine-slide { 0%, 100% { opacity: 0; visibility: hidden; } 9%, 91% { opacity: 1; visibility: visible; } }
+@keyframes cine-slide-primera { 0%, 91% { opacity: 1; visibility: visible; } 100% { opacity: 0; visibility: hidden; } }
+@keyframes cine-slide-ultima { 0% { opacity: 0; visibility: hidden; } 9%, 100% { opacity: 1; visibility: visible; } }
+/* Sin scroll-timeline no hay sala de cine: galeria plana y legible, sin capas de teatro */
+@supports not (animation-timeline: view()) {
+  .capa-telon, .telon-cenefa, .capa-audiencia, .portfolio-voltio, .projector-beam,
+  .capa-proyector, .portfolio-instruction { display: none; }
+  .portfolio-stage { min-height: 0; }
+  .portfolio-screen { position: static; max-width: 1080px; margin: 0 auto; padding: 50px 6vw 70px; }
+  .site-frame { position: relative; inset: auto; opacity: 1; visibility: visible; margin-bottom: 44px; }
+  .site-shot { flex: none; height: 56vh; }
 }
 
 .method-section { position: relative; padding: 160px 0 0; color: var(--cream); background: linear-gradient(180deg, #0b0a08, #0e1018 55%, #060605); }
@@ -307,7 +331,6 @@ footer a { justify-self: end; }
 @keyframes spark { 50% { transform: translateY(-5px) scale(1.08); opacity: .72; } }
 @keyframes beam-breathe { to { opacity: .24; filter: blur(3px); } }
 @keyframes instruction-line { to { background-position: -200% 0; } }
-@keyframes portfolio-pan { to { transform: translateX(calc(-100% + 94vw)); } }
 
 @supports (animation-timeline: view()) {
   .reveal { opacity: .12; transform: translateY(38px); animation: view-reveal linear both; animation-timeline: view(); animation-range: entry 8% cover 34%; }
@@ -324,7 +347,6 @@ footer a { justify-self: end; }
   .systems-visual { position: relative; top: auto; height: min(760px, 86svh); }
   .system-cards { padding-top: 0; }
   .system-card { margin-bottom: 28px; }
-  .site-frame { width: 78vw; }
 }
 
 @media (max-width: 680px) {
@@ -357,16 +379,14 @@ footer a { justify-self: end; }
   .machine-readout { left: 20px; right: 20px; bottom: 20px; gap: 8px; }
   .system-card { min-height: 390px; padding: 38px 30px; }
   .system-number { left: 30px; }
-  .portfolio-story { height: auto; }
+  .portfolio-story { height: 560vh; }
   .portfolio-stage { min-height: 680px; }
-  .portfolio-track { gap: 8vw; padding: 8vh 6vw 9vh 30vw; animation: none; }
-  .portfolio-voltio { left: -6vw; width: 62vw; }
+  .portfolio-screen { left: 4vw; right: 4vw; top: max(12vh, 116px); bottom: 24%; }
+  .portfolio-voltio { left: -8vw; width: 56vw; }
   .portfolio-voltio span { display: none; }
-  .site-frame { width: 86vw; }
   .site-browserbar { height: 54px; grid-template-columns: auto 1fr auto; gap: 12px; padding-inline: 14px; }
   .site-browserbar b { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 8px 10px; }
-  .site-shot { height: 48vh; }
-  .site-caption { min-height: 90px; padding: 16px 18px; }
+  .site-caption { min-height: 74px; padding: 14px 16px; }
   .site-caption p { display: none; }
   .portfolio-instruction { display: none; }
   .method-intro { margin-bottom: 60px; }
