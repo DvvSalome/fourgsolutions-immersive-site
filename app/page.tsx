@@ -1,7 +1,8 @@
 "use client";
 
+/* eslint-disable jsx-a11y/media-has-caption -- All media is decorative and contains no speech. */
 import Image from "next/image";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const systems = [
   {
@@ -40,6 +41,31 @@ const selectedWork = [
 export default function Home() {
   const [entered, setEntered] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
+  const theaterRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const stage = theaterRef.current;
+    if (!stage) return;
+
+    const videos = Array.from(stage.querySelectorAll<HTMLVideoElement>("video"));
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const observer = new IntersectionObserver(([entry]) => {
+      for (const video of videos) {
+        if (entry.isIntersecting && !reducedMotion.matches) {
+          if (video.dataset.once === "true") video.currentTime = 0;
+          video.play().catch(() => undefined);
+        } else {
+          video.pause();
+        }
+      }
+    }, { threshold: 0.18 });
+
+    observer.observe(stage);
+    return () => {
+      observer.disconnect();
+      videos.forEach((video) => video.pause());
+    };
+  }, []);
 
   const enterExperience = () => {
     setEntered(true);
@@ -56,8 +82,6 @@ export default function Home() {
   return (
     <main className="site-shell" onPointerMove={moveLight}>
       <a className="skip-link" href="#contenido">Saltar al contenido</a>
-      {/* Non-speech interface chime; captions are not applicable. */}
-      {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
       <audio ref={audioRef} src="/audio/chime.mp3" preload="auto" />
       <div className="noise" aria-hidden="true" />
       <div className="scroll-progress" aria-hidden="true" />
@@ -156,10 +180,12 @@ export default function Home() {
 
           <div className="portfolio-story">
             <div className="portfolio-stage">
-              <div className="projector-beam" aria-hidden="true" />
-              <div className="portfolio-voltio" aria-hidden="true">
-                <Image src="/assets/voltio-host.png" alt="" width={1072} height={1467} />
-                <span>Voltio presenta</span>
+              <div className="theater-layers" ref={theaterRef} aria-hidden="true">
+                <video className="theater-layer theater-projector" src="/video/layers/proyector-loop.webm" poster="/assets/omni-posters/proyector-loop.png" muted loop playsInline preload="metadata" />
+                <video className="theater-layer theater-beam" src="/video/layers/haz-dorado-loop.mp4" poster="/assets/omni-posters/haz-dorado-loop.png" muted loop playsInline preload="metadata" />
+                <video className="theater-layer theater-audience" src="/video/layers/audiencia-loop.webm" poster="/assets/omni-posters/audiencia-loop.png" muted loop playsInline preload="metadata" />
+                <video className="theater-layer theater-voltio" src="/video/layers/voltio-presenta.webm" poster="/assets/omni-posters/voltio-presenta.png" data-once="true" muted playsInline preload="metadata" />
+                <video className="theater-layer theater-curtain" src="/video/layers/telon-abre.webm" poster="/assets/omni-posters/telon-abre.png" data-once="true" muted playsInline preload="metadata" />
               </div>
               <div className="portfolio-track" aria-label="Sitios web creados por 4GS">
                 {selectedWork.map((item) => (
