@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import CapaVideo from "./CapaVideo";
 import { useRef, useState } from "react";
 
 const systems = [
@@ -38,6 +39,7 @@ const selectedWork = [
 ];
 
 export default function Home() {
+  const [telonAbierto, setTelonAbierto] = useState(false);
   const [entered, setEntered] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
 
@@ -156,10 +158,23 @@ export default function Home() {
 
           <div className="portfolio-story">
             <div className="portfolio-stage">
-              <div className="projector-beam" aria-hidden="true" />
+              {/* Capas de FLOW-ASSETS.md, de atras hacia delante: proyector, haz (screen),
+                  capturas (HTML), audiencia, Voltio, telon. Los textos siguen en HTML. */}
+              <div className="capa-proyector" aria-hidden="true">
+                <CapaVideo src="/video/layers/proyector-loop.webm" poster="/video/layers/proyector-loop-poster.png" loop />
+              </div>
+              <div className="projector-beam" aria-hidden="true">
+                <CapaVideo src="/video/layers/haz-dorado-loop.webm" poster="/video/layers/haz-dorado-loop-poster.png" loop />
+              </div>
+              <div className="capa-audiencia" aria-hidden="true">
+                <CapaVideo src="/video/layers/audiencia-loop.webm" poster="/video/layers/audiencia-loop-poster.png" loop />
+              </div>
               <div className="portfolio-voltio" aria-hidden="true">
-                <Image src="/assets/voltio-host.png" alt="" width={1072} height={1467} />
+                <CapaVideo src="/video/layers/voltio-presenta.webm" poster="/video/layers/voltio-presenta-poster.png" />
                 <span>Voltio presenta</span>
+              </div>
+              <div className={telonAbierto ? "capa-telon capa-telon--abierto" : "capa-telon"} aria-hidden="true">
+                <CapaVideo src="/video/layers/telon-abre.webm" poster="/video/layers/telon-abre-poster.png" onEnded={() => setTelonAbierto(true)} />
               </div>
               <div className="portfolio-track" aria-label="Sitios web creados por 4GS">
                 {selectedWork.map((item) => (
