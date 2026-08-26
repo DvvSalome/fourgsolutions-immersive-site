@@ -19,12 +19,14 @@ import os, subprocess, sys
 ESCENAS = {
     "site": {
         "v1.mp4": ("voltio-presenta.webm", True, False),
-        # despill al telon: sobre el fondo oscuro del sitio, cualquier fleco verde
-        # en el borde del terciopelo brilla (feedback: "mal integrada").
+        # despill FUERTE al telon: sobre el fondo oscuro del sitio, cualquier fleco
+        # verde en el borde del terciopelo brilla (feedback, dos veces). Tol un poco
+        # mas amplia por lo mismo; en tela vinotinto es seguro (no hay zonas crema).
         # poster=primero: antes del play debe verse CERRADO (el ultimo frame haria
         # que la entrada muestre el telon abierto y salte a cerrado al arrancar).
         "v2.mp4": ("telon-abre.webm", True, False,
-                   {"despill": ",despill=type=green:mix=0.6", "poster": "primero"}),
+                   {"tol": "0.17:0.06", "despill": ",despill=type=green:mix=0.78",
+                    "poster": "primero"}),
         "v3.mp4": ("proyector-loop.webm", True, True),
         "v4.mp4": ("haz-dorado-loop.webm", False, True),
         "v5.mp4": ("audiencia-loop.webm", True, True),
@@ -54,8 +56,11 @@ ESCENAS = {
         "v2.mp4": ("olas-loop.webm", True, True),
         # cofre y bandera tambien llevan despill: las chispas doradas del cofre y el
         # borde de la tela quedaban con halo verde (feedback del usuario sobre la escena)
+        # alfa: mismo mal del barco — Veo mezclo el verde en la madera y se veia
+        # semitransparente (feedback: "el cofre se ve transparente")
         "v3.mp4": ("cofre-loop.webm", True, True,
-                   {"tol": "0.14:0.04", "despill": ",despill=type=green:mix=0.6"}),
+                   {"tol": "0.14:0.04", "alfa": 120,
+                    "despill": ",despill=type=green:mix=0.6"}),
         "v4.mp4": ("bandera-loop.webm", True, True,
                    {"despill": ",despill=type=green:mix=0.6"}),
     },

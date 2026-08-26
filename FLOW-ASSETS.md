@@ -203,3 +203,16 @@ endurecidos, identidad + first-frame en dos imagenes) y recortadas al bbox del a
 | Voltio pirata | `voltio-pirata.webm` | travesia, esquina de proa | tricornio + catalejo hacia el barco |
 
 Sin despill (los guantes crema se rosarian) — la leccion inversa del telon.
+
+### Afinado final de la ronda (feedback en vivo)
+
+- **Alfa endurecido** (`"alfa": N` en capas.py): Veo mezcla el verde DENTRO de telas y
+  maderas (barco ~65% opaco, cofre igual). Todo alfa > umbral se fuerza a 255 con un
+  lut; el aparejo fino queda intacto. Sintoma: "se ve transparente".
+- **Cine-recorrido**: mientras un cliente esta proyectado su pantallazo baja de top a
+  bottom con el scroll (mismo --rango inline del slide) — el sitio se ve COMPLETO.
+- **Rollo 35mm** (.film-strip): miniaturas del catalogo con perforaciones, sincronizadas
+  por --paso/--n; agregar un sitio a selectedWork alarga la cinta sola.
+- **Telon**: bottom -13% + mask degradado inferior (la tela se funde con el piso, sin
+  corte duro) + despill 0.78. El presentador va en loop (sin loop quedaba congelado a
+  los 8s). Islotes: e9 keyeado como PNG, uno para el pirata y otro (flip) para el cofre.

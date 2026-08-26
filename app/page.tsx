@@ -237,7 +237,9 @@ export default function Home() {
                 />
               </div>
               <div className="portfolio-voltio" aria-hidden="true">
-                <CapaVideo src="/video/layers/voltio-presenta.webm" poster="/video/layers/voltio-presenta-poster.png" />
+                {/* loop: sin el, a los 8s el presentador quedaba congelado el resto
+                    de la escena (feedback: "se pausa") */}
+                <CapaVideo src="/video/layers/voltio-presenta.webm" poster="/video/layers/voltio-presenta-poster.png" loop />
                 <span>Voltio presenta</span>
               </div>
               <div className="capa-audiencia" aria-hidden="true">
@@ -252,7 +254,7 @@ export default function Home() {
                   <article
                     className="site-frame"
                     key={item.number}
-                    style={{ animationRange: `contain ${i * 10}% contain ${(i + 1) * 10}%` }}
+                    style={{ "--rango": `contain ${i * 10}% contain ${(i + 1) * 10}%` } as React.CSSProperties}
                   >
                     <div className="site-browserbar">
                       <span className="traffic-lights" aria-hidden="true"><i /><i /><i /></span>
@@ -298,6 +300,10 @@ export default function Home() {
             <div className="voyage-stage">
               <div className="voyage-flag" aria-hidden="true">
                 <CapaVideo src="/video/layers/bandera-loop.webm" poster="/video/layers/bandera-loop-poster.png" loop />
+              </div>
+              {/* el islote del cofre aparece JUNTO al tesoro (misma animacion) */}
+              <div className="voyage-isla-cofre" aria-hidden="true">
+                <Image src="/img/isla-pirata.png" alt="" width={772} height={313} />
               </div>
               <div className="voyage-chest" aria-hidden="true">
                 <CapaVideo src="/video/layers/cofre-loop.webm" poster="/video/layers/cofre-loop-poster.png" loop />

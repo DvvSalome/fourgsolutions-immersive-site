@@ -164,10 +164,12 @@ h1 em, .section-heading h2 em, .method-intro h2 em, .contact-section h2 em { col
 /* Orden teatral: telon DETRAS de Voltio y del publico (el presentador sale al frente,
    la audiencia mira el telon). Abierto se QUEDA como patas del escenario, ya no se
    desvanece. Se desborda -7vw para que las cortinas recogidas asomen solo en los bordes. */
-/* bottom -9%: el terciopelo del master termina al ~92% del cuadro (hay aire debajo);
-   sin compensarlo, en ventanas cortas las patas flotaban cortadas a media altura.
-   Con el desborde, la tela SIEMPRE llega al piso del escenario. */
-.capa-telon { position: absolute; z-index: 5; inset: 0 -7vw -9%; pointer-events: none; }
+/* bottom -13%: el terciopelo del master termina al ~92% del cuadro (hay aire debajo)
+   y las patas recogidas suben en diagonal; el desborde empuja el remate de la tela
+   por debajo de la seccion y el mask la FUNDE con el piso — sin corte duro abajo. */
+.capa-telon { position: absolute; z-index: 5; inset: 0 -7vw -13%; pointer-events: none;
+  -webkit-mask-image: linear-gradient(180deg, #000 82%, transparent 97%);
+  mask-image: linear-gradient(180deg, #000 82%, transparent 97%); }
 /* fill, no cover: en ventanas cortas y anchas cover escala por ancho y las patas
    recogidas se comen 20vw de pantalla. Los pliegues verticales disimulan el estirado
    y la intrusion de las patas queda constante en vw a cualquier tamano. */
@@ -204,10 +206,7 @@ h1 em, .section-heading h2 em, .method-intro h2 em, .contact-section h2 em { col
 .site-browserbar a { justify-self: end; color: var(--gold); font-size: 9px; font-weight: 800; letter-spacing: .16em; }
 .site-shot { position: relative; display: block; flex: 1; min-height: 0; overflow: hidden; background: #111; }
 .site-shot::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, transparent 64%, rgba(8,7,6,.88)); }
-/* recorrer el pantallazo al hover moviendo el encuadre (object-position), que no
-   depende del alto del contenedor como el viejo translateY */
-.site-shot img { object-fit: cover; object-position: top; transition: object-position 6s cubic-bezier(.2,.7,.2,1); }
-.site-frame:hover .site-shot img { object-position: bottom; }
+.site-shot img { object-fit: cover; object-position: top; }
 .site-caption { min-height: 78px; padding: 14px 22px; display: flex; align-items: end; justify-content: space-between; gap: 24px; }
 .site-caption span { color: var(--gold); font-size: 9px; letter-spacing: .16em; }
 .site-caption h3 { margin: 5px 0 0; font-family: Georgia, serif; font-size: clamp(1.8rem, 3vw, 3rem); font-weight: 400; }
@@ -235,15 +234,20 @@ h1 em, .section-heading h2 em, .method-intro h2 em, .contact-section h2 em { col
      (con entry, al fijarse ya iba 12% del recorrido y el cliente 01 llegaba de salida).
      El rango por slide va inline en el JSX; visibility acompana al opacity para que
      los slides invisibles no roben los clics del visible. */
-  .site-frame { animation: cine-slide linear both; animation-timeline: --portfolio; }
+  /* --rango (inline por slide) = su decima parte del tramo fijado */
+  .site-frame { animation: cine-slide linear both; animation-timeline: --portfolio; animation-range: var(--rango); }
   .site-frame:first-child { animation-name: cine-slide-primera; }
   .site-frame:last-child { animation-name: cine-slide-ultima; }
+  /* mientras un cliente esta proyectado, su pantallazo se RECORRE completo de arriba
+     a abajo (feedback: "que se vea completo, no un cuadro de arriba") */
+  .site-shot img { animation: cine-recorrido linear both; animation-timeline: --portfolio; animation-range: var(--rango); }
   /* la cinta avanza una celda por slide: en el centro del slot i el fotograma i
      queda bajo el marco dorado (rango 5%-95% = centros del primer y ultimo slot) */
   .film-cells { animation: film-run linear both; animation-timeline: --portfolio; animation-range: contain 5% contain 95%; }
 }
 @keyframes film-run { to { transform: translateX(calc((var(--n, 10) - 1) * var(--paso) * -1)); } }
 @keyframes cine-slide { 0%, 100% { opacity: 0; visibility: hidden; } 9%, 91% { opacity: 1; visibility: visible; } }
+@keyframes cine-recorrido { 0%, 14% { object-position: top; } 86%, 100% { object-position: bottom; } }
 @keyframes cine-slide-primera { 0%, 91% { opacity: 1; visibility: visible; } 100% { opacity: 0; visibility: hidden; } }
 @keyframes cine-slide-ultima { 0% { opacity: 0; visibility: hidden; } 9%, 100% { opacity: 1; visibility: visible; } }
 /* Sin scroll-timeline no hay sala de cine: galeria plana y legible, sin capas de teatro */
@@ -267,7 +271,12 @@ h1 em, .section-heading h2 em, .method-intro h2 em, .contact-section h2 em { col
   background: linear-gradient(180deg, rgba(6,6,5,.15), rgba(6,6,5,.55) 78%, #060605),
               url("/img/travesia-fondo.jpg") center top / cover no-repeat, #0b0d14; }
 .voyage-flag { position: absolute; z-index: 2; right: 3vw; bottom: 30%; width: min(30vw, 420px); opacity: 0; pointer-events: none; }
-.voyage-chest { position: absolute; z-index: 4; right: 9vw; bottom: 22%; width: min(20vw, 270px); opacity: 0; pointer-events: none; }
+/* el cofre aparece A LA IZQUIERDA del pirata, justo donde apunta su catalejo */
+.voyage-chest { position: absolute; z-index: 4; right: 14vw; bottom: 23%; width: min(19vw, 260px); opacity: 0; pointer-events: none; }
+/* el mismo islote del pirata, volteado, para que el tesoro no flote en el agua.
+   El flip va en el IMG: voyage-appear anima transform y pisaria un scaleX del div */
+.voyage-isla-cofre { position: absolute; z-index: 3; right: 11.5vw; bottom: 16%; width: min(25vw, 330px); opacity: 0; pointer-events: none; filter: drop-shadow(0 10px 16px rgba(0,0,0,.5)); }
+.voyage-isla-cofre img { width: 100%; height: auto; transform: scaleX(-1); }
 .voyage-ship { position: absolute; z-index: 3; left: 0; bottom: 22%; width: min(52vw, 720px); transform: translateX(-30%); pointer-events: none;
   filter: drop-shadow(0 30px 34px rgba(0,0,0,.5)); }
 /* el narrador pirata, plantado en su islote en la esquina de proa */
@@ -295,6 +304,7 @@ h1 em, .section-heading h2 em, .method-intro h2 em, .contact-section h2 em { col
   .voyage-ship { animation: voyage-sail linear both; animation-timeline: --voyage; animation-range: cover 0% cover 100%; }
   .voyage-flag { animation: voyage-appear linear both; animation-timeline: --voyage; animation-range: cover 62% cover 78%; }
   .voyage-chest { animation: voyage-treasure linear both; animation-timeline: --voyage; animation-range: cover 74% cover 92%; }
+  .voyage-isla-cofre { animation: voyage-appear linear both; animation-timeline: --voyage; animation-range: cover 72% cover 88%; }
   .voyage-step { opacity: 0; transform: translateY(26px); animation: voyage-step linear both; animation-timeline: --voyage; }
   .voyage-step[data-paso="1"] { animation-range: cover 6% cover 18%; }
   .voyage-step[data-paso="2"] { animation-range: cover 26% cover 38%; }
@@ -315,6 +325,7 @@ h1 em, .section-heading h2 em, .method-intro h2 em, .contact-section h2 em { col
   .voyage-flag { width: 44vw; }
   .voyage-chest { width: 30vw; right: 6vw; }
   .voyage-isla { width: 42vw; right: 0; }
+  .voyage-isla-cofre { width: 38vw; right: 3vw; }
   .voyage-voltio { width: 30vw; right: 7vw; bottom: 12%; }
 }
 
@@ -334,7 +345,7 @@ h1 em, .section-heading h2 em, .method-intro h2 em, .contact-section h2 em { col
 /* Sin soporte (o movil): escena fija con todo visible y pasos en flujo normal */
 @supports not (animation-timeline: view()) {
   .voyage-ship { transform: translateX(60%); }
-  .voyage-flag, .voyage-chest { opacity: 1; }
+  .voyage-flag, .voyage-chest, .voyage-isla-cofre { opacity: 1; }
   .voyage-steps { position: relative; left: auto; top: auto; max-width: none; padding: 40px max(7vw, 48px) 70px; }
 }
 .method-section::before { content: "4GS"; position: absolute; z-index: 0; right: -2vw; top: 30px; color: rgba(212,175,85,.05); font-family: Georgia, serif; font-size: 30vw; line-height: 1; }
