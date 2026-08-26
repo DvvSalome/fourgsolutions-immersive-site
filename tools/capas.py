@@ -43,8 +43,13 @@ ESCENAS = {
     #   tol:     key mas fino para el barco; 0.16 le picaba las velas vinotinto
     #   despill: mata el tinte verde del aparejo fino; seguro en assets oscuros
     "pirata": {
+        # alfa: Veo MEZCLO el verde dentro de las velas (el barco salia ~65% opaco,
+        # feedback "se ve transparente"). Todo alfa > umbral se fuerza a 255; el
+        # despill limpia el tinte verde que quedo horneado en el color. El aparejo
+        # fino (alfa bajo) se conserva tal cual.
         "v1.mp4": ("barco-loop.webm", True, True,
                    {"crop": "crop=1280:572:0:74,", "tol": "0.13:0.03",
+                    "alfa": 120,
                     "despill": ",despill=type=green:mix=0.7"}),
         "v2.mp4": ("olas-loop.webm", True, True),
         # cofre y bandera tambien llevan despill: las chispas doradas del cofre y el
@@ -119,10 +124,13 @@ def main():
             color = color_esquina(m, y=100 if ajustes.get("crop") else 8)
             tol = ajustes.get("tol", TOLERANCIA)
             despill = ajustes.get("despill", "")
+            # endurecer alfa (ver barco): umbral -> opaco, debajo se respeta
+            dura = ajustes.get("alfa")
+            lut = f",format=yuva444p,lut=a='if(gt(val,{dura}),255,val)'" if dura else ""
             # el recorte a bbox (voltio) NO se re-escala: 348px nativos ~ su contenedor;
             # los demas bajan a 1280 de ancho
             escala = "" if (crop and escena == "site") else ",scale=1280:-2"
-            filtro = f"{crop}colorkey={color}:{tol}{despill},format=yuva420p{escala}"
+            filtro = f"{crop}colorkey={color}:{tol}{lut}{despill},format=yuva420p{escala}"
             print(f"  {master} -> {final}  (chroma muestreado {color})")
         else:
             filtro = "scale=1280:-2,format=yuv420p"

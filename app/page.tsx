@@ -266,6 +266,19 @@ export default function Home() {
                   </article>
                 ))}
               </div>
+              {/* Rollo de pelicula: la cinta con los fotogramas del catalogo corre con
+                  el scroll y el marco dorado marca el que esta proyectado. --n viene
+                  de los datos: agregar un sitio a selectedWork alarga la cinta sola. */}
+              <div className="film-strip" aria-hidden="true">
+                <div className="film-cells" style={{ "--n": selectedWork.length } as React.CSSProperties}>
+                  {selectedWork.map((item) => (
+                    <span className="film-cell" key={item.number}>
+                      <Image src={item.image} alt="" width={110} height={64} />
+                    </span>
+                  ))}
+                </div>
+                <span className="film-gate" />
+              </div>
               <div className="portfolio-instruction" aria-hidden="true"><span>SCROLL PARA RECORRER</span><i /></div>
             </div>
           </div>
@@ -292,7 +305,11 @@ export default function Home() {
               <div className="voyage-ship" aria-hidden="true">
                 <CapaVideo src="/video/layers/barco-loop.webm" poster="/video/layers/barco-loop-poster.png" loop />
               </div>
-              {/* Voltio pirata: el narrador de la travesia, catalejo al horizonte */}
+              {/* Voltio pirata: el narrador de la travesia, catalejo al horizonte,
+                  parado en su islote (feedback: "ponlo sobre tierra") */}
+              <div className="voyage-isla" aria-hidden="true">
+                <Image src="/img/isla-pirata.png" alt="" width={772} height={313} />
+              </div>
               <div className="voyage-voltio" aria-hidden="true">
                 <CapaVideo src="/video/layers/voltio-pirata.webm" poster="/video/layers/voltio-pirata-poster.png" loop />
               </div>

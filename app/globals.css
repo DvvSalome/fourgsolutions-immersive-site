@@ -164,7 +164,10 @@ h1 em, .section-heading h2 em, .method-intro h2 em, .contact-section h2 em { col
 /* Orden teatral: telon DETRAS de Voltio y del publico (el presentador sale al frente,
    la audiencia mira el telon). Abierto se QUEDA como patas del escenario, ya no se
    desvanece. Se desborda -7vw para que las cortinas recogidas asomen solo en los bordes. */
-.capa-telon { position: absolute; z-index: 5; inset: 0 -7vw; pointer-events: none; }
+/* bottom -9%: el terciopelo del master termina al ~92% del cuadro (hay aire debajo);
+   sin compensarlo, en ventanas cortas las patas flotaban cortadas a media altura.
+   Con el desborde, la tela SIEMPRE llega al piso del escenario. */
+.capa-telon { position: absolute; z-index: 5; inset: 0 -7vw -9%; pointer-events: none; }
 /* fill, no cover: en ventanas cortas y anchas cover escala por ancho y las patas
    recogidas se comen 20vw de pantalla. Los pliegues verticales disimulan el estirado
    y la intrusion de las patas queda constante en vw a cualquier tamano. */
@@ -179,11 +182,13 @@ h1 em, .section-heading h2 em, .method-intro h2 em, .contact-section h2 em { col
 .telon-cenefa::after { content: ""; position: absolute; left: 0; right: 0; top: 100%; height: 26px;
   background: radial-gradient(33px 26px at 32px 0, #430f0b 60%, #26080631 67%, transparent 70%) repeat-x;
   background-size: 64px 26px; filter: drop-shadow(0 8px 10px rgba(0,0,0,.45)); }
-.portfolio-voltio { position: absolute; z-index: 6; left: -2vw; bottom: 0; width: min(38vw, 520px); pointer-events: none; filter: drop-shadow(0 22px 25px rgba(0,0,0,.64)); }
+/* z8, ENCIMA del publico: con las siluetas por delante, en pantallas cortas le
+   tapaban las piernas a Voltio y se veia "cortado" (feedback) */
+.portfolio-voltio { position: absolute; z-index: 8; left: -2vw; bottom: 0; width: min(38vw, 520px); pointer-events: none; filter: drop-shadow(0 22px 25px rgba(0,0,0,.64)); }
 .portfolio-voltio img, .portfolio-voltio video { width: 100%; height: auto; }
 /* abajo a la derecha de Voltio, sobre el piso del escenario: con la pantalla de cine
    a su derecha, la posicion vieja (70%/32%) pisaba la proyeccion */
-.portfolio-voltio span { position: absolute; left: 56%; bottom: 7%; width: max-content; padding: 8px 12px; border: 1px solid rgba(212,175,85,.46); background: rgba(9,8,7,.78); color: var(--gold); font-family: Georgia, serif; font-size: 11px; font-style: italic; }
+.portfolio-voltio span { position: absolute; left: 58%; bottom: 24%; width: max-content; padding: 8px 12px; border: 1px solid rgba(212,175,85,.46); background: rgba(9,8,7,.78); color: var(--gold); font-family: Georgia, serif; font-size: 11px; font-style: italic; }
 /* SALA DE CINE: una sola pantalla fija entre la cenefa (top) y el publico (bottom);
    los clientes se proyectan en ella con crossfade por scroll. La pantalla se estira
    al alto disponible, asi NUNCA se recorta abajo, a cualquier alto de ventana. */
@@ -207,6 +212,19 @@ h1 em, .section-heading h2 em, .method-intro h2 em, .contact-section h2 em { col
 .site-caption span { color: var(--gold); font-size: 9px; letter-spacing: .16em; }
 .site-caption h3 { margin: 5px 0 0; font-family: Georgia, serif; font-size: clamp(1.8rem, 3vw, 3rem); font-weight: 400; }
 .site-caption p { margin: 0; color: rgba(246,232,196,.42); font-family: monospace; font-size: 10px; }
+/* Rollo de pelicula: cinta 35mm con los fotogramas del catalogo. Corre con la misma
+   timeline del teatro; el paso (celda+gap) vive en --paso para poder achicarla en
+   pantallas cortas sin desincronizar el keyframe. */
+.film-strip { position: absolute; z-index: 8; left: 50%; bottom: 5.5%; width: min(64vw, 880px); padding: 14px 0; transform: translateX(-50%); overflow: hidden; pointer-events: none; background: rgba(5,4,3,.92); border-block: 1px solid rgba(212,175,85,.3);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent); }
+.film-strip::before, .film-strip::after { content: ""; position: absolute; left: 0; right: 0; height: 6px; background: repeating-linear-gradient(90deg, rgba(246,232,196,.5) 0 8px, transparent 8px 24px); }
+.film-strip::before { top: 4px; }
+.film-strip::after { bottom: 4px; }
+.film-cells { display: flex; gap: 16px; width: max-content; padding-left: calc(50% - 55px); --paso: 126px; }
+.film-cell { width: 110px; height: 64px; flex: 0 0 auto; overflow: hidden; border-radius: 3px; outline: 1px solid rgba(212,175,85,.28); opacity: .6; }
+.film-cell img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.film-gate { position: absolute; left: 50%; top: 50%; width: 124px; height: 80px; transform: translate(-50%, -50%); border: 2px solid var(--gold); border-radius: 5px; box-shadow: 0 0 18px rgba(212,175,85,.35), inset 0 0 14px rgba(212,175,85,.12); }
 .portfolio-instruction { position: absolute; z-index: 8; right: 4vw; bottom: 22px; display: flex; align-items: center; gap: 12px; color: rgba(246,232,196,.36); font-size: 8px; letter-spacing: .2em; }
 .portfolio-instruction i { width: 48px; height: 1px; overflow: hidden; background: linear-gradient(90deg, var(--gold) 50%, rgba(212,175,85,.18) 50%); background-size: 200% 100%; animation: instruction-line 1.5s linear infinite; }
 
@@ -220,14 +238,18 @@ h1 em, .section-heading h2 em, .method-intro h2 em, .contact-section h2 em { col
   .site-frame { animation: cine-slide linear both; animation-timeline: --portfolio; }
   .site-frame:first-child { animation-name: cine-slide-primera; }
   .site-frame:last-child { animation-name: cine-slide-ultima; }
+  /* la cinta avanza una celda por slide: en el centro del slot i el fotograma i
+     queda bajo el marco dorado (rango 5%-95% = centros del primer y ultimo slot) */
+  .film-cells { animation: film-run linear both; animation-timeline: --portfolio; animation-range: contain 5% contain 95%; }
 }
+@keyframes film-run { to { transform: translateX(calc((var(--n, 10) - 1) * var(--paso) * -1)); } }
 @keyframes cine-slide { 0%, 100% { opacity: 0; visibility: hidden; } 9%, 91% { opacity: 1; visibility: visible; } }
 @keyframes cine-slide-primera { 0%, 91% { opacity: 1; visibility: visible; } 100% { opacity: 0; visibility: hidden; } }
 @keyframes cine-slide-ultima { 0% { opacity: 0; visibility: hidden; } 9%, 100% { opacity: 1; visibility: visible; } }
 /* Sin scroll-timeline no hay sala de cine: galeria plana y legible, sin capas de teatro */
 @supports not (animation-timeline: view()) {
   .capa-telon, .telon-cenefa, .capa-audiencia, .portfolio-voltio, .projector-beam,
-  .capa-proyector, .portfolio-instruction { display: none; }
+  .capa-proyector, .portfolio-instruction, .film-strip { display: none; }
   .portfolio-stage { min-height: 0; }
   .portfolio-screen { position: static; max-width: 1080px; margin: 0 auto; padding: 50px 6vw 70px; }
   .site-frame { position: relative; inset: auto; opacity: 1; visibility: visible; margin-bottom: 44px; }
@@ -248,8 +270,10 @@ h1 em, .section-heading h2 em, .method-intro h2 em, .contact-section h2 em { col
 .voyage-chest { position: absolute; z-index: 4; right: 9vw; bottom: 22%; width: min(20vw, 270px); opacity: 0; pointer-events: none; }
 .voyage-ship { position: absolute; z-index: 3; left: 0; bottom: 22%; width: min(52vw, 720px); transform: translateX(-30%); pointer-events: none;
   filter: drop-shadow(0 30px 34px rgba(0,0,0,.5)); }
-/* el narrador pirata, plantado sobre las olas en la esquina de proa */
-.voyage-voltio { position: absolute; z-index: 6; right: 3.5vw; bottom: 5%; width: min(17vw, 250px); pointer-events: none; filter: drop-shadow(0 18px 22px rgba(0,0,0,.55)); }
+/* el narrador pirata, plantado en su islote en la esquina de proa */
+.voyage-isla { position: absolute; z-index: 6; right: 1vw; bottom: 0; width: min(24vw, 340px); pointer-events: none; filter: drop-shadow(0 10px 16px rgba(0,0,0,.5)); }
+.voyage-isla img { width: 100%; height: auto; }
+.voyage-voltio { position: absolute; z-index: 7; right: 4.5vw; bottom: 10%; width: min(17vw, 250px); pointer-events: none; filter: drop-shadow(0 18px 22px rgba(0,0,0,.55)); }
 .voyage-voltio video { width: 100%; height: auto; }
 .voyage-waves { position: absolute; z-index: 5; left: 0; right: 0; bottom: -2px; height: 32%; pointer-events: none;
   /* el master de olas llena su cuadro: sin mask, la cresta termina en una linea recta */
@@ -290,7 +314,21 @@ h1 em, .section-heading h2 em, .method-intro h2 em, .contact-section h2 em { col
   .voyage-ship { width: 74vw; bottom: 26%; }
   .voyage-flag { width: 44vw; }
   .voyage-chest { width: 30vw; right: 6vw; }
-  .voyage-voltio { width: 30vw; bottom: 8%; }
+  .voyage-isla { width: 42vw; right: 0; }
+  .voyage-voltio { width: 30vw; right: 7vw; bottom: 12%; }
+}
+
+/* Ventanas CORTAS (laptops con poco alto): cenefa mas baja y pantalla con mas aire,
+   para que el modulo teatro completo respire sin recortar nada */
+@media (max-height: 720px) {
+  .telon-cenefa { min-height: 66px; }
+  .telon-cenefa::after { height: 20px; background-size: 56px 20px; }
+  .portfolio-screen { top: max(12vh, 102px); bottom: 19%; }
+  .site-caption h3 { font-size: clamp(1.4rem, 2.2vw, 2rem); }
+  .film-strip { bottom: 3%; padding: 10px 0; }
+  .film-cells { --paso: 100px; gap: 14px; padding-left: calc(50% - 43px); }
+  .film-cell { width: 86px; height: 50px; }
+  .film-gate { width: 98px; height: 62px; }
 }
 
 /* Sin soporte (o movil): escena fija con todo visible y pasos en flujo normal */
@@ -390,6 +428,7 @@ footer a { justify-self: end; }
   .portfolio-screen { left: 4vw; right: 4vw; top: max(12vh, 116px); bottom: 24%; }
   .portfolio-voltio { left: -8vw; width: 56vw; }
   .portfolio-voltio span { display: none; }
+  .film-strip { width: 92vw; bottom: 4%; }
   .site-browserbar { height: 54px; grid-template-columns: auto 1fr auto; gap: 12px; padding-inline: 14px; }
   .site-browserbar b { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 8px 10px; }
   .site-caption { min-height: 74px; padding: 14px 16px; }
