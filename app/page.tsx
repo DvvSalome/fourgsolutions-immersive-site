@@ -2,7 +2,25 @@
 
 import Image from "next/image";
 import CapaVideo from "./CapaVideo";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+
+/* Efectos de sonido de las escenas. Se crean una sola vez y se "desbloquean" con el
+   clic de entrada (un play mudo): sin ese truco, Chrome bloquea los play() que llegan
+   despues por scroll, que no cuentan como gesto del usuario. */
+type Sfx = { telon: HTMLAudioElement; ooh: HTMLAudioElement; olas: HTMLAudioElement; cofre: HTMLAudioElement };
+const crearSfx = (): Sfx => {
+  const mk = (src: string, volume: number, loop = false) => {
+    const a = new Audio(src);
+    a.volume = volume; a.loop = loop; a.preload = "auto";
+    return a;
+  };
+  return {
+    telon: mk("/audio/sfx/telon-whoosh.mp3", 0.5),
+    ooh: mk("/audio/sfx/publico-ooh.mp3", 0.35),
+    olas: mk("/audio/sfx/olas.mp3", 0.22, true),
+    cofre: mk("/audio/sfx/cofre.mp3", 0.5),
+  };
+};
 
 const systems = [
   {
@@ -39,14 +57,47 @@ const selectedWork = [
 ];
 
 export default function Home() {
-  const [telonAbierto, setTelonAbierto] = useState(false);
   const [entered, setEntered] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
+  const sfxRef = useRef<Sfx | null>(null);
+  const telonSono = useRef(false);
+
+  const sfx = () => (sfxRef.current ??= crearSfx());
 
   const enterExperience = () => {
     setEntered(true);
     audioRef.current?.play().catch(() => undefined);
+    // desbloquear los sfx aprovechando el gesto (ver crearSfx)
+    Object.values(sfx()).forEach((a) => {
+      a.muted = true;
+      a.play().then(() => { a.pause(); a.currentTime = 0; a.muted = false; })
+        .catch(() => { a.muted = false; });
+    });
   };
+
+  // Sonidos de la travesia: olas mientras la escena esta en pantalla, y el cofre
+  // cuando el tesoro aparece (mismo 74% del recorrido que usa la animacion CSS).
+  useEffect(() => {
+    if (!entered) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const voyage = document.querySelector(".voyage-story");
+    if (!voyage) return;
+    const s = sfx();
+    let cofreSono = false;
+    const io = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) s.olas.play().catch(() => {}); else s.olas.pause(); },
+      { threshold: 0.12 },
+    );
+    io.observe(voyage);
+    const alScroll = () => {
+      if (cofreSono) return;
+      const r = voyage.getBoundingClientRect();
+      const p = (window.innerHeight - r.top) / (window.innerHeight + r.height);
+      if (p >= 0.74) { cofreSono = true; s.cofre.play().catch(() => {}); }
+    };
+    window.addEventListener("scroll", alScroll, { passive: true });
+    return () => { io.disconnect(); window.removeEventListener("scroll", alScroll); s.olas.pause(); };
+  }, [entered]);
 
   const moveLight = (event: React.PointerEvent<HTMLElement>) => {
     const x = (event.clientX / window.innerWidth - 0.5) * 18;
@@ -159,23 +210,37 @@ export default function Home() {
           <div className="portfolio-story">
             <div className="portfolio-stage">
               {/* Capas de FLOW-ASSETS.md, de atras hacia delante: proyector, haz (screen),
-                  capturas (HTML), audiencia, Voltio, telon. Los textos siguen en HTML. */}
+                  capturas (HTML), telon, Voltio, audiencia, cenefa. El telon abre DETRAS
+                  del presentador y del publico, y abierto se queda de patas del escenario. */}
               <div className="capa-proyector" aria-hidden="true">
                 <CapaVideo src="/video/layers/proyector-loop.webm" poster="/video/layers/proyector-loop-poster.png" loop />
               </div>
               <div className="projector-beam" aria-hidden="true">
                 <CapaVideo src="/video/layers/haz-dorado-loop.webm" poster="/video/layers/haz-dorado-loop-poster.png" loop />
               </div>
-              <div className="capa-audiencia" aria-hidden="true">
-                <CapaVideo src="/video/layers/audiencia-loop.webm" poster="/video/layers/audiencia-loop-poster.png" loop />
+              <div className="capa-telon" aria-hidden="true">
+                <CapaVideo
+                  src="/video/layers/telon-abre.webm"
+                  poster="/video/layers/telon-abre-poster.png"
+                  umbral={0.55}
+                  onPlay={() => {
+                    // barrido de tela al abrir, una sola vez (onPlay tambien se
+                    // dispara al reanudar tras una pausa por scroll)
+                    if (telonSono.current) return;
+                    telonSono.current = true;
+                    sfx().telon.play().catch(() => {});
+                  }}
+                  onEnded={() => sfx().ooh.play().catch(() => {})}
+                />
               </div>
               <div className="portfolio-voltio" aria-hidden="true">
                 <CapaVideo src="/video/layers/voltio-presenta.webm" poster="/video/layers/voltio-presenta-poster.png" />
                 <span>Voltio presenta</span>
               </div>
-              <div className={telonAbierto ? "capa-telon capa-telon--abierto" : "capa-telon"} aria-hidden="true">
-                <CapaVideo src="/video/layers/telon-abre.webm" poster="/video/layers/telon-abre-poster.png" onEnded={() => setTelonAbierto(true)} />
+              <div className="capa-audiencia" aria-hidden="true">
+                <CapaVideo src="/video/layers/audiencia-loop.webm" poster="/video/layers/audiencia-loop-poster.png" loop />
               </div>
+              <div className="telon-cenefa" aria-hidden="true" />
               <div className="portfolio-track" aria-label="Sitios web creados por 4GS">
                 {selectedWork.map((item) => (
                   <article className="site-frame" key={item.number}>

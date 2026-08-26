@@ -149,3 +149,33 @@ Scroll-driven con `view-timeline` (rangos **cover**, no entry: un sujeto mas alt
 viewport nunca "termina de entrar" y los rangos entry se disparan de golpe). El barco
 cruza el mar, los 4 pasos del metodo aparecen como bitacora, y el destino es la bandera
 con el tesoro. Fallback sin soporte: escena estatica con todo visible.
+
+---
+
+## Teatro v2 · integracion del telon + sonido (2026-08-26)
+
+Auditoria tras feedback ("mal integrado, pantalla verde, se ve basico"):
+
+- **Orden teatral**: telon z5 DETRAS de Voltio (z6) y del publico (z7). El presentador
+  sale al frente del telon cerrado y el publico lo mira; abierto, las cortinas se QUEDAN
+  como patas del escenario (nada de fade-out). `.capa-telon` desborda `-7vw` para que
+  las patas solo asomen por los bordes y los frames entren/salgan por bambalinas.
+- **Cenefa CSS** (`.telon-cenefa`): proscenio de terciopelo con festones y filete dorado;
+  ancla el borde superior del video. Candilejas (`.portfolio-stage::after`) llenan la
+  boca del escenario.
+- **Posters con alfa**: generarlos SIEMPRE decodificando con `-c:v libvpx-vp9` — el
+  decoder nativo ignora el alfa y el PNG sale opaco con el fondo del master (el "flash
+  verde/gris" antes del play). El poster del telon es el PRIMER frame (cerrado); con
+  `prefers-reduced-motion` el telon se oculta por CSS o taparia la galeria para siempre.
+- **Pan del carrusel**: `animation-range: contain 0% contain 100%` — con entry/exit el
+  track ya llevaba ~87vw recorridos al fijarse el sticky y el cliente 01 llegaba de
+  salida. `contain` = exactamente el tramo fijado.
+- **Arranque del telon**: `umbral={0.55}` en CapaVideo (threshold de IntersectionObserver)
+  para que no se abra mientras la escena apenas asoma. play() sobre un video terminado
+  REBOBINA: CapaVideo lo bloquea para no re-abrir el telon al reentrar.
+- **Sonido** (`public/audio/sfx/`): whoosh al abrir el telon + "ooh" del publico al
+  terminar; olas en loop mientras la travesia esta en pantalla y cofre.mp3 al 74% del
+  recorrido (mismo punto que la animacion CSS). Los Audio se desbloquean con un play
+  mudo en el clic de entrada — sin eso Chrome bloquea los play() por scroll.
+- Olas de la travesia con `mask-image` degradado arriba (el master llena su cuadro y
+  cortaba la cresta en una linea recta).

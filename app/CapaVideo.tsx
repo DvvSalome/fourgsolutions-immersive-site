@@ -14,14 +14,20 @@ export default function CapaVideo({
   src,
   poster,
   loop = false,
+  umbral,
   className,
   onEnded,
+  onPlay,
 }: {
   src: string;
   poster: string;
   loop?: boolean;
+  /** Fraccion visible para arrancar (0-1). El telon la usa para no abrirse
+   *  mientras la escena apenas se asoma al hacer scroll. */
+  umbral?: number;
   className?: string;
   onEnded?: () => void;
+  onPlay?: () => void;
 }) {
   const ref = useRef<HTMLVideoElement>(null);
 
@@ -33,17 +39,20 @@ export default function CapaVideo({
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
+          // play() sobre un video terminado REBOBINA: el telon se re-abriria
+          // cada vez que la escena vuelve a entrar al viewport
+          if (!loop && video.ended) return;
           // un play() rechazado (autoplay bloqueado) no debe romper la escena
           video.play().catch(() => {});
         } else {
           video.pause();
         }
       },
-      { rootMargin: "120px" },
+      umbral ? { threshold: umbral } : { rootMargin: "120px" },
     );
     observer.observe(video);
     return () => observer.disconnect();
-  }, []);
+  }, [loop, umbral]);
 
   return (
     <video
@@ -55,6 +64,7 @@ export default function CapaVideo({
       muted
       playsInline
       preload="metadata"
+      onPlay={onPlay}
       onEnded={onEnded}
       aria-hidden="true"
     />

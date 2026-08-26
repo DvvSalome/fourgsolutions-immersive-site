@@ -19,7 +19,12 @@ import os, subprocess, sys
 ESCENAS = {
     "site": {
         "v1.mp4": ("voltio-presenta.webm", True, False),
-        "v2.mp4": ("telon-abre.webm", True, False),
+        # despill al telon: sobre el fondo oscuro del sitio, cualquier fleco verde
+        # en el borde del terciopelo brilla (feedback: "mal integrada").
+        # poster=primero: antes del play debe verse CERRADO (el ultimo frame haria
+        # que la entrada muestre el telon abierto y salte a cerrado al arrancar).
+        "v2.mp4": ("telon-abre.webm", True, False,
+                   {"despill": ",despill=type=green:mix=0.6", "poster": "primero"}),
         "v3.mp4": ("proyector-loop.webm", True, True),
         "v4.mp4": ("haz-dorado-loop.webm", False, True),
         "v5.mp4": ("audiencia-loop.webm", True, True),
@@ -83,6 +88,7 @@ def color_esquina(master, y=8):
 
 def main():
     src = sys.argv[1] if len(sys.argv) > 1 else "."
+    solo = sys.argv[2] if len(sys.argv) > 2 else None   # p.ej. v2.mp4: reconvierte solo esa capa
     escena = os.path.basename(os.path.normpath(src))
     capas = ESCENAS.get(escena)
     if not capas:
@@ -91,6 +97,8 @@ def main():
                        "public", "video", "layers")
     os.makedirs(dst, exist_ok=True)
     for master, entrada in capas.items():
+        if solo and master != solo:
+            continue
         final, recortar, loopea = entrada[0], entrada[1], entrada[2]
         ajustes = entrada[3] if len(entrada) > 3 else {}
         m = os.path.join(src, master)
@@ -112,10 +120,12 @@ def main():
             print(f"  {master} -> {final}  (sin recorte: negro + blend screen)")
         sh(f'ffmpeg -y -loglevel error -i "{m}" -vf "{filtro}" -an '
            f'-c:v libvpx-vp9 -b:v 0 -crf 30 "{salida}"')
-        # Poster: para los loops es el frame 0; para Voltio y el telon es el ULTIMO
-        # cuadro — el estado en que la capa descansa, y lo que ve prefers-reduced-motion.
-        pos = "" if loopea else "-sseof -0.2 "
-        sh(f'ffmpeg -y -loglevel error {pos}-i "{salida}" -frames:v 1 '
+        # Poster: para los loops (y el telon, ver arriba) es el frame 0; para Voltio
+        # es el ULTIMO cuadro — el estado en que la capa descansa.
+        # OJO: decodificar con libvpx-vp9 — el decoder nativo IGNORA el alfa y el
+        # poster sale OPACO con el fondo del master (un panel gris tapando la escena).
+        pos = "-sseof -0.2 " if (not loopea and ajustes.get("poster") != "primero") else ""
+        sh(f'ffmpeg -y -loglevel error -c:v libvpx-vp9 {pos}-i "{salida}" -frames:v 1 '
            f'"{salida.replace(".webm", "-poster.png")}"')
     print("listo -> public/video/layers/")
 
