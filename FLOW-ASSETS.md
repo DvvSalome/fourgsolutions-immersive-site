@@ -129,3 +129,23 @@ Mantener los textos y botones fuera del video. Así los enlaces siguen siendo cl
 - En pantallas pequeñas usar los clips móviles o una imagen estática si la conexión es lenta.
 - Con `prefers-reduced-motion: reduce`, mostrar el cuadro final y desactivar loops/scrubbing.
 - Mantener una sola pista de audio iniciada después de una interacción del usuario.
+
+
+---
+
+## Escena 2 · LA TRAVESIA (capitulo 03, EL METODO)
+
+Generada 2026-08-30 con el pipeline propio (no Flow UI): stills en verde -> Veo ->
+`tools/capas.py web/gen/pirata` -> WebM alfa. Masters en `omni-studio/web/gen/pirata/`.
+
+| Capa | Archivo | Loop | Nota |
+|---|---|---|---|
+| Galeon pirata | `barco-loop.webm` | 8s | Veo le metio letterbox 74/72px: se recorta ANTES del key. Key fino 0.13 + despill (las velas vinotinto se picaban a 0.16) |
+| Olas art-deco | `olas-loop.webm` | 8s | banda inferior, borde superior limpio |
+| Cofre del tesoro | `cofre-loop.webm` | 8s | brillo pulsante |
+| Bandera robot-pirata | `bandera-loop.webm` | 8s | Jolly Roger 4GS: calavera robot + llaves cruzadas |
+
+Scroll-driven con `view-timeline` (rangos **cover**, no entry: un sujeto mas alto que el
+viewport nunca "termina de entrar" y los rangos entry se disparan de golpe). El barco
+cruza el mar, los 4 pasos del metodo aparecen como bitacora, y el destino es la bandera
+con el tesoro. Fallback sin soporte: escena estatica con todo visible.

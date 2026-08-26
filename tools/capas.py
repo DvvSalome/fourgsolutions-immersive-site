@@ -14,12 +14,28 @@ mix-blend-mode: screen, que ya descarta el negro.
 """
 import os, subprocess, sys
 
-CAPAS = {  # master -> (nombre final, se recorta el chroma?, loopea?)
-    "v1.mp4": ("voltio-presenta.webm", True, False),
-    "v2.mp4": ("telon-abre.webm", True, False),
-    "v3.mp4": ("proyector-loop.webm", True, True),
-    "v4.mp4": ("haz-dorado-loop.webm", False, True),
-    "v5.mp4": ("audiencia-loop.webm", True, True),
+# Mapas por escena: master -> (nombre final, se recorta el chroma?, loopea?).
+# El mapa se elige por el nombre de la carpeta de masters (web/gen/<escena>).
+ESCENAS = {
+    "site": {
+        "v1.mp4": ("voltio-presenta.webm", True, False),
+        "v2.mp4": ("telon-abre.webm", True, False),
+        "v3.mp4": ("proyector-loop.webm", True, True),
+        "v4.mp4": ("haz-dorado-loop.webm", False, True),
+        "v5.mp4": ("audiencia-loop.webm", True, True),
+    },
+    # El 4o campo (opcional) son ajustes por capa, aprendidos componiendo la escena:
+    #   crop:    Veo le metio barras de cine SOLO al barco (74/72px) — fuera ANTES del key
+    #   tol:     key mas fino para el barco; 0.16 le picaba las velas vinotinto
+    #   despill: mata el tinte verde del aparejo fino; seguro en assets oscuros
+    "pirata": {
+        "v1.mp4": ("barco-loop.webm", True, True,
+                   {"crop": "crop=1280:572:0:74,", "tol": "0.13:0.03",
+                    "despill": ",despill=type=green:mix=0.7"}),
+        "v2.mp4": ("olas-loop.webm", True, True),
+        "v3.mp4": ("cofre-loop.webm", True, True),
+        "v4.mp4": ("bandera-loop.webm", True, True),
+    },
 }
 # colorkey, NO chromakey. chromakey compara solo crominancia (UV) y el negro lacado con
 # rebote verde de la pantalla cae dentro del umbral: dejo al personaje entero a media alfa
@@ -42,14 +58,15 @@ def sh(cmd):
     return r.stdout or ""
 
 
-def color_esquina(master):
-    """El verde real del clip, muestreado de la esquina superior izquierda del frame 0.
+def color_esquina(master, y=8):
+    """El verde real del clip, muestreado en el borde izquierdo a altura `y` del frame
+    en t=1s. `y` alto esquiva el letterbox que Veo a veces mete arriba del cuadro.
 
     OJO: la salida es RGB crudo — se captura como BYTES. Pasarla por un pipe de texto
     UTF-8 corrompe los valores y el recorte falla en silencio.
     """
     r = subprocess.run(
-        f'ffmpeg -loglevel error -i "{master}" -vf "crop=20:20:4:4,scale=1:1" '
+        f'ffmpeg -loglevel error -ss 1 -i "{master}" -vf "crop=20:20:4:{y},scale=1:1" '
         f'-frames:v 1 -f rawvideo -pix_fmt rgb24 -',
         shell=True, capture_output=True)
     if r.returncode != 0 or len(r.stdout) < 3:
@@ -60,21 +77,29 @@ def color_esquina(master):
 
 def main():
     src = sys.argv[1] if len(sys.argv) > 1 else "."
+    escena = os.path.basename(os.path.normpath(src))
+    capas = ESCENAS.get(escena)
+    if not capas:
+        raise SystemExit(f"escena desconocida '{escena}' — agregala al mapa ESCENAS")
     dst = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
                        "public", "video", "layers")
     os.makedirs(dst, exist_ok=True)
-    for master, (final, recortar, loopea) in CAPAS.items():
+    for master, entrada in capas.items():
+        final, recortar, loopea = entrada[0], entrada[1], entrada[2]
+        ajustes = entrada[3] if len(entrada) > 3 else {}
         m = os.path.join(src, master)
         if not os.path.exists(m):
             print(f"  falta {master} — se salta"); continue
         salida = os.path.join(dst, final)
-        crop = CROPS.get(master, "")
+        crop = ajustes.get("crop") or (CROPS.get(master, "") if escena == "site" else "")
         if recortar:
-            color = color_esquina(m)
-            # el recorte NO se re-escala: 348px nativos ~ el contenedor de 330px;
-            # subirlo al doble solo emborrona el trazo
-            escala = "" if crop else ",scale=1280:-2"
-            filtro = f"{crop}colorkey={color}:{TOLERANCIA},format=yuva420p{escala}"
+            color = color_esquina(m, y=100 if ajustes.get("crop") else 8)
+            tol = ajustes.get("tol", TOLERANCIA)
+            despill = ajustes.get("despill", "")
+            # el recorte a bbox (voltio) NO se re-escala: 348px nativos ~ su contenedor;
+            # los demas bajan a 1280 de ancho
+            escala = "" if (crop and escena == "site") else ",scale=1280:-2"
+            filtro = f"{crop}colorkey={color}:{tol}{despill},format=yuva420p{escala}"
             print(f"  {master} -> {final}  (chroma muestreado {color})")
         else:
             filtro = "scale=1280:-2,format=yuv420p"

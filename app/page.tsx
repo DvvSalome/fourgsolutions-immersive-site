@@ -198,15 +198,36 @@ export default function Home() {
 
         <section className="method-section" id="metodo">
           <div className="method-intro reveal">
-            <p className="chapter"><span>CAPÍTULO 03</span> / EL MÉTODO</p>
+            <p className="chapter"><span>CAPÍTULO 03</span> / LA TRAVESÍA</p>
             <h2>Primero entendemos.<br /><em>Después encendemos.</em></h2>
+            <p className="voyage-sub">Cada proyecto es un viaje con destino claro. Baja y navégalo.</p>
           </div>
-          <ol className="method-steps">
-            <li className="reveal"><span>01</span><div><h3>Mapeamos</h3><p>Objetivo, cuello de botella, personas y recorrido real.</p></div></li>
-            <li className="reveal"><span>02</span><div><h3>Diseñamos</h3><p>La experiencia visible y el sistema que trabaja detrás.</p></div></li>
-            <li className="reveal"><span>03</span><div><h3>Construimos</h3><p>Una primera versión concreta, medible y lista para usar.</p></div></li>
-            <li className="reveal"><span>04</span><div><h3>Escalamos</h3><p>Medimos, afinamos y sumamos solo lo que produce valor.</p></div></li>
-          </ol>
+
+          {/* La travesía: escena pirata por capas (web/gen/pirata), scroll-driven como
+              el capítulo 02. El barco cruza el mar mientras los cuatro pasos del método
+              aparecen como puntos de la ruta; al final, la bandera y el tesoro. */}
+          <div className="voyage-story">
+            <div className="voyage-stage">
+              <div className="voyage-flag" aria-hidden="true">
+                <CapaVideo src="/video/layers/bandera-loop.webm" poster="/video/layers/bandera-loop-poster.png" loop />
+              </div>
+              <div className="voyage-chest" aria-hidden="true">
+                <CapaVideo src="/video/layers/cofre-loop.webm" poster="/video/layers/cofre-loop-poster.png" loop />
+              </div>
+              <div className="voyage-ship" aria-hidden="true">
+                <CapaVideo src="/video/layers/barco-loop.webm" poster="/video/layers/barco-loop-poster.png" loop />
+              </div>
+              <ol className="voyage-steps" aria-label="El método FourG en cuatro pasos">
+                <li className="voyage-step" data-paso="1"><span>01</span><div><h3>Mapeamos</h3><p>Objetivo, cuello de botella, personas y recorrido real.</p></div></li>
+                <li className="voyage-step" data-paso="2"><span>02</span><div><h3>Diseñamos</h3><p>La experiencia visible y el sistema que trabaja detrás.</p></div></li>
+                <li className="voyage-step" data-paso="3"><span>03</span><div><h3>Construimos</h3><p>Una primera versión concreta, medible y lista para usar.</p></div></li>
+                <li className="voyage-step" data-paso="4"><span>04</span><div><h3>Escalamos</h3><p>Medimos, afinamos y sumamos solo lo que produce valor.</p></div></li>
+              </ol>
+              <div className="voyage-waves" aria-hidden="true">
+                <CapaVideo src="/video/layers/olas-loop.webm" poster="/video/layers/olas-loop-poster.png" loop />
+              </div>
+            </div>
+          </div>
         </section>
 
         <section className="contact-section" id="contacto">
