@@ -190,3 +190,16 @@ La pantalla se estira al alto disponible (flex; el pantallazo es `flex: 1`), asi
 recorta abajo en ninguna altura de ventana. El telon va con `object-fit: fill`: con
 cover, en ventanas cortas y anchas las patas recogidas se comian 20vw de pantalla.
 Fallback sin animation-timeline: galeria plana sin capas de teatro.
+
+### Voltios de escena (feedback: "en todas las escenas un Voltio con movimiento")
+
+Tres capas nuevas, generadas con la fabrica omni (web/gen/voltios.py: mismos prompts
+endurecidos, identidad + first-frame en dos imagenes) y recortadas al bbox del alfa:
+
+| Capa | Archivo | Donde | Nota |
+|---|---|---|---|
+| Voltio saluda | `voltio-saluda.webm` | hero (reemplaza el PNG) | saluda y abre brazos, vuelve a la pose inicial para loopear |
+| Voltio opera | `voltio-opera.webm` | sistemas (reemplaza el PNG) | consola art-deco de palancas y medidores |
+| Voltio pirata | `voltio-pirata.webm` | travesia, esquina de proa | tricornio + catalejo hacia el barco |
+
+Sin despill (los guantes crema se rosarian) — la leccion inversa del telon.

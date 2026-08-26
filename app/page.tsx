@@ -158,7 +158,9 @@ export default function Home() {
             <div className="orbit orbit-one" aria-hidden="true" />
             <div className="orbit orbit-two" aria-hidden="true" />
             <div className="stage-glow" aria-hidden="true" />
-            <Image className="voltio-host" src="/assets/voltio-host.png" alt="Voltio, robot negro y dorado de 4GS, dando la bienvenida" width={1072} height={1467} priority />
+            {/* Voltio de verdad, en video (feedback: "nada plano"): saluda y abre los
+                brazos en loop. El poster con alfa cubre la carga y reduced-motion. */}
+            <CapaVideo className="voltio-host" src="/video/layers/voltio-saluda.webm" poster="/video/layers/voltio-saluda-poster.png" loop />
             <div className="guide-tag"><span>01</span> Tu guía por el sistema</div>
             <div className="status-tag"><i /> Sistema en línea</div>
           </div>
@@ -177,10 +179,10 @@ export default function Home() {
           </div>
 
           <div className="systems-layout">
-            <div className="systems-visual">
+            <div className="systems-visual" role="img" aria-label="Voltio operando un sistema de automatización 4GS">
               <div className="machine-grid" aria-hidden="true" />
               <div className="machine-halo" aria-hidden="true" />
-              <Image src="/assets/voltio-system.png" alt="Voltio operando un sistema de automatización 4GS" width={1073} height={1466} />
+              <CapaVideo src="/video/layers/voltio-opera.webm" poster="/video/layers/voltio-opera-poster.png" loop />
               <div className="machine-readout" aria-hidden="true"><b>4GS / CORE</b><span>OPERANDO</span></div>
             </div>
 
@@ -289,6 +291,10 @@ export default function Home() {
               </div>
               <div className="voyage-ship" aria-hidden="true">
                 <CapaVideo src="/video/layers/barco-loop.webm" poster="/video/layers/barco-loop-poster.png" loop />
+              </div>
+              {/* Voltio pirata: el narrador de la travesia, catalejo al horizonte */}
+              <div className="voyage-voltio" aria-hidden="true">
+                <CapaVideo src="/video/layers/voltio-pirata.webm" poster="/video/layers/voltio-pirata-poster.png" loop />
               </div>
               <ol className="voyage-steps" aria-label="El método FourG en cuatro pasos">
                 <li className="voyage-step" data-paso="1"><span>01</span><div><h3>Mapeamos</h3><p>Objetivo, cuello de botella, personas y recorrido real.</p></div></li>

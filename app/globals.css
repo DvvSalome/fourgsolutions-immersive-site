@@ -93,7 +93,9 @@ h1 em, .section-heading h2 em, .method-intro h2 em, .contact-section h2 em { col
 
 .voltio-stage { position: relative; height: min(720px, 75vh); display: grid; place-items: center; isolation: isolate; }
 .stage-glow { position: absolute; width: 58%; aspect-ratio: 1; border-radius: 50%; background: rgba(212,175,85,.16); filter: blur(64px); animation: glow 3s ease-in-out infinite alternate; }
-.voltio-host { position: relative; z-index: 3; width: min(520px, 78%); height: auto; filter: drop-shadow(0 34px 40px rgba(0,0,0,.55)); translate: var(--mx) var(--my); animation: hero-float 5s ease-in-out infinite; transition: translate .25s ease-out; }
+/* el clip 16:9 recortado al bbox es mas ancho que el PNG viejo (el brazo del saludo
+   abre el encuadre): 640px para que el cuerpo quede del mismo tamano de antes */
+.voltio-host { position: relative; z-index: 3; width: min(640px, 92%); height: auto; filter: drop-shadow(0 34px 40px rgba(0,0,0,.55)); translate: var(--mx) var(--my); animation: hero-float 5s ease-in-out infinite; transition: translate .25s ease-out; }
 .orbit { position: absolute; width: 82%; aspect-ratio: 1; border: 1px solid rgba(212,175,85,.2); border-radius: 50%; transform: rotate(18deg); }
 .orbit::after { content: ""; position: absolute; top: 9%; left: 13%; width: 8px; height: 8px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 22px var(--gold); }
 .orbit-one { animation: spin 19s linear infinite; }
@@ -120,7 +122,7 @@ h1 em, .section-heading h2 em, .method-intro h2 em, .contact-section h2 em { col
 .systems-layout { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: minmax(390px, .9fr) 1.1fr; gap: clamp(46px, 8vw, 130px); align-items: start; }
 .systems-visual { position: sticky; top: 7vh; height: 86vh; min-height: 650px; display: grid; place-items: center; overflow: hidden; border: 1px solid rgba(20,17,16,.26); background: radial-gradient(circle at 50% 48%, rgba(212,175,85,.28), transparent 40%), #11100e; box-shadow: 0 35px 80px rgba(20,17,16,.16); }
 .systems-visual::before { content: ""; position: absolute; inset: 15px; border: 1px solid rgba(212,175,85,.26); }
-.systems-visual img { position: relative; z-index: 3; width: 88%; height: 88%; object-fit: contain; filter: drop-shadow(0 28px 28px rgba(0,0,0,.55)); }
+.systems-visual img, .systems-visual video { position: relative; z-index: 3; width: 88%; height: 88%; object-fit: contain; filter: drop-shadow(0 28px 28px rgba(0,0,0,.55)); }
 .machine-grid { position: absolute; inset: 0; opacity: .14; background-image: linear-gradient(rgba(212,175,85,.28) 1px, transparent 1px), linear-gradient(90deg, rgba(212,175,85,.28) 1px, transparent 1px); background-size: 44px 44px; }
 .machine-halo { position: absolute; width: 75%; aspect-ratio: 1; border: 1px solid rgba(212,175,85,.32); border-radius: 50%; box-shadow: 0 0 0 50px rgba(212,175,85,.025), 0 0 0 100px rgba(212,175,85,.018); animation: spin 18s linear infinite; }
 .machine-readout { left: 32px; bottom: 30px; display: flex; justify-content: space-between; gap: 34px; color: var(--gold); }
@@ -246,6 +248,9 @@ h1 em, .section-heading h2 em, .method-intro h2 em, .contact-section h2 em { col
 .voyage-chest { position: absolute; z-index: 4; right: 9vw; bottom: 22%; width: min(20vw, 270px); opacity: 0; pointer-events: none; }
 .voyage-ship { position: absolute; z-index: 3; left: 0; bottom: 22%; width: min(52vw, 720px); transform: translateX(-30%); pointer-events: none;
   filter: drop-shadow(0 30px 34px rgba(0,0,0,.5)); }
+/* el narrador pirata, plantado sobre las olas en la esquina de proa */
+.voyage-voltio { position: absolute; z-index: 6; right: 3.5vw; bottom: 5%; width: min(17vw, 250px); pointer-events: none; filter: drop-shadow(0 18px 22px rgba(0,0,0,.55)); }
+.voyage-voltio video { width: 100%; height: auto; }
 .voyage-waves { position: absolute; z-index: 5; left: 0; right: 0; bottom: -2px; height: 32%; pointer-events: none;
   /* el master de olas llena su cuadro: sin mask, la cresta termina en una linea recta */
   -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 30%); mask-image: linear-gradient(180deg, transparent 0, #000 30%); }
@@ -285,6 +290,7 @@ h1 em, .section-heading h2 em, .method-intro h2 em, .contact-section h2 em { col
   .voyage-ship { width: 74vw; bottom: 26%; }
   .voyage-flag { width: 44vw; }
   .voyage-chest { width: 30vw; right: 6vw; }
+  .voyage-voltio { width: 30vw; bottom: 8%; }
 }
 
 /* Sin soporte (o movil): escena fija con todo visible y pasos en flujo normal */

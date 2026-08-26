@@ -28,6 +28,15 @@ ESCENAS = {
         "v3.mp4": ("proyector-loop.webm", True, True),
         "v4.mp4": ("haz-dorado-loop.webm", False, True),
         "v5.mp4": ("audiencia-loop.webm", True, True),
+        # Los Voltio animados de todas las escenas (feedback: "nada plano").
+        # Sin despill, como v1: los guantes crema se rosarian. Crop al bbox del alfa
+        # (medido a 2fps en TODOS los frames), como la leccion de v1.
+        "v6.mp4": ("voltio-saluda.webm", True, True,
+                   {"crop": "crop=704:636:292:40,"}),
+        "v7.mp4": ("voltio-opera.webm", True, True,
+                   {"crop": "crop=464:642:408:44,"}),
+        "v8.mp4": ("voltio-pirata.webm", True, True,
+                   {"crop": "crop=518:654:328:24,"}),
     },
     # El 4o campo (opcional) son ajustes por capa, aprendidos componiendo la escena:
     #   crop:    Veo le metio barras de cine SOLO al barco (74/72px) — fuera ANTES del key
