@@ -39,6 +39,14 @@ ESCENAS = {
                    {"crop": "crop=464:642:408:44,"}),
         "v8.mp4": ("voltio-pirata.webm", True, True,
                    {"crop": "crop=518:654:328:24,"}),
+        # EL GRAN ENCENDIDO + LA FABRICA. El crop del skyline es el bbox del still
+        # e10 (1242:622:51:154 en 1344x768) escalado a los 1280x720 del video, para
+        # que el encuadre del PNG apagado y el video encendido coincidan sin salto.
+        "v10.mp4": ("skyline-enciende.webm", True, False,
+                    {"crop": "crop=1184:592:48:146,"}),
+        "v11.mp4": ("voltio-palanca.webm", True, False,
+                    {"poster": "primero"}),
+        "v12.mp4": ("fabrica-banda.webm", True, True),
     },
     # El 4o campo (opcional) son ajustes por capa, aprendidos componiendo la escena:
     #   crop:    Veo le metio barras de cine SOLO al barco (74/72px) — fuera ANTES del key

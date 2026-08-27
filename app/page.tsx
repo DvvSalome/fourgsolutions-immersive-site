@@ -65,6 +65,8 @@ const selectedWork = [
 
 export default function Home() {
   const [entered, setEntered] = useState(false);
+  // el gran encendido: la palanca de Voltio activa el skyline, las chispas y el CTA
+  const [palancaLista, setPalancaLista] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
   const sfxRef = useRef<Sfx | null>(null);
   const telonSono = useRef(false);
@@ -98,6 +100,13 @@ export default function Home() {
       { threshold: 0.12 },
     );
     io.observe(voyage);
+    // la fabrica traquetea mientras esta en pantalla
+    const fabrica = document.querySelector(".systems-visual");
+    const ioFabrica = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) s.cinta.play().catch(() => {}); else s.cinta.pause(); },
+      { threshold: 0.3 },
+    );
+    if (fabrica) ioFabrica.observe(fabrica);
     const alScroll = () => {
       if (cofreSono) return;
       const r = voyage.getBoundingClientRect();
@@ -105,7 +114,11 @@ export default function Home() {
       if (p >= 0.74) { cofreSono = true; s.cofre.play().catch(() => {}); }
     };
     window.addEventListener("scroll", alScroll, { passive: true });
-    return () => { io.disconnect(); window.removeEventListener("scroll", alScroll); s.olas.pause(); };
+    return () => {
+      io.disconnect(); ioFabrica.disconnect();
+      window.removeEventListener("scroll", alScroll);
+      s.olas.pause(); s.cinta.pause();
+    };
   }, [entered]);
 
   const moveLight = (event: React.PointerEvent<HTMLElement>) => {
@@ -198,6 +211,10 @@ export default function Home() {
             <div className="systems-visual" role="img" aria-label="Voltio operando un sistema de automatización 4GS">
               <div className="machine-grid" aria-hidden="true" />
               <div className="machine-halo" aria-hidden="true" />
+              {/* LA FABRICA: banda de ensamblaje con engranajes girando tras Voltio */}
+              <div className="fabrica-banda" aria-hidden="true">
+                <CapaVideo src="/video/layers/fabrica-banda.webm" poster="/video/layers/fabrica-banda-poster.png" loop />
+              </div>
               <CapaVideo src="/video/layers/voltio-opera.webm" poster="/video/layers/voltio-opera-poster.png" loop />
               <div className="machine-readout" aria-hidden="true"><b>4GS / CORE</b><span>OPERANDO</span></div>
             </div>
@@ -349,13 +366,37 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="contact-section" id="contacto">
-          <div className="contact-spark" aria-hidden="true">ϟ</div>
-          <p className="chapter"><span>ÚLTIMO CAPÍTULO</span> / TU PROYECTO</p>
-          <h2>¿Qué debería estar haciendo<br />tu negocio <em>sin ti?</em></h2>
-          <p>Cuéntanos dónde se atasca tu operación. Voltio y el equipo 4GS convierten ese punto en un sistema claro.</p>
-          <a className="contact-cta" href="https://www.instagram.com/four.g.solutions/" target="_blank" rel="noreferrer">Hablar con 4GS <span>↗</span></a>
-          <small>Respuesta humana. Sin formularios eternos.</small>
+        {/* EL GRAN ENCENDIDO: Voltio baja la palanca gigante, el skyline se ilumina
+            ventana por ventana, llueven chispas y el CTA late. */}
+        <section className="contact-story" id="contacto">
+          <div className={palancaLista ? "contact-stage contact-stage--encendida" : "contact-stage"}>
+            <div className="encendido-skyline" aria-hidden="true">
+              {palancaLista ? (
+                <CapaVideo src="/video/layers/skyline-enciende.webm" poster="/video/layers/skyline-enciende-poster.png" unaVez />
+              ) : (
+                <Image src="/img/skyline-apagado.png" alt="" width={1242} height={622} />
+              )}
+            </div>
+            <div className="chispas" aria-hidden="true" />
+            <div className="encendido-palanca" aria-hidden="true">
+              <CapaVideo
+                src="/video/layers/voltio-palanca.webm"
+                poster="/video/layers/voltio-palanca-poster.png"
+                umbral={0.6}
+                unaVez
+                onPlay={() => sfx().palanca.play().catch(() => {})}
+                onEnded={() => { setPalancaLista(true); sfx().campana.play().catch(() => {}); }}
+              />
+            </div>
+            <div className="contact-copy">
+              <div className="contact-spark" aria-hidden="true">ϟ</div>
+              <p className="chapter"><span>ÚLTIMO CAPÍTULO</span> / TU PROYECTO</p>
+              <h2>¿Qué debería estar haciendo<br />tu negocio <em>sin ti?</em></h2>
+              <p>Cuéntanos dónde se atasca tu operación. Voltio y el equipo 4GS convierten ese punto en un sistema claro.</p>
+              <a className="contact-cta" href="https://www.instagram.com/four.g.solutions/" target="_blank" rel="noreferrer">Hablar con 4GS <span>↗</span></a>
+              <small>Respuesta humana. Sin formularios eternos.</small>
+            </div>
+          </div>
         </section>
 
         <footer>

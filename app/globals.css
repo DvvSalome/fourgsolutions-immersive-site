@@ -89,9 +89,9 @@ button { color: inherit; font: inherit; }
 .eyebrow, .chapter { display: flex; align-items: center; gap: 12px; margin: 0 0 26px; color: var(--gold); font-size: 10px; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; }
 .eyebrow span { width: 28px; height: 1px; background: currentColor; }
 .chapter span { color: var(--cream); }
-h1, .section-heading h2, .method-intro h2, .contact-section h2 { margin: 0; font-family: Georgia, "Times New Roman", serif; font-weight: 400; letter-spacing: -.045em; line-height: .95; text-wrap: balance; }
+h1, .section-heading h2, .method-intro h2, .contact-stage h2 { margin: 0; font-family: Georgia, "Times New Roman", serif; font-weight: 400; letter-spacing: -.045em; line-height: .95; text-wrap: balance; }
 h1 { font-size: clamp(3.8rem, 6.6vw, 7rem); }
-h1 em, .section-heading h2 em, .method-intro h2 em, .contact-section h2 em { color: var(--gold); font-weight: 400; }
+h1 em, .section-heading h2 em, .method-intro h2 em, .contact-stage h2 em { color: var(--gold); font-weight: 400; }
 .lede { max-width: 630px; margin: 30px 0 0; color: rgba(246,232,196,.65); font-size: clamp(1rem, 1.35vw, 1.18rem); line-height: 1.65; }
 .hero-actions { display: flex; align-items: center; gap: 28px; margin-top: 38px; }
 .primary-cta { display: inline-flex; align-items: center; gap: 38px; padding: 16px 20px; color: var(--ink); background: var(--cream); border-radius: 2px; font-size: 10px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; transition: .25s; }
@@ -132,6 +132,9 @@ h1 em, .section-heading h2 em, .method-intro h2 em, .contact-section h2 em { col
 .systems-visual::before { content: ""; position: absolute; inset: 15px; border: 1px solid rgba(212,175,85,.26); }
 .systems-visual img, .systems-visual video { position: relative; z-index: 3; width: 88%; height: 88%; object-fit: contain; filter: drop-shadow(0 28px 28px rgba(0,0,0,.55)); }
 .machine-grid { position: absolute; inset: 0; opacity: .14; background-image: linear-gradient(rgba(212,175,85,.28) 1px, transparent 1px), linear-gradient(90deg, rgba(212,175,85,.28) 1px, transparent 1px); background-size: 44px 44px; }
+/* la linea de ensamblaje corre detras de Voltio, a lo ancho de la caja */
+.fabrica-banda { position: absolute; z-index: 2; left: -5%; right: -5%; bottom: 3%; pointer-events: none; opacity: .95; }
+.fabrica-banda video { width: 100%; height: auto; }
 .machine-halo { position: absolute; width: 75%; aspect-ratio: 1; border: 1px solid rgba(212,175,85,.32); border-radius: 50%; box-shadow: 0 0 0 50px rgba(212,175,85,.025), 0 0 0 100px rgba(212,175,85,.018); animation: spin 18s linear infinite; }
 .machine-readout { left: 32px; bottom: 30px; display: flex; justify-content: space-between; gap: 34px; color: var(--gold); }
 .machine-readout span { color: #81bc64; }
@@ -373,17 +376,43 @@ h1 em, .section-heading h2 em, .method-intro h2 em, .contact-section h2 em { col
 .method-steps h3 { margin: 0; font-family: Georgia, serif; font-size: clamp(2rem, 4vw, 3.8rem); font-weight: 400; }
 .method-steps p { margin: 8px 0 0; color: rgba(9,8,7,.58); line-height: 1.6; }
 
-.contact-section { position: relative; min-height: 92svh; padding: 130px max(8vw, 52px); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; overflow: hidden; background: radial-gradient(circle at 50% 40%, rgba(212,175,85,.12), transparent 30%), #090807; }
-.contact-section::before, .contact-section::after { content: ""; position: absolute; width: 52vw; aspect-ratio: 1; border: 1px solid rgba(212,175,85,.12); transform: rotate(45deg); animation: spin-intro 35s linear infinite; }
-.contact-section::after { width: 38vw; animation-direction: reverse; }
-.contact-section > * { position: relative; z-index: 2; }
+/* EL GRAN ENCENDIDO: el cierre es una escena — skyline apagado, Voltio baja la
+   palanca (video), la ciudad se enciende, llueven chispas y el CTA late. */
+.contact-story { position: relative; }
+.contact-stage { position: relative; min-height: 92svh; padding: 130px max(8vw, 52px); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; overflow: hidden; background: radial-gradient(circle at 50% 40%, rgba(212,175,85,.12), transparent 30%), #090807; }
+@supports (animation-timeline: view()) {
+  .contact-story { height: 210vh; }
+  .contact-stage { position: sticky; top: 0; height: 100vh; min-height: 0; }
+}
+.encendido-skyline { position: absolute; z-index: 1; left: 0; right: 0; bottom: -2px; pointer-events: none; opacity: .9; }
+.encendido-skyline img, .encendido-skyline video { display: block; width: 100%; height: auto; }
+.encendido-palanca { position: absolute; z-index: 3; left: 2vw; bottom: 0; width: min(22vw, 300px); pointer-events: none; filter: drop-shadow(0 16px 20px rgba(0,0,0,.6)); }
+.encendido-palanca video { width: 100%; height: auto; }
+.contact-copy { position: relative; z-index: 4; display: flex; flex-direction: column; align-items: center; }
+/* chispas doradas subiendo; cada capa desplaza exactamente su size-y para loopear */
+.chispas { position: absolute; z-index: 2; inset: 0; pointer-events: none; opacity: 0; transition: opacity 1.2s ease .3s;
+  -webkit-mask-image: linear-gradient(180deg, transparent 6%, #000 44%);
+  mask-image: linear-gradient(180deg, transparent 6%, #000 44%);
+  background-image:
+    radial-gradient(2.5px 2.5px at 22% 88%, rgba(246,220,140,.95), transparent 65%),
+    radial-gradient(2px 2px at 51% 74%, rgba(212,175,85,.9), transparent 65%),
+    radial-gradient(1.6px 1.6px at 68% 92%, rgba(246,232,196,.9), transparent 65%),
+    radial-gradient(2.2px 2.2px at 84% 79%, rgba(212,175,85,.85), transparent 65%),
+    radial-gradient(1.8px 1.8px at 36% 95%, rgba(246,220,140,.8), transparent 65%);
+  background-size: 220px 260px, 300px 340px, 180px 220px, 260px 300px, 340px 380px; }
+.contact-stage--encendida .chispas { opacity: 1; animation: chispas-subir 9s linear infinite; }
+@keyframes chispas-subir { to { background-position: 0 -260px, 0 -340px, 0 -220px, 0 -300px, 0 -380px; } }
+.contact-stage--encendida .contact-cta { animation: cta-latido 2.4s ease-in-out infinite; }
+@keyframes cta-latido { 0%, 100% { box-shadow: 0 0 26px rgba(212,175,85,.4); } 50% { box-shadow: 0 0 64px rgba(212,175,85,.85); } }
+.contact-stage::before, .contact-stage::after { content: ""; position: absolute; width: 52vw; aspect-ratio: 1; border: 1px solid rgba(212,175,85,.12); transform: rotate(45deg); animation: spin-intro 35s linear infinite; }
+.contact-stage::after { width: 38vw; animation-direction: reverse; }
 .contact-spark { margin-bottom: 26px; color: var(--gold); font-size: 44px; text-shadow: 0 0 25px rgba(212,175,85,.45); animation: spark 1.7s ease-in-out infinite; }
-.contact-section .chapter { justify-content: center; }
-.contact-section h2 { max-width: 1100px; font-size: clamp(3.4rem, 7vw, 7.6rem); }
-.contact-section > p:not(.chapter) { max-width: 650px; margin: 30px auto; color: rgba(246,232,196,.58); line-height: 1.65; }
+.contact-stage .chapter { justify-content: center; }
+.contact-stage h2 { max-width: 1100px; font-size: clamp(3.4rem, 7vw, 7.6rem); }
+.contact-copy > p:not(.chapter) { max-width: 650px; margin: 30px auto; color: rgba(246,232,196,.58); line-height: 1.65; }
 .contact-cta { display: inline-flex; align-items: center; gap: 70px; margin-top: 18px; padding: 18px 24px; color: var(--ink); background: var(--gold); border: 1px solid var(--gold); border-radius: 999px; font-size: 11px; font-weight: 900; letter-spacing: .15em; text-transform: uppercase; transition: .3s; }
 .contact-cta:hover, .contact-cta:focus-visible { color: var(--cream); background: transparent; box-shadow: 0 0 40px rgba(212,175,85,.2); transform: translateY(-3px); }
-.contact-section small { margin-top: 16px; color: rgba(246,232,196,.35); font-family: Georgia, serif; font-style: italic; }
+.contact-stage small { margin-top: 16px; color: rgba(246,232,196,.35); font-family: Georgia, serif; font-style: italic; }
 
 footer { min-height: 110px; padding: 28px max(5vw, 40px); display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; border-top: 1px solid rgba(212,175,85,.18); background: #050504; color: rgba(246,232,196,.5); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; }
 footer img { width: 78px; height: auto; }
@@ -404,6 +433,9 @@ footer a { justify-self: end; }
 @supports (animation-timeline: view()) {
   .reveal { opacity: .12; transform: translateY(38px); animation: view-reveal linear both; animation-timeline: view(); animation-range: entry 8% cover 34%; }
   @keyframes view-reveal { to { opacity: 1; transform: translateY(0); } }
+  /* las piezas del sistema LLEGAN por la banda: entran de lado con un giro leve */
+  .system-card.reveal { transform: translateX(70px) rotate(1.4deg); animation-name: card-ensamble; }
+  @keyframes card-ensamble { to { opacity: 1; transform: none; } }
 }
 
 @media (max-width: 980px) {
@@ -461,9 +493,11 @@ footer a { justify-self: end; }
   .portfolio-instruction { display: none; }
   .method-intro { margin-bottom: 60px; }
   .method-steps li { grid-template-columns: 54px 1fr; padding-block: 32px; }
-  .contact-section { min-height: 86svh; padding: 110px 9vw; }
-  .contact-section h2 { font-size: clamp(3.1rem, 14vw, 5rem); }
+  .contact-stage { min-height: 86svh; padding: 110px 9vw; }
+  .contact-stage h2 { font-size: clamp(3.1rem, 14vw, 5rem); }
   .contact-cta { gap: 36px; }
+  .encendido-skyline { left: -38%; right: -37%; }
+  .encendido-palanca { width: 40vw; left: 0; }
   footer { grid-template-columns: 1fr auto; gap: 18px; padding: 28px 30px; }
   footer p { display: none; }
 }
