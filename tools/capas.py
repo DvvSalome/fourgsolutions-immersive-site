@@ -50,9 +50,12 @@ ESCENAS = {
                     {"crop": "crop=576:640:360:28,", "poster": "primero"}),
         "v12.mp4": ("fabrica-banda.webm", True, True,
                     {"crop": "crop=1144:466:70:82,"}),
-        # el dirigible 4GS del hero, cruza el cielo con su banner
+        # el dirigible 4GS del hero, cruza el cielo con su banner.
+        # alfa+cerrar: las CUERDAS finas del banner quedaban partidas (el key se come
+        # los trazos de 1-2px); el cierre de poros las reconecta.
         "v13.mp4": ("dirigible-loop.webm", True, True,
-                    {"crop": "crop=876:330:200:138,"}),
+                    {"crop": "crop=876:330:200:138,", "alfa": 50, "cerrar": True,
+                     "despill": ",despill=type=green:mix=0.5"}),
     },
     # El 4o campo (opcional) son ajustes por capa, aprendidos componiendo la escena:
     #   crop:    Veo le metio barras de cine SOLO al barco (74/72px) — fuera ANTES del key

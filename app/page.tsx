@@ -175,7 +175,7 @@ export default function Home() {
           {/* EL DIRIGIBLE 4GS cruza el cielo del hero con su banner; las nubes deco
               se mueven en parallax con el cursor (via --mx/--my de moveLight) */}
           <div className="hero-dirigible" aria-hidden="true">
-            <CapaVideo src="/video/layers/dirigible-loop.webm" poster="/video/layers/dirigible-loop-poster.png" loop />
+            <CapaVideo src="/video/layers/dirigible-loop.webm?v=2" poster="/video/layers/dirigible-loop-poster.png" loop />
           </div>
           <svg className="hero-nube hero-nube--lejos" viewBox="0 0 160 54" aria-hidden="true">
             <path d="M10 44 Q2 30 16 24 Q14 8 32 12 Q40 0 54 8 Q70 2 74 16 Q92 10 92 26 Q106 22 104 36 Q118 34 114 44 Z" fill="none" stroke="rgba(212,175,85,.4)" strokeWidth="1.4" />

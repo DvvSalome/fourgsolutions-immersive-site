@@ -89,8 +89,10 @@ button { color: inherit; font: inherit; }
     linear-gradient(145deg, #080706, #12100e 55%, #080706);
 }
 .hero::before { content: ""; position: absolute; inset: 0; z-index: -1; opacity: .14; background: repeating-linear-gradient(90deg, transparent 0 11.8vw, rgba(212,175,85,.18) 12vw, transparent 12.1vw); }
-/* el dirigible cruza el cielo del hero de derecha a izquierda, sin prisa */
-.hero-dirigible { position: absolute; z-index: 1; top: 10%; left: 0; width: min(25vw, 360px); pointer-events: none; opacity: .92; transform: translateX(115vw); animation: dirigible-cruza 75s linear infinite 3s; filter: drop-shadow(0 14px 20px rgba(0,0,0,.45)); }
+/* el dirigible cruza el cielo del hero de derecha a izquierda, sin prisa.
+   SIN drop-shadow: un filter sobre un elemento en movimiento con video adentro
+   repinta cada frame y el cruce se veia a tirones (feedback de fluidez). */
+.hero-dirigible { position: absolute; z-index: 1; top: 10%; left: 0; width: min(25vw, 360px); pointer-events: none; opacity: .92; transform: translateX(115vw); animation: dirigible-cruza 75s linear infinite 3s; will-change: transform; }
 .hero-dirigible video { width: 100%; height: auto; }
 @keyframes dirigible-cruza { from { transform: translateX(115vw); } to { transform: translateX(-130%); } }
 /* nubes deco en parallax con el cursor (invierten --mx/--my a dos profundidades) */
