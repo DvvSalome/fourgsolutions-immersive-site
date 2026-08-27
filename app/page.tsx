@@ -7,7 +7,10 @@ import { useEffect, useRef, useState } from "react";
 /* Efectos de sonido de las escenas. Se crean una sola vez y se "desbloquean" con el
    clic de entrada (un play mudo): sin ese truco, Chrome bloquea los play() que llegan
    despues por scroll, que no cuentan como gesto del usuario. */
-type Sfx = { telon: HTMLAudioElement; ooh: HTMLAudioElement; olas: HTMLAudioElement; cofre: HTMLAudioElement };
+type Sfx = {
+  telon: HTMLAudioElement; ooh: HTMLAudioElement; olas: HTMLAudioElement; cofre: HTMLAudioElement;
+  riser: HTMLAudioElement; palanca: HTMLAudioElement; campana: HTMLAudioElement; cinta: HTMLAudioElement;
+};
 const crearSfx = (): Sfx => {
   const mk = (src: string, volume: number, loop = false) => {
     const a = new Audio(src);
@@ -19,6 +22,10 @@ const crearSfx = (): Sfx => {
     ooh: mk("/audio/sfx/publico-ooh.mp3", 0.35),
     olas: mk("/audio/sfx/olas.mp3", 0.22, true),
     cofre: mk("/audio/sfx/cofre.mp3", 0.5),
+    riser: mk("/audio/sfx/proyector-riser.mp3", 0.26),
+    palanca: mk("/audio/sfx/palanca-spark.mp3", 0.5),
+    campana: mk("/audio/sfx/encendido-campana.mp3", 0.42),
+    cinta: mk("/audio/sfx/fabrica-cinta.mp3", 0.14, true),
   };
 };
 
@@ -67,6 +74,8 @@ export default function Home() {
   const enterExperience = () => {
     setEntered(true);
     audioRef.current?.play().catch(() => undefined);
+    // el "encendido de proyector": riser mientras el iris cierra y la sala parpadea
+    sfx().riser.play().catch(() => {});
     // desbloquear los sfx aprovechando el gesto (ver crearSfx)
     Object.values(sfx()).forEach((a) => {
       a.muted = true;
@@ -104,6 +113,13 @@ export default function Home() {
     const y = (event.clientY / window.innerHeight - 0.5) * 18;
     event.currentTarget.style.setProperty("--mx", `${x}px`);
     event.currentTarget.style.setProperty("--my", `${y}px`);
+  };
+
+  // el foco de sala: el cursor es el reflector dentro del teatro
+  const moverFoco = (event: React.PointerEvent<HTMLDivElement>) => {
+    const r = event.currentTarget.getBoundingClientRect();
+    event.currentTarget.style.setProperty("--sx", `${event.clientX - r.left}px`);
+    event.currentTarget.style.setProperty("--sy", `${event.clientY - r.top}px`);
   };
 
   return (
@@ -210,7 +226,7 @@ export default function Home() {
           </div>
 
           <div className="portfolio-story">
-            <div className="portfolio-stage">
+            <div className="portfolio-stage" onPointerMove={moverFoco}>
               {/* Capas de FLOW-ASSETS.md, de atras hacia delante: proyector, haz (screen),
                   capturas (HTML), telon, Voltio, audiencia, cenefa. El telon abre DETRAS
                   del presentador y del publico, y abierto se queda de patas del escenario. */}
@@ -281,6 +297,7 @@ export default function Home() {
                 </div>
                 <span className="film-gate" />
               </div>
+              <div className="stage-luz" aria-hidden="true" />
               <div className="portfolio-instruction" aria-hidden="true"><span>SCROLL PARA RECORRER</span><i /></div>
             </div>
           </div>
