@@ -206,20 +206,33 @@ h1 em, .section-heading h2 em, .method-intro h2 em, .contact-stage h2 em { color
    los clientes se proyectan en ella con crossfade por scroll. La pantalla se estira
    al alto disponible, asi NUNCA se recorta abajo, a cualquier alto de ventana. */
 .portfolio-screen { position: absolute; z-index: 4; top: max(13vh, 132px); bottom: 19%; left: max(23vw, 330px); right: 13vw; max-width: 1250px; margin-inline: auto; }
-.site-frame { position: absolute; inset: 0; display: flex; flex-direction: column; opacity: 0; visibility: hidden; overflow: hidden; border: 1px solid rgba(212,175,85,.48); border-radius: 16px; background: #0d0c0a; box-shadow: 0 40px 90px rgba(0,0,0,.58), 0 0 0 8px rgba(212,175,85,.04); }
+/* PANTALLA DE CINE, no mockup de navegador: marco escalonado art-deco (capas de
+   box-shadow hacia afuera, estilo setback), marquesina arriba y placa de sala abajo */
+.site-frame { position: absolute; inset: 0; display: flex; flex-direction: column; opacity: 0; visibility: hidden; overflow: hidden; border: 1px solid rgba(212,175,85,.6); border-radius: 10px; background: #0d0c0a;
+  box-shadow: 0 0 0 5px #131009, 0 0 0 6px rgba(212,175,85,.4), 0 0 0 12px #0b0a07, 0 0 0 13px rgba(212,175,85,.2), 0 44px 90px rgba(0,0,0,.6); }
 .site-frame:first-child { opacity: 1; visibility: visible; }
-.site-browserbar { height: 64px; padding: 0 22px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; border-bottom: 1px solid rgba(212,175,85,.22); background: #17130e; }
-.traffic-lights { display: flex; gap: 7px; }
-.traffic-lights i { width: 11px; height: 11px; border-radius: 50%; background: #ed6a5e; }
-.traffic-lights i:nth-child(2) { background: #e8b33c; }
-.traffic-lights i:nth-child(3) { background: #58b789; }
-.site-browserbar b { padding: 10px 18px; border: 1px solid rgba(212,175,85,.2); border-radius: 8px; color: rgba(246,232,196,.58); background: #090807; font-family: monospace; font-size: 11px; font-weight: 400; }
-.site-browserbar a { justify-self: end; color: var(--gold); font-size: 9px; font-weight: 800; letter-spacing: .16em; }
+/* la MARQUESINA: bombillos que parpadean, la URL como placa grabada, y el VISITAR
+   como boleto dorado con muescas de taquilla */
+.site-browserbar { position: relative; height: 58px; padding: 0 20px 6px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; border-bottom: 1px solid rgba(212,175,85,.42); background: linear-gradient(180deg, #201812, #120e0a); }
+.site-browserbar::after { content: ""; position: absolute; left: 12px; right: 12px; bottom: 4px; height: 4px;
+  background: radial-gradient(circle 1.7px at 9px 50%, rgba(246,220,140,.8), rgba(246,220,140,.1) 72%, transparent) repeat-x; background-size: 27px 4px; }
+.traffic-lights { display: flex; gap: 8px; }
+.traffic-lights i { width: 8px; height: 8px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 9px rgba(212,175,85,.85); animation: bombillo 1.8s ease-in-out infinite; }
+.traffic-lights i:nth-child(2) { background: #f1d98d; animation-delay: .6s; }
+.traffic-lights i:nth-child(3) { background: var(--gold-soft); animation-delay: 1.2s; }
+@keyframes bombillo { 50% { opacity: .4; box-shadow: 0 0 3px rgba(212,175,85,.3); } }
+.site-browserbar b { padding: 9px 20px; border: 1px solid rgba(212,175,85,.5); border-radius: 3px; color: var(--gold); background: #090807; font-family: monospace; font-size: 10.5px; font-weight: 400; letter-spacing: .13em; text-transform: uppercase; box-shadow: inset 0 0 14px rgba(212,175,85,.09); }
+.site-browserbar a { justify-self: end; position: relative; padding: 8px 15px; color: var(--ink); background: var(--gold); border-radius: 2px; font-size: 9px; font-weight: 800; letter-spacing: .16em; transition: .25s;
+  background-image: radial-gradient(circle 3.5px at 0 50%, #171310 97%, transparent), radial-gradient(circle 3.5px at 100% 50%, #171310 97%, transparent); }
+.site-browserbar a:hover, .site-browserbar a:focus-visible { background-color: #f1d98d; box-shadow: 0 0 18px rgba(212,175,85,.5); }
 .site-shot { position: relative; display: block; flex: 1; min-height: 0; overflow: hidden; background: #111; }
-.site-shot::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, transparent 64%, rgba(8,7,6,.88)); }
+/* vineta de proyeccion: leve sombra arriba, vineta radial y pie oscuro para la placa */
+.site-shot::after { content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(180deg, rgba(8,7,6,.24), transparent 16%, transparent 60%, rgba(8,7,6,.88)),
+              radial-gradient(125% 105% at 50% 42%, transparent 60%, rgba(5,4,3,.38)); }
 .site-shot img { object-fit: cover; object-position: top; }
-.site-caption { min-height: 78px; padding: 14px 22px; display: flex; align-items: end; justify-content: space-between; gap: 24px; }
-.site-caption span { color: var(--gold); font-size: 9px; letter-spacing: .16em; }
+.site-caption { min-height: 78px; padding: 14px 22px; display: flex; align-items: end; justify-content: space-between; gap: 24px; border-top: 1px solid rgba(212,175,85,.26); background: linear-gradient(180deg, #14100c, #0d0c0a); }
+.site-caption span { display: inline-block; padding: 3px 9px; border: 1px solid rgba(212,175,85,.5); color: var(--gold); font-size: 9px; letter-spacing: .16em; }
 .site-caption h3 { margin: 5px 0 0; font-family: Georgia, serif; font-size: clamp(1.8rem, 3vw, 3rem); font-weight: 400; }
 .site-caption p { margin: 0; color: rgba(246,232,196,.42); font-family: monospace; font-size: 10px; }
 /* Rollo de pelicula: cinta 35mm con los fotogramas del catalogo. Corre con la misma
