@@ -263,7 +263,9 @@ h1 em, .section-heading h2 em, .method-intro h2 em, .contact-stage h2 em { color
 
 @supports (animation-timeline: view()) {
   .portfolio-story { height: 720vh; view-timeline-name: --portfolio; view-timeline-axis: block; }
-  .portfolio-stage { position: sticky; top: 0; height: 100vh; min-height: 0; }
+  .portfolio-stage { position: sticky; top: 0; height: 100vh; min-height: 0;
+    /* ZOOM DEL PROYECTOR: se entra al teatro desde DENTRO del haz de luz */
+    transform-origin: 24% 30%; animation: proyector-zoom linear both; animation-timeline: --portfolio; animation-range: entry 35% contain 4%; }
   /* contain, NO entry/exit: la proyeccion solo cambia mientras la sala esta FIJADA
      (con entry, al fijarse ya iba 12% del recorrido y el cliente 01 llegaba de salida).
      El rango por slide va inline en el JSX; visibility acompana al opacity para que
@@ -280,6 +282,7 @@ h1 em, .section-heading h2 em, .method-intro h2 em, .contact-stage h2 em { color
   .film-cells { animation: film-run linear both; animation-timeline: --portfolio; animation-range: contain 5% contain 95%; }
 }
 @keyframes film-run { to { transform: translateX(calc((var(--n, 10) - 1) * var(--paso) * -1)); } }
+@keyframes proyector-zoom { from { transform: scale(4.4); filter: brightness(1.6) saturate(.75); } 55% { filter: brightness(1.14) saturate(.96); } to { transform: scale(1); filter: brightness(1); } }
 @keyframes cine-slide { 0%, 100% { opacity: 0; visibility: hidden; } 9%, 91% { opacity: 1; visibility: visible; } }
 @keyframes cine-recorrido { 0%, 14% { object-position: top; } 86%, 100% { object-position: bottom; } }
 @keyframes cine-slide-primera { 0%, 91% { opacity: 1; visibility: visible; } 100% { opacity: 0; visibility: hidden; } }
@@ -322,6 +325,25 @@ h1 em, .section-heading h2 em, .method-intro h2 em, .contact-stage h2 em { color
   /* el master de olas llena su cuadro: sin mask, la cresta termina en una linea recta */
   -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 30%); mask-image: linear-gradient(180deg, transparent 0, #000 30%); }
 .voyage-flag video, .voyage-chest video, .voyage-ship video { width: 100%; height: auto; }
+/* el barco se MECE siempre (vida); la tormenta lo hace sentir mas dramatico */
+.voyage-ship video { animation: barco-mece 5.5s ease-in-out infinite; transform-origin: 50% 85%; }
+@keyframes barco-mece { 50% { transform: rotate(2.4deg) translateY(6px); } }
+
+/* --- CONSTELACION: el trazo se dibuja con el scroll, las estrellas se encienden --- */
+/* en el claro del cielo entre las tarjetas del metodo y la luna */
+.voyage-constelacion { position: absolute; z-index: 1; left: 41vw; top: 3%; width: min(21vw, 300px); pointer-events: none; }
+.constelacion-trazo { stroke: rgba(212,175,85,.8); stroke-width: 1.4; stroke-linejoin: round; stroke-dasharray: 360; stroke-dashoffset: 360; filter: drop-shadow(0 0 4px rgba(212,175,85,.65)); }
+.constelacion-estrella { fill: #f6e8c4; opacity: .18; filter: drop-shadow(0 0 6px rgba(246,220,140,.95)); }
+
+/* --- LA TORMENTA: vela oscura + lluvia + relampagos, todo scroll-driven --- */
+.voyage-tormenta { position: absolute; z-index: 5; inset: 0; pointer-events: none; opacity: 0; background: linear-gradient(180deg, rgba(7,9,18,.82), rgba(7,9,18,.5) 58%, rgba(7,9,18,.12)); }
+/* patron VERTICAL con period exacto (26px) y el DIV rotado: lluvia inclinada sin costura */
+.voyage-lluvia { position: absolute; z-index: 5; inset: -22%; pointer-events: none; opacity: 0; transform: rotate(13deg);
+  background-image: linear-gradient(180deg, transparent 0 56%, rgba(212,202,178,.2) 56% 82%, transparent 82%);
+  background-size: 3px 26px; }
+.voyage-relampago { position: absolute; z-index: 6; inset: 0; pointer-events: none; opacity: 0;
+  background: radial-gradient(85% 65% at 58% 16%, rgba(246,240,214,.85), rgba(246,240,214,.3) 52%, transparent 76%); }
+.voyage-rayo { position: absolute; z-index: 6; right: 26vw; top: 3%; width: min(13vw, 170px); pointer-events: none; opacity: 0; filter: drop-shadow(0 0 14px rgba(246,240,214,.9)); }
 .voyage-waves video { width: 100%; height: 100%; object-fit: cover; object-position: bottom; }
 
 .voyage-steps { position: absolute; z-index: 6; left: max(7vw, 48px); top: 7%; margin: 0; padding: 0; list-style: none; max-width: 420px; }
@@ -344,7 +366,23 @@ h1 em, .section-heading h2 em, .method-intro h2 em, .contact-stage h2 em { color
   .voyage-step[data-paso="2"] { animation-range: cover 26% cover 38%; }
   .voyage-step[data-paso="3"] { animation-range: cover 46% cover 58%; }
   .voyage-step[data-paso="4"] { animation-range: cover 66% cover 78%; }
+  /* constelacion: el trazo se dibuja y cada estrella prende al llegarle la linea */
+  .constelacion-trazo { animation: constelacion-dibuja linear both; animation-timeline: --voyage; animation-range: cover 6% cover 30%; }
+  .constelacion-estrella { animation: estrella-enciende linear both; animation-timeline: --voyage; }
+  .constelacion-estrella:nth-of-type(1) { animation-range: cover 6% cover 9%; }
+  .constelacion-estrella:nth-of-type(2) { animation-range: cover 13% cover 16%; }
+  .constelacion-estrella:nth-of-type(3) { animation-range: cover 17% cover 20%; }
+  .constelacion-estrella:nth-of-type(4) { animation-range: cover 26% cover 30%; }
+  /* tormenta: entra, pega dos veces y escampa antes del tesoro */
+  .voyage-tormenta { animation: tormenta-vela linear both; animation-timeline: --voyage; animation-range: cover 34% cover 68%; }
+  .voyage-lluvia { animation: tormenta-vela linear both, lluvia-cae .38s linear infinite; animation-timeline: --voyage, auto; animation-range: cover 36% cover 66%, normal; }
+  .voyage-relampago, .voyage-rayo { animation: relampago linear both; animation-timeline: --voyage; animation-range: cover 38% cover 62%; }
 }
+@keyframes constelacion-dibuja { to { stroke-dashoffset: 0; } }
+@keyframes estrella-enciende { to { opacity: 1; } }
+@keyframes tormenta-vela { 0%, 100% { opacity: 0; } 28%, 76% { opacity: 1; } }
+@keyframes lluvia-cae { to { background-position: 0 26px; } }
+@keyframes relampago { 0%, 15%, 22%, 52%, 60%, 100% { opacity: 0; } 17%, 19% { opacity: .9; } 55%, 57% { opacity: .75; } }
 @keyframes voyage-sail { from { transform: translateX(-30%); } to { transform: translateX(115%); } }
 @keyframes voyage-appear { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
 @keyframes voyage-treasure { from { opacity: 0; transform: translateY(40px) scale(.9); } to { opacity: 1; transform: none; } }

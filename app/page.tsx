@@ -10,6 +10,7 @@ import { useEffect, useRef, useState } from "react";
 type Sfx = {
   telon: HTMLAudioElement; ooh: HTMLAudioElement; olas: HTMLAudioElement; cofre: HTMLAudioElement;
   riser: HTMLAudioElement; palanca: HTMLAudioElement; campana: HTMLAudioElement; cinta: HTMLAudioElement;
+  trueno: HTMLAudioElement;
 };
 const crearSfx = (): Sfx => {
   const mk = (src: string, volume: number, loop = false) => {
@@ -26,6 +27,7 @@ const crearSfx = (): Sfx => {
     palanca: mk("/audio/sfx/palanca-spark.mp3", 0.5),
     campana: mk("/audio/sfx/encendido-campana.mp3", 0.42),
     cinta: mk("/audio/sfx/fabrica-cinta.mp3", 0.14, true),
+    trueno: mk("/audio/sfx/trueno.mp3", 0.45),
   };
 };
 
@@ -107,11 +109,17 @@ export default function Home() {
       { threshold: 0.3 },
     );
     if (fabrica) ioFabrica.observe(fabrica);
+    let truenos = 0;
     const alScroll = () => {
-      if (cofreSono) return;
       const r = voyage.getBoundingClientRect();
       const p = (window.innerHeight - r.top) / (window.innerHeight + r.height);
-      if (p >= 0.74) { cofreSono = true; s.cofre.play().catch(() => {}); }
+      // los truenos de la tormenta, en los mismos puntos que los flashes CSS
+      if ((truenos === 0 && p >= 0.42) || (truenos === 1 && p >= 0.55)) {
+        truenos += 1;
+        s.trueno.currentTime = 0;
+        s.trueno.play().catch(() => {});
+      }
+      if (!cofreSono && p >= 0.74) { cofreSono = true; s.cofre.play().catch(() => {}); }
     };
     window.addEventListener("scroll", alScroll, { passive: true });
     return () => {
@@ -336,6 +344,21 @@ export default function Home() {
               aparecen como puntos de la ruta; al final, la bandera y el tesoro. */}
           <div className="voyage-story">
             <div className="voyage-stage">
+              {/* CONSTELACION: el scroll dibuja el rayo de Voltio conectando estrellas */}
+              <svg className="voyage-constelacion" viewBox="0 0 400 300" aria-hidden="true">
+                <path className="constelacion-trazo" d="M240 18 L152 118 L205 132 L128 262" fill="none" />
+                <circle className="constelacion-estrella" cx="240" cy="18" r="3" />
+                <circle className="constelacion-estrella" cx="152" cy="118" r="2.4" />
+                <circle className="constelacion-estrella" cx="205" cy="132" r="2.4" />
+                <circle className="constelacion-estrella" cx="128" cy="262" r="3.2" />
+              </svg>
+              {/* LA TORMENTA: vela oscura, lluvia, relampago y rayo (truenos por JS) */}
+              <div className="voyage-tormenta" aria-hidden="true" />
+              <div className="voyage-lluvia" aria-hidden="true" />
+              <div className="voyage-relampago" aria-hidden="true" />
+              <svg className="voyage-rayo" viewBox="0 0 220 320" aria-hidden="true">
+                <path d="M120 8 L70 128 L108 136 L52 258 L142 118 L102 112 L158 8 Z" fill="rgba(246,240,214,.95)" />
+              </svg>
               <div className="voyage-flag" aria-hidden="true">
                 <CapaVideo src="/video/layers/bandera-loop.webm" poster="/video/layers/bandera-loop-poster.png" loop />
               </div>
