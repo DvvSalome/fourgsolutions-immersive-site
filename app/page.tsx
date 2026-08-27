@@ -57,6 +57,8 @@ export default function Home() {
   const [entered, setEntered] = useState(false);
   // el gran encendido: la palanca de Voltio activa el skyline, las chispas y el CTA
   const [palancaLista, setPalancaLista] = useState(false);
+  // la barra: arriba integrada; al bajar se esconde; al subir vuelve con fondo blur
+  const [barra, setBarra] = useState<"top" | "visible" | "oculta">("top");
   const audioRef = useRef<HTMLAudioElement>(null);
   const sfxRef = useRef<Sfx | null>(null);
   const telonSono = useRef(false);
@@ -118,6 +120,26 @@ export default function Home() {
     };
   }, [entered]);
 
+  // hide-on-scroll-down / show-on-scroll-up, con rAF para no trabajar de mas
+  useEffect(() => {
+    if (!entered) return;
+    let ultimo = window.scrollY;
+    let raf = 0;
+    const alScroll = () => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = 0;
+        const y = window.scrollY;
+        if (y < 120) setBarra("top");
+        else if (y > ultimo + 6) setBarra("oculta");
+        else if (y < ultimo - 6) setBarra("visible");
+        ultimo = y;
+      });
+    };
+    window.addEventListener("scroll", alScroll, { passive: true });
+    return () => { window.removeEventListener("scroll", alScroll); if (raf) cancelAnimationFrame(raf); };
+  }, [entered]);
+
   const moveLight = (event: React.PointerEvent<HTMLElement>) => {
     const x = (event.clientX / window.innerWidth - 0.5) * 18;
     const y = (event.clientY / window.innerHeight - 0.5) * 18;
@@ -157,7 +179,7 @@ export default function Home() {
       </div>
 
       <div id="contenido" className={entered ? "experience experience--entered" : "experience"}>
-        <header className="topbar">
+        <header className={`topbar topbar--${barra}`}>
           <a className="brand" href="#inicio" aria-label="4GS, inicio">
             <Image src="/assets/4gs-logo.png" alt="4GS" width={104} height={52} priority />
           </a>
@@ -172,11 +194,7 @@ export default function Home() {
         </header>
 
         <section className="hero" id="inicio">
-          {/* EL DIRIGIBLE 4GS cruza el cielo del hero con su banner; las nubes deco
-              se mueven en parallax con el cursor (via --mx/--my de moveLight) */}
-          <div className="hero-dirigible" aria-hidden="true">
-            <CapaVideo src="/video/layers/dirigible-loop.webm?v=2" poster="/video/layers/dirigible-loop-poster.png" loop />
-          </div>
+          {/* nubes deco en parallax con el cursor (via --mx/--my de moveLight) */}
           <svg className="hero-nube hero-nube--lejos" viewBox="0 0 160 54" aria-hidden="true">
             <path d="M10 44 Q2 30 16 24 Q14 8 32 12 Q40 0 54 8 Q70 2 74 16 Q92 10 92 26 Q106 22 104 36 Q118 34 114 44 Z" fill="none" stroke="rgba(212,175,85,.4)" strokeWidth="1.4" />
           </svg>
@@ -428,6 +446,11 @@ export default function Home() {
             ventana por ventana, llueven chispas y el CTA late. */}
         <section className="contact-story" id="contacto">
           <div className={palancaLista ? "contact-stage contact-stage--encendida" : "contact-stage"}>
+            {/* el dirigible cruza el cielo nocturno del cierre (en el hero chocaba
+                con la cabecera; aca tiene el cielo entero sobre la ciudad) */}
+            <div className="encendido-dirigible" aria-hidden="true">
+              <CapaVideo src="/video/layers/dirigible-loop.webm?v=2" poster="/video/layers/dirigible-loop-poster.png" loop />
+            </div>
             <div className="encendido-skyline" aria-hidden="true">
               {palancaLista ? (
                 <CapaVideo src="/video/layers/skyline-enciende.webm" poster="/video/layers/skyline-enciende-poster.png" unaVez />

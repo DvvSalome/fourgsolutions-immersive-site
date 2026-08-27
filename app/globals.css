@@ -66,11 +66,16 @@ button { color: inherit; font: inherit; }
 .experience--entered { opacity: 1; transform: none; animation: luz-flicker 1.25s ease-out .1s backwards; }
 @keyframes luz-flicker { 0% { filter: brightness(.25); } 16% { filter: brightness(1.16); } 30% { filter: brightness(.55); } 46% { filter: brightness(1.08); } 64% { filter: brightness(.88); } 100% { filter: brightness(1); } }
 
+/* barra inteligente: fija; arriba va integrada (sin fondo), al bajar se esconde y
+   al subir reaparece con fondo blur para leerse sobre cualquier escena */
 .topbar {
-  position: absolute; top: 0; left: 50%; z-index: 80; width: min(100%, 1440px); height: 106px;
+  position: fixed; top: 0; left: 50%; z-index: 80; width: min(100%, 1440px); height: 106px;
   padding: 24px 58px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
   border-bottom: 1px solid rgba(212,175,85,.18); transform: translateX(-50%);
+  transition: transform .38s ease, background .3s ease, backdrop-filter .3s ease;
 }
+.topbar--visible { background: rgba(9,8,7,.84); backdrop-filter: blur(12px); border-bottom-color: rgba(212,175,85,.32); }
+.topbar--oculta { transform: translate(-50%, -112%); }
 .brand img { width: 94px; height: auto; display: block; }
 .topbar nav { display: flex; gap: 36px; font-size: 10px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: rgba(246,232,196,.65); }
 .topbar nav a, footer a { transition: color .25s; }
@@ -89,11 +94,11 @@ button { color: inherit; font: inherit; }
     linear-gradient(145deg, #080706, #12100e 55%, #080706);
 }
 .hero::before { content: ""; position: absolute; inset: 0; z-index: -1; opacity: .14; background: repeating-linear-gradient(90deg, transparent 0 11.8vw, rgba(212,175,85,.18) 12vw, transparent 12.1vw); }
-/* el dirigible cruza el cielo del hero de derecha a izquierda, sin prisa.
+/* el dirigible cruza el cielo nocturno del CIERRE, sin prisa.
    SIN drop-shadow: un filter sobre un elemento en movimiento con video adentro
    repinta cada frame y el cruce se veia a tirones (feedback de fluidez). */
-.hero-dirigible { position: absolute; z-index: 1; top: 10%; left: 0; width: min(25vw, 360px); pointer-events: none; opacity: .92; transform: translateX(115vw); animation: dirigible-cruza 75s linear infinite 3s; will-change: transform; }
-.hero-dirigible video { width: 100%; height: auto; }
+.encendido-dirigible { position: absolute; z-index: 2; top: 5%; left: 0; width: min(21vw, 300px); pointer-events: none; opacity: .9; transform: translateX(115vw); animation: dirigible-cruza 70s linear infinite 4s; will-change: transform; }
+.encendido-dirigible video { width: 100%; height: auto; }
 @keyframes dirigible-cruza { from { transform: translateX(115vw); } to { transform: translateX(-130%); } }
 /* nubes deco en parallax con el cursor (invierten --mx/--my a dos profundidades) */
 .hero-nube { position: absolute; z-index: 1; pointer-events: none; }
