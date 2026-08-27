@@ -179,6 +179,7 @@ export default function Home() {
             <a href="#sistemas">Sistemas</a>
             <a href="#trabajos">Trabajos</a>
             <a href="#metodo">Método</a>
+            <a href="#nosotros">Nosotros</a>
           </nav>
           <a className="nav-cta" href="#contacto">Encender proyecto <span aria-hidden="true">↗</span></a>
         </header>
@@ -405,6 +406,38 @@ export default function Home() {
               </div>
             </div>
           </div>
+        </section>
+
+        {/* NOSOTROS: el elenco de la funcion (los cinco Voltios del sitio como
+            creditos de pelicula) + los principios de la casa */}
+        <section className="nosotros-section" id="nosotros">
+          <div className="section-heading section-heading--center reveal">
+            <p className="chapter"><span>CAPÍTULO 04</span> / NOSOTROS</p>
+            <h2>Detrás del telón,<br /><em>somos 4GS.</em></h2>
+            <p>Un estudio de sistemas de crecimiento desde Colombia. Estrategia, automatización e inteligencia artificial puestas a trabajar en negocios reales — con un guía que ya conoces.</p>
+          </div>
+          <div className="elenco" aria-label="Voltio en todas sus funciones">
+            {[
+              { img: "voltio-saluda-poster.png", rol: "El anfitrión", escena: "La bienvenida" },
+              { img: "voltio-opera-poster.png", rol: "El operador", escena: "Los sistemas" },
+              { img: "voltio-presenta-poster.png", rol: "El presentador", escena: "La función" },
+              { img: "voltio-pirata-poster.png", rol: "El vigía", escena: "La travesía" },
+              { img: "voltio-palanca-poster.png", rol: "El que enciende", escena: "Tu proyecto" },
+            ].map((p) => (
+              <figure className="retrato reveal" key={p.rol}>
+                <Image src={`/video/layers/${p.img}`} alt={`Voltio como ${p.rol}`} width={220} height={240} />
+                <figcaption>
+                  <b>{p.rol}</b>
+                  <span>{p.escena}</span>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+          <ul className="principios" aria-label="Los principios de la casa">
+            <li className="reveal"><span>I</span><h3>Claridad primero</h3><p>Antes de construir entendemos el negocio: el objetivo, el cuello de botella y el recorrido real de tus clientes.</p></li>
+            <li className="reveal"><span>II</span><h3>Sistemas, no ruido</h3><p>Cada pieza — sitio, automatización, IA — existe para que la operación trabaje sola, no para acumular herramientas.</p></li>
+            <li className="reveal"><span>III</span><h3>Socios, no proveedores</h3><p>Medimos, afinamos y respondemos como parte de tu equipo. Si a tu negocio le va bien, a nosotros también.</p></li>
+          </ul>
         </section>
 
         {/* EL GRAN ENCENDIDO: Voltio baja la palanca gigante, el skyline se ilumina

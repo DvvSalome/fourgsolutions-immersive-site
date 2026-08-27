@@ -271,3 +271,16 @@ Canvas de decision: claude.ai/code/artifact/d43a0694 (auditoria + 4 direcciones)
   entry 35% -> contain 4%, transform-origin en el haz, brightness alto que aterriza).
 - **Dirigible 4GS** (v13, hero): zeppelin negro-oro con banner '4GS' legible, cruza
   cada 75s de derecha a izquierda + nubes deco SVG en parallax con el cursor.
+
+### Botones de la casa, fondo rico y NOSOTROS (feedback)
+
+- **Botones art-deco**: chaflanes (clip-path), metal dorado con veta, filete grabado
+  (pseudo con box-shadow inset — se recorta al chaflan del propio pseudo), barrido de
+  brillo al hover y separador de taquilla antes de la flecha. nav-cta = contorno que
+  se llena. Nada de pildoras planas.
+- **Fondo travesia v2** (travesia-fondo2.jpg): luna con halos entre capas de nubes
+  espirales, FARO art-deco con haz sobre el horizonte, estrellas fugaces. Generado
+  sin chroma (es fondo directo), crop del marco de papel que trae el modelo.
+- **NOSOTROS (capitulo 04)**: "el elenco" — los posters con alfa de los cinco Voltios
+  como creditos de pelicula (anfitrion/operador/presentador/vigia/el-que-enciende) +
+  tres principios. Cero cifras inventadas: el copy es identidad, no numeros.
