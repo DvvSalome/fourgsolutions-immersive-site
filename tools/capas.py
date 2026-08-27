@@ -50,6 +50,9 @@ ESCENAS = {
                     {"crop": "crop=576:640:360:28,", "poster": "primero"}),
         "v12.mp4": ("fabrica-banda.webm", True, True,
                     {"crop": "crop=1144:466:70:82,"}),
+        # el dirigible 4GS del hero, cruza el cielo con su banner
+        "v13.mp4": ("dirigible-loop.webm", True, True,
+                    {"crop": "crop=876:330:200:138,"}),
     },
     # El 4o campo (opcional) son ajustes por capa, aprendidos componiendo la escena:
     #   crop:    Veo le metio barras de cine SOLO al barco (74/72px) — fuera ANTES del key
@@ -60,15 +63,11 @@ ESCENAS = {
         # feedback "se ve transparente"). Todo alfa > umbral se fuerza a 255; el
         # despill limpia el tinte verde que quedo horneado en el color. El aparejo
         # fino (alfa bajo) se conserva tal cual.
-        # alfa 50, no 120: la mezcla de Veo deja REGIONES del casco/velas entre 50-119
-        # (medido: YAVG 189 en la caja del casco con umbral 120 — seguia fantasma).
-        # 50 solo respeta el antialias del contorno y los huecos reales del aparejo.
-        # despill total + brightness: las velas CREMA traseras venian banadas de
-        # rebote verde; mix alto las neutraliza y el -0.25 las entona con la noche
-        "v1.mp4": ("barco-loop.webm", True, True,
-                   {"crop": "crop=1280:572:0:74,", "tol": "0.13:0.03",
-                    "alfa": 50, "cerrar": True,
-                    "despill": ",despill=type=green:mix=0.95:expand=0.6:brightness=-0.25"}),
+        # v1b: master REGENERADO con el prompt endurecido (velas "FULLY OPAQUE") —
+        # sin los parches de alfa que pedia el viejo (Veo horneaba verde en las velas).
+        # flip: salio navegando a la izquierda y la escena va de izquierda a derecha.
+        "v1b.mp4": ("barco-loop.webm", True, True,
+                    {"flip": True, "despill": ",despill=type=green:mix=0.5"}),
         "v2.mp4": ("olas-loop.webm", True, True),
         # cofre y bandera tambien llevan despill: las chispas doradas del cofre y el
         # borde de la tela quedaban con halo verde (feedback del usuario sobre la escena)
@@ -143,6 +142,7 @@ def main():
         crop = ajustes.get("crop") or (CROPS.get(master, "") if escena == "site" else "")
         if recortar:
             color = color_esquina(m, y=100 if ajustes.get("crop") else 8)
+            crop += "hflip," if ajustes.get("flip") else ""
             tol = ajustes.get("tol", TOLERANCIA)
             despill = ajustes.get("despill", "")
             # endurecer alfa (ver barco): umbral -> opaco, debajo se respeta.

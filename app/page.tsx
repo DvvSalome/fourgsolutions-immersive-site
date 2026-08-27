@@ -181,6 +181,17 @@ export default function Home() {
         </header>
 
         <section className="hero" id="inicio">
+          {/* EL DIRIGIBLE 4GS cruza el cielo del hero con su banner; las nubes deco
+              se mueven en parallax con el cursor (via --mx/--my de moveLight) */}
+          <div className="hero-dirigible" aria-hidden="true">
+            <CapaVideo src="/video/layers/dirigible-loop.webm" poster="/video/layers/dirigible-loop-poster.png" loop />
+          </div>
+          <svg className="hero-nube hero-nube--lejos" viewBox="0 0 160 54" aria-hidden="true">
+            <path d="M10 44 Q2 30 16 24 Q14 8 32 12 Q40 0 54 8 Q70 2 74 16 Q92 10 92 26 Q106 22 104 36 Q118 34 114 44 Z" fill="none" stroke="rgba(212,175,85,.4)" strokeWidth="1.4" />
+          </svg>
+          <svg className="hero-nube hero-nube--cerca" viewBox="0 0 160 54" aria-hidden="true">
+            <path d="M10 44 Q2 30 16 24 Q14 8 32 12 Q40 0 54 8 Q70 2 74 16 Q92 10 92 26 Q106 22 104 36 Q118 34 114 44 Z" fill="none" stroke="rgba(212,175,85,.55)" strokeWidth="1.6" />
+          </svg>
           <div className="hero-copy">
             <p className="eyebrow"><span /> Estrategia · Automatización · IA</p>
             <h1>Tu negocio no necesita más ruido.<em> Necesita un sistema.</em></h1>
@@ -370,7 +381,7 @@ export default function Home() {
                 <CapaVideo src="/video/layers/cofre-loop.webm?v=2" poster="/video/layers/cofre-loop-poster.png" loop />
               </div>
               <div className="voyage-ship" aria-hidden="true">
-                <CapaVideo src="/video/layers/barco-loop.webm?v=2" poster="/video/layers/barco-loop-poster.png" loop />
+                <CapaVideo src="/video/layers/barco-loop.webm?v=3" poster="/video/layers/barco-loop-poster.png" loop />
               </div>
               {/* Voltio pirata: el narrador de la travesia, catalejo al horizonte,
                   parado en su islote (feedback: "ponlo sobre tierra") */}

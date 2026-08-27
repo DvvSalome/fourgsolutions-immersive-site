@@ -85,6 +85,14 @@ button { color: inherit; font: inherit; }
     linear-gradient(145deg, #080706, #12100e 55%, #080706);
 }
 .hero::before { content: ""; position: absolute; inset: 0; z-index: -1; opacity: .14; background: repeating-linear-gradient(90deg, transparent 0 11.8vw, rgba(212,175,85,.18) 12vw, transparent 12.1vw); }
+/* el dirigible cruza el cielo del hero de derecha a izquierda, sin prisa */
+.hero-dirigible { position: absolute; z-index: 1; top: 10%; left: 0; width: min(25vw, 360px); pointer-events: none; opacity: .92; transform: translateX(115vw); animation: dirigible-cruza 75s linear infinite 3s; filter: drop-shadow(0 14px 20px rgba(0,0,0,.45)); }
+.hero-dirigible video { width: 100%; height: auto; }
+@keyframes dirigible-cruza { from { transform: translateX(115vw); } to { transform: translateX(-130%); } }
+/* nubes deco en parallax con el cursor (invierten --mx/--my a dos profundidades) */
+.hero-nube { position: absolute; z-index: 1; pointer-events: none; }
+.hero-nube--lejos { top: 16%; left: 30%; width: 150px; translate: calc(var(--mx) * -1.1) calc(var(--my) * -.8); }
+.hero-nube--cerca { top: 34%; left: 6%; width: 210px; translate: calc(var(--mx) * -2) calc(var(--my) * -1.4); }
 .hero-copy { position: relative; z-index: 3; max-width: 760px; animation: reveal-copy 1s .15s cubic-bezier(.2,.7,.2,1) both; }
 .eyebrow, .chapter { display: flex; align-items: center; gap: 12px; margin: 0 0 26px; color: var(--gold); font-size: 10px; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; }
 .eyebrow span { width: 28px; height: 1px; background: currentColor; }

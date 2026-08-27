@@ -249,3 +249,25 @@ de bombillos, pantalla con chaflanes (el halo va con drop-shadow — un box-shad
 recorta con el clip-path), placa de URL al pie de la proyeccion, boleto VISITAR
 colgando de la base, y el contenedor entero con doble tubo de neon dorado.
 Canvas de decision: claude.ai/code/artifact/d43a0694 (auditoria + 4 direcciones).
+
+---
+
+## Segunda ronda de escenas (2026-08-26, noche)
+
+- **Barco REGENERADO (v1b)**: el master original tenia el verde horneado DENTRO de las
+  velas (parches sucios incurables por key). Prompt endurecido + "sails FULLY OPAQUE
+  dense fabric" = master limpio, key basico sin parches. Salio mirando a la izquierda:
+  `"flip": True` en capas.py (hflip antes del key). Leccion: si el asset pide parches
+  de alfa, REGENERA con el prompt duro — sale mas barato que remendar.
+- **La Tormenta** (travesia, cover 34-68%): vela oscura + lluvia (patron vertical de
+  period exacto 26px en un div ROTADO 13deg = inclinada sin costura; opacidad por
+  scroll + caida por tiempo, dos timelines en un elemento) + dos relampagos (keyframes
+  con picos estrechos + rayo SVG) + truenos sintetizados (JS en los mismos puntos).
+  El barco se mece siempre (rotate 5.5s).
+- **Constelacion**: el scroll dibuja el rayo de Voltio (stroke-dashoffset) y cada
+  estrella prende al llegarle el trazo (ranges escalonados). En el claro del cielo
+  (left 41vw) — la primera posicion quedaba DETRAS de las tarjetas del metodo.
+- **Zoom del proyector**: se entra al teatro desde dentro (scale 4.4 -> 1 sobre
+  entry 35% -> contain 4%, transform-origin en el haz, brightness alto que aterriza).
+- **Dirigible 4GS** (v13, hero): zeppelin negro-oro con banner '4GS' legible, cruza
+  cada 75s de derecha a izquierda + nubes deco SVG en parallax con el cursor.
