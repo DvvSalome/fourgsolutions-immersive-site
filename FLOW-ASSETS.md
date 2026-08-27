@@ -206,9 +206,11 @@ Sin despill (los guantes crema se rosarian) — la leccion inversa del telon.
 
 ### Afinado final de la ronda (feedback en vivo)
 
-- **Alfa endurecido** (`"alfa": N` en capas.py): Veo mezcla el verde DENTRO de telas y
-  maderas (barco ~65% opaco, cofre igual). Todo alfa > umbral se fuerza a 255 con un
-  lut; el aparejo fino queda intacto. Sintoma: "se ve transparente".
+- **Alfa endurecido** (`"alfa": N` + `"cerrar"` en capas.py): Veo mezcla el verde
+  DENTRO de telas y maderas (barco ~65% opaco, cofre igual) y deja POROS granulares
+  con alfa ~0 dentro de las velas. Umbral -> opaco + cierre morfologico (blur solo
+  del canal alfa + re-umbral). Las velas crema venian banadas de rebote verde:
+  despill mix alto + brightness negativo las entona. Sintoma: "se ve transparente".
 - **Cine-recorrido**: mientras un cliente esta proyectado su pantallazo baja de top a
   bottom con el scroll (mismo --rango inline del slide) — el sitio se ve COMPLETO.
 - **Rollo 35mm** (.film-strip): miniaturas del catalogo con perforaciones, sincronizadas

@@ -348,7 +348,8 @@ h1 em, .section-heading h2 em, .method-intro h2 em, .contact-section h2 em { col
   .voyage-flag, .voyage-chest, .voyage-isla-cofre { opacity: 1; }
   .voyage-steps { position: relative; left: auto; top: auto; max-width: none; padding: 40px max(7vw, 48px) 70px; }
 }
-.method-section::before { content: "4GS"; position: absolute; z-index: 0; right: -2vw; top: 30px; color: rgba(212,175,85,.05); font-family: Georgia, serif; font-size: 30vw; line-height: 1; }
+/* marca de agua con el LOGO real, no un "4GS" en Georgia (feedback) */
+.method-section::before { content: ""; position: absolute; z-index: 0; right: -3vw; top: 40px; width: 46vw; aspect-ratio: 2 / 1; background: url("/assets/4gs-logo.png") center / contain no-repeat; opacity: .055; }
 .method-intro { position: relative; z-index: 2; max-width: 1000px; margin-bottom: 100px; }
 .method-intro .chapter { color: #6e5524; }
 .method-intro .chapter span { color: var(--ink); }

@@ -49,17 +49,22 @@ ESCENAS = {
         # feedback "se ve transparente"). Todo alfa > umbral se fuerza a 255; el
         # despill limpia el tinte verde que quedo horneado en el color. El aparejo
         # fino (alfa bajo) se conserva tal cual.
+        # alfa 50, no 120: la mezcla de Veo deja REGIONES del casco/velas entre 50-119
+        # (medido: YAVG 189 en la caja del casco con umbral 120 — seguia fantasma).
+        # 50 solo respeta el antialias del contorno y los huecos reales del aparejo.
+        # despill total + brightness: las velas CREMA traseras venian banadas de
+        # rebote verde; mix alto las neutraliza y el -0.25 las entona con la noche
         "v1.mp4": ("barco-loop.webm", True, True,
                    {"crop": "crop=1280:572:0:74,", "tol": "0.13:0.03",
-                    "alfa": 120,
-                    "despill": ",despill=type=green:mix=0.7"}),
+                    "alfa": 50, "cerrar": True,
+                    "despill": ",despill=type=green:mix=0.95:expand=0.6:brightness=-0.25"}),
         "v2.mp4": ("olas-loop.webm", True, True),
         # cofre y bandera tambien llevan despill: las chispas doradas del cofre y el
         # borde de la tela quedaban con halo verde (feedback del usuario sobre la escena)
         # alfa: mismo mal del barco — Veo mezclo el verde en la madera y se veia
         # semitransparente (feedback: "el cofre se ve transparente")
         "v3.mp4": ("cofre-loop.webm", True, True,
-                   {"tol": "0.14:0.04", "alfa": 120,
+                   {"tol": "0.14:0.04", "alfa": 50,
                     "despill": ",despill=type=green:mix=0.6"}),
         "v4.mp4": ("bandera-loop.webm", True, True,
                    {"despill": ",despill=type=green:mix=0.6"}),
@@ -129,9 +134,13 @@ def main():
             color = color_esquina(m, y=100 if ajustes.get("crop") else 8)
             tol = ajustes.get("tol", TOLERANCIA)
             despill = ajustes.get("despill", "")
-            # endurecer alfa (ver barco): umbral -> opaco, debajo se respeta
+            # endurecer alfa (ver barco): umbral -> opaco, debajo se respeta.
+            # "cerrar": ademas rellena POROS (Veo deja moteado con alfa ~0 DENTRO de
+            # las velas): blur SOLO del canal alfa + re-umbral = cierre morfologico.
             dura = ajustes.get("alfa")
             lut = f",format=yuva444p,lut=a='if(gt(val,{dura}),255,val)'" if dura else ""
+            if dura and ajustes.get("cerrar"):
+                lut += ",boxblur=0:0:0:0:3:2,lut=a='if(gt(val,110),255,val)'"
             # el recorte a bbox (voltio) NO se re-escala: 348px nativos ~ su contenedor;
             # los demas bajan a 1280 de ancho
             escala = "" if (crop and escena == "site") else ",scale=1280:-2"

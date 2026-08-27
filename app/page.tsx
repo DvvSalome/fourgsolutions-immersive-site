@@ -222,7 +222,7 @@ export default function Home() {
               </div>
               <div className="capa-telon" aria-hidden="true">
                 <CapaVideo
-                  src="/video/layers/telon-abre.webm"
+                  src="/video/layers/telon-abre.webm?v=2"
                   poster="/video/layers/telon-abre-poster.png"
                   umbral={0.55}
                   unaVez
@@ -306,10 +306,10 @@ export default function Home() {
                 <Image src="/img/isla-pirata.png" alt="" width={772} height={313} />
               </div>
               <div className="voyage-chest" aria-hidden="true">
-                <CapaVideo src="/video/layers/cofre-loop.webm" poster="/video/layers/cofre-loop-poster.png" loop />
+                <CapaVideo src="/video/layers/cofre-loop.webm?v=2" poster="/video/layers/cofre-loop-poster.png" loop />
               </div>
               <div className="voyage-ship" aria-hidden="true">
-                <CapaVideo src="/video/layers/barco-loop.webm" poster="/video/layers/barco-loop-poster.png" loop />
+                <CapaVideo src="/video/layers/barco-loop.webm?v=2" poster="/video/layers/barco-loop-poster.png" loop />
               </div>
               {/* Voltio pirata: el narrador de la travesia, catalejo al horizonte,
                   parado en su islote (feedback: "ponlo sobre tierra") */}
