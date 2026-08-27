@@ -244,7 +244,7 @@ h1 em, .section-heading h2 em, .method-intro h2 em, .contact-stage h2 em { color
 .frame-bombillos i { height: 4px; background: radial-gradient(circle 1.8px at 9px 50%, rgba(246,220,140,.9), rgba(246,220,140,.12) 70%, transparent) repeat-x; background-size: 24px 4px; animation: bombillo 1.8s ease-in-out infinite; }
 .frame-bombillos i:nth-child(2) { background-position-x: 12px; opacity: .75; animation-delay: .9s; }
 @keyframes bombillo { 50% { opacity: .35; } }
-.frame-url { position: absolute; left: 50%; bottom: 14px; transform: translateX(-50%); padding: 7px 16px; border: 1px solid rgba(212,175,85,.55); background: rgba(9,8,7,.85); color: var(--gold); font-family: monospace; font-size: 10.5px; font-weight: 400; letter-spacing: .15em; text-transform: uppercase; }
+.frame-url { position: absolute; z-index: 3; left: 50%; bottom: 12px; transform: translateX(-50%); padding: 7px 16px; border: 1px solid rgba(212,175,85,.55); background: rgba(9,8,7,.85); color: var(--gold); font-family: monospace; font-size: 10.5px; font-weight: 400; letter-spacing: .15em; text-transform: uppercase; }
 .frame-base { position: relative; flex: none; height: 28px; border-top: 1px solid rgba(212,175,85,.45); background: linear-gradient(180deg, #171310, #0d0a07); }
 .frame-base::before { content: ""; position: absolute; left: 12px; right: 12px; top: 5px; height: 3px; background: linear-gradient(90deg, transparent, rgba(212,175,85,.5) 18%, #f1d98d 50%, rgba(212,175,85,.5) 82%, transparent); }
 .frame-boleto { position: absolute; right: 24px; top: -9px; padding: 9px 16px; transform: rotate(-4deg); color: var(--ink); background-color: var(--gold); font-size: 9px; font-weight: 800; letter-spacing: .17em; box-shadow: 0 8px 16px rgba(0,0,0,.5); transition: .25s;
@@ -255,7 +255,7 @@ h1 em, .section-heading h2 em, .method-intro h2 em, .contact-stage h2 em { color
    escenario iluminado, con base, sombra y reflejo. El recorrido completo queda. */
 .site-shot { position: relative; display: flex; align-items: center; justify-content: center; flex: 1; min-height: 0; overflow: hidden;
   background: radial-gradient(90% 120% at 50% 8%, rgba(212,175,85,.16), rgba(212,175,85,.04) 46%, transparent 72%), #0b0a08; }
-.dispositivo { position: relative; display: block; width: min(76%, 940px); max-height: 86%; aspect-ratio: 16 / 9.6; }
+.dispositivo { position: relative; display: block; width: min(90%, 1080px); max-height: 88%; aspect-ratio: 16 / 9.6; }
 .dispositivo-pantalla { position: absolute; inset: 0 0 7% 0; overflow: hidden; border: 2px solid #1c1712; border-bottom-width: 0; border-radius: 10px 10px 0 0; background: #111;
   box-shadow: 0 0 0 1px rgba(212,175,85,.35), 0 24px 44px rgba(0,0,0,.55); }
 .dispositivo-pantalla::before { content: ""; position: absolute; z-index: 2; left: 50%; top: 5px; width: 5px; height: 5px; transform: translateX(-50%); border-radius: 50%; background: #2a221a; box-shadow: inset 0 0 2px #000; }
@@ -263,9 +263,23 @@ h1 em, .section-heading h2 em, .method-intro h2 em, .contact-stage h2 em { color
 .dispositivo-base { position: absolute; left: -7%; right: -7%; bottom: 4.2%; height: 3%; border-radius: 3px 3px 8px 8px;
   background: linear-gradient(180deg, #2b231a, #16110c 68%, #0d0a07); box-shadow: 0 0 0 1px rgba(212,175,85,.3), 0 16px 26px rgba(0,0,0,.5); }
 .dispositivo-base::after { content: ""; position: absolute; left: 50%; top: 0; width: 13%; height: 42%; transform: translateX(-50%); border-radius: 0 0 8px 8px; background: #0d0a07; }
-/* reflejo del portatil sobre el piso del escenario */
-.dispositivo::after { content: ""; position: absolute; left: 6%; right: 6%; bottom: -1.5%; height: 5%; border-radius: 50%;
-  background: radial-gradient(50% 100% at 50% 0, rgba(212,175,85,.2), transparent 75%); filter: blur(4px); }
+/* REFLEJO real del sitio sobre el piso del escenario (showroom): la misma imagen
+   invertida con mascara — fuerte junto a la base, se funde hacia abajo. El mask se
+   pinta ANTES del scaleY(-1), por eso va "al reves" en coords locales. */
+.dispositivo-reflejo { position: absolute; top: 97%; left: 0; right: 0; height: 46%; overflow: hidden; transform: scaleY(-1); opacity: .16; pointer-events: none;
+  -webkit-mask-image: linear-gradient(180deg, transparent 26%, rgba(0,0,0,.95) 100%);
+  mask-image: linear-gradient(180deg, transparent 26%, rgba(0,0,0,.95) 100%); }
+.dispositivo-reflejo img { object-fit: cover; object-position: top; }
+/* motas de polvo dorado flotando en el haz de proyeccion */
+.site-shot::after { content: ""; position: absolute; inset: 0; z-index: 2; pointer-events: none; opacity: .55;
+  background-image:
+    radial-gradient(1.6px 1.6px at 18% 34%, rgba(246,220,140,.6), transparent 65%),
+    radial-gradient(1.2px 1.2px at 52% 18%, rgba(246,220,140,.45), transparent 65%),
+    radial-gradient(1.9px 1.9px at 78% 42%, rgba(246,220,140,.5), transparent 65%),
+    radial-gradient(1.1px 1.1px at 36% 60%, rgba(246,220,140,.4), transparent 65%);
+  background-size: 260px 300px, 340px 380px, 300px 340px, 380px 420px;
+  animation: motas 18s linear infinite; }
+@keyframes motas { to { background-position: 34px -300px, -46px -380px, 24px -340px, -30px -420px; } }
 /* Rollo de pelicula: cinta 35mm con los fotogramas del catalogo. Corre con la misma
    timeline del teatro; el paso (celda+gap) vive en --paso para poder achicarla en
    pantallas cortas sin desincronizar el keyframe. */
@@ -525,9 +539,28 @@ h1 em, .section-heading h2 em, .method-intro h2 em, .contact-stage h2 em { color
 .intro button:hover::after, .intro button:focus-visible::after { transform: translateX(420%) skewX(-14deg); }
 .contact-stage small { margin-top: 16px; color: rgba(246,232,196,.35); font-family: Georgia, serif; font-style: italic; }
 
-footer { min-height: 110px; padding: 28px max(5vw, 40px); display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; border-top: 1px solid rgba(212,175,85,.18); background: #050504; color: rgba(246,232,196,.5); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; }
-footer img { width: 78px; height: auto; }
-footer a { justify-self: end; }
+/* pie completo: marca + mapa del sitio + legal, con el filete de la casa */
+.pie { padding: 64px max(6vw, 44px) 26px; border-top: 1px solid rgba(212,175,85,.22); background: #050504; color: rgba(246,232,196,.5); }
+.pie-cols { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 40px; }
+.pie-marca img { width: 92px; height: auto; }
+.pie-marca p { max-width: 320px; margin: 16px 0 0; font-size: 12px; line-height: 1.7; color: rgba(246,232,196,.45); }
+.pie-rutas { display: flex; flex-direction: column; gap: 10px; }
+.pie-rutas b { margin-bottom: 6px; color: var(--gold); font-size: 9px; font-weight: 700; letter-spacing: .28em; text-transform: uppercase; }
+.pie-rutas a { width: max-content; font-size: 12.5px; color: rgba(246,232,196,.6); transition: color .25s; }
+.pie-rutas a:hover, .pie-rutas a:focus-visible { color: var(--gold); }
+.pie-cierre { max-width: 1280px; margin: 46px auto 0; padding-top: 20px; display: flex; align-items: center; justify-content: space-between; gap: 20px; border-top: 1px solid rgba(212,175,85,.14); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; }
+.pie-cierre a { transition: color .25s; }
+.pie-cierre a:hover { color: var(--gold); }
+/* paginas legales: lectura tranquila con la tipografia de la casa */
+.legal { min-height: 100svh; padding: 70px max(6vw, 44px) 90px; background: #0a0908; color: rgba(246,232,196,.72); }
+.legal-cuerpo { max-width: 760px; margin: 60px auto 0; }
+.legal h1 { margin: 0 0 8px; color: var(--cream); font-family: Georgia, "Times New Roman", serif; font-size: clamp(2.6rem, 5vw, 4.2rem); font-weight: 400; letter-spacing: -.03em; }
+.legal .legal-fecha { margin: 0 0 46px; color: rgba(246,232,196,.4); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; }
+.legal h2 { margin: 40px 0 12px; color: var(--gold); font-family: Georgia, serif; font-size: 21px; font-weight: 400; }
+.legal p, .legal li { font-size: 15px; line-height: 1.8; }
+.legal ul { padding-left: 22px; }
+.legal a { color: var(--gold); }
+.legal a:hover { color: #f1d98d; }
 
 @keyframes scroll-progress { to { transform: scaleX(1); } }
 @keyframes reveal-copy { from { opacity: 0; transform: translateY(28px); } }

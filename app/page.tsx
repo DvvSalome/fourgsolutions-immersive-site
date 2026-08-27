@@ -329,6 +329,9 @@ export default function Home() {
                           <Image src={item.image} alt={`Vista previa del sitio ${item.name}`} fill sizes="(max-width: 680px) 88vw, 60vw" />
                         </span>
                         <span className="dispositivo-base" aria-hidden="true" />
+                        <span className="dispositivo-reflejo" aria-hidden="true">
+                          <Image src={item.image} alt="" fill sizes="(max-width: 680px) 88vw, 60vw" />
+                        </span>
                       </span>
                       <b className="frame-url">{item.domain}</b>
                     </a>
@@ -489,10 +492,32 @@ export default function Home() {
           </div>
         </section>
 
-        <footer>
-          <Image src="/assets/4gs-logo.png" alt="4GS" width={84} height={42} />
-          <p>Growth systems for ambitious businesses.</p>
-          <a href="#inicio">Volver arriba ↑</a>
+        <footer className="pie">
+          <div className="pie-cols">
+            <div className="pie-marca">
+              <Image src="/assets/4gs-logo.png" alt="4GS" width={94} height={47} />
+              <p>Growth systems for ambitious businesses. Estrategia, automatización e IA desde Colombia.</p>
+            </div>
+            <nav className="pie-rutas" aria-label="Mapa del sitio">
+              <b>El recorrido</b>
+              <a href="#inicio">Inicio</a>
+              <a href="#sistemas">Sistemas</a>
+              <a href="#trabajos">Trabajos</a>
+              <a href="#metodo">Método</a>
+              <a href="#nosotros">Nosotros</a>
+              <a href="/catalogo">Cartelera</a>
+              <a href="#contacto">Contacto</a>
+            </nav>
+            <nav className="pie-rutas" aria-label="Legal">
+              <b>Legal</b>
+              <a href="/terminos">Términos de servicio</a>
+              <a href="/privacidad">Política de privacidad</a>
+            </nav>
+          </div>
+          <div className="pie-cierre">
+            <span>© 2026 FourG Solutions · Todos los derechos reservados</span>
+            <a href="#inicio">Volver arriba ↑</a>
+          </div>
         </footer>
       </div>
     </main>

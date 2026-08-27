@@ -60,6 +60,10 @@ export default function Catalogo() {
 
       <footer className="cartelera-pie">
         <Link href="/#trabajos">← Volver a la sala de cine</Link>
+        <span aria-hidden="true"> · </span>
+        <Link href="/terminos">Términos</Link>
+        <span aria-hidden="true"> · </span>
+        <Link href="/privacidad">Privacidad</Link>
       </footer>
     </main>
   );
