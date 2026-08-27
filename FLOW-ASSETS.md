@@ -218,3 +218,25 @@ Sin despill (los guantes crema se rosarian) — la leccion inversa del telon.
 - **Telon**: bottom -13% + mask degradado inferior (la tela se funde con el piso, sin
   corte duro) + despill 0.78. El presentador va en loop (sin loop quedaba congelado a
   los 8s). Islotes: e9 keyeado como PNG, uno para el pirata y otro (flip) para el cofre.
+
+---
+
+## Ronda de escenas por seccion (2026-08-26, tarde)
+
+Cuatro escenas nuevas sobre el mismo metodo (verde -> capas -> scroll/IO):
+
+- **Encendido de proyector** (intro->hero): iris-out de cine mudo (clip-path circle
+  hacia el boton) + parpadeo de sala (filter brightness, fill backwards para no dejar
+  capa de composicion) + riser. Cero assets.
+- **Foco de sala** (.stage-luz): el cursor es el reflector del teatro — radial calido
+  + vineta siguiendo --sx/--sy, solo @media (hover: hover).
+- **La fabrica** (sistemas): banda de engranajes en loop (v12) tras el Voltio operador,
+  tarjetas entrando de lado como piezas (card-ensamble) y traqueteo (feet-cinta) por IO.
+- **El gran encendido** (cierre): contact-section ahora es escena sticky. Skyline
+  art-deco keyeado del still e10 (PNG apagado, mismo bbox que el video para no saltar
+  encuadre); Voltio baja la palanca (v11, umbral .6 + unaVez, spark al play) y al
+  terminar monta el video del skyline encendiendose (v10, CORTADO en el pico t=6 —
+  Veo hizo ciclo y re-apagaba: `"dur"` en capas.py), campanazo, chispas CSS en loop
+  (background-position desplaza exactamente su size-y) y el CTA late.
+- e11 (Voltio + palanca) costo TRES intentos: toda pose con brazos cruzando el pecho
+  le deforma el 4GS. La que funciona: FRONTAL, una sola mano en la palanca a un lado.

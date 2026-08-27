@@ -47,7 +47,7 @@ ESCENAS = {
         "v10.mp4": ("skyline-enciende.webm", True, False,
                     {"crop": "crop=1184:592:48:146,", "dur": 6.0}),
         "v11.mp4": ("voltio-palanca.webm", True, False,
-                    {"poster": "primero"}),
+                    {"crop": "crop=576:640:360:28,", "poster": "primero"}),
         "v12.mp4": ("fabrica-banda.webm", True, True,
                     {"crop": "crop=1144:466:70:82,"}),
     },
