@@ -295,7 +295,10 @@ h1 em, .section-heading h2 em, .method-intro h2 em, .contact-stage h2 em { color
   .film-cells { animation: film-run linear both; animation-timeline: --portfolio; animation-range: contain 5% contain 95%; }
 }
 @keyframes film-run { to { transform: translateX(calc((var(--n, 10) - 1) * var(--paso) * -1)); } }
-@keyframes proyector-zoom { from { transform: scale(4.4); filter: brightness(1.6) saturate(.75); } 55% { filter: brightness(1.14) saturate(.96); } to { transform: scale(1); filter: brightness(1); } }
+/* 1.6, no 4.4: a 4.4x el reverse-scrub al SUBIR mostraba la sala pixelada y
+   gigante (feedback del scroll ascendente). El push-in sutil lee igual de bien
+   en ambas direcciones. */
+@keyframes proyector-zoom { from { transform: scale(1.6); filter: brightness(1.28) saturate(.9); } to { transform: scale(1); filter: brightness(1); } }
 @keyframes cine-slide { 0%, 100% { opacity: 0; visibility: hidden; } 9%, 91% { opacity: 1; visibility: visible; } }
 @keyframes cine-recorrido { 0%, 14% { object-position: top; } 86%, 100% { object-position: bottom; } }
 @keyframes cine-slide-primera { 0%, 91% { opacity: 1; visibility: visible; } 100% { opacity: 0; visibility: hidden; } }
