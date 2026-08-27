@@ -240,3 +240,12 @@ Cuatro escenas nuevas sobre el mismo metodo (verde -> capas -> scroll/IO):
   (background-position desplaza exactamente su size-y) y el CTA late.
 - e11 (Voltio + palanca) costo TRES intentos: toda pose con brazos cruzando el pecho
   le deforma el 4GS. La que funciona: FRONTAL, una sola mano en la palanca a un lado.
+
+### Pantalla v3 · Marquesina Palace + borde de neon (eleccion sobre canvas /design)
+
+El usuario eligio la direccion A (Marquesina Palace) con el borde de la D (neon):
+fronton escalonado con sunburst y el NOMBRE del cliente en el cartel, doble hilera
+de bombillos, pantalla con chaflanes (el halo va con drop-shadow — un box-shadow se
+recorta con el clip-path), placa de URL al pie de la proyeccion, boleto VISITAR
+colgando de la base, y el contenedor entero con doble tubo de neon dorado.
+Canvas de decision: claude.ai/code/artifact/d43a0694 (auditoria + 4 direcciones).

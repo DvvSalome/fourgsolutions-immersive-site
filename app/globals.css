@@ -206,35 +206,40 @@ h1 em, .section-heading h2 em, .method-intro h2 em, .contact-stage h2 em { color
    los clientes se proyectan en ella con crossfade por scroll. La pantalla se estira
    al alto disponible, asi NUNCA se recorta abajo, a cualquier alto de ventana. */
 .portfolio-screen { position: absolute; z-index: 4; top: max(13vh, 132px); bottom: 19%; left: max(23vw, 330px); right: 13vw; max-width: 1250px; margin-inline: auto; }
-/* PANTALLA DE CINE, no mockup de navegador: marco escalonado art-deco (capas de
-   box-shadow hacia afuera, estilo setback), marquesina arriba y placa de sala abajo */
-.site-frame { position: absolute; inset: 0; display: flex; flex-direction: column; opacity: 0; visibility: hidden; overflow: hidden; border: 1px solid rgba(212,175,85,.6); border-radius: 10px; background: #0d0c0a;
-  box-shadow: 0 0 0 5px #131009, 0 0 0 6px rgba(212,175,85,.4), 0 0 0 12px #0b0a07, 0 0 0 13px rgba(212,175,85,.2), 0 44px 90px rgba(0,0,0,.6); }
+/* A + D (eleccion del usuario): arquitectura MARQUESINA PALACE con el borde de
+   NEON de la direccion D — doble tubo dorado con glow en vez del marco escalonado */
+.site-frame { position: absolute; inset: 0; display: flex; flex-direction: column; opacity: 0; visibility: hidden; overflow: hidden; border: 1.5px solid var(--gold); border-radius: 10px; background: #0d0c0a; outline: 1px solid rgba(212,175,85,.5); outline-offset: 7px;
+  box-shadow: 0 0 10px rgba(212,175,85,.6), 0 0 34px rgba(212,175,85,.22), inset 0 0 18px rgba(212,175,85,.1), 0 40px 80px rgba(0,0,0,.6); }
 .site-frame:first-child { opacity: 1; visibility: visible; }
-/* la MARQUESINA: bombillos que parpadean, la URL como placa grabada, y el VISITAR
-   como boleto dorado con muescas de taquilla */
-.site-browserbar { position: relative; height: 58px; padding: 0 20px 6px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; border-bottom: 1px solid rgba(212,175,85,.42); background: linear-gradient(180deg, #201812, #120e0a); }
-.site-browserbar::after { content: ""; position: absolute; left: 12px; right: 12px; bottom: 4px; height: 4px;
-  background: radial-gradient(circle 1.7px at 9px 50%, rgba(246,220,140,.8), rgba(246,220,140,.1) 72%, transparent) repeat-x; background-size: 27px 4px; }
-.traffic-lights { display: flex; gap: 8px; }
-.traffic-lights i { width: 8px; height: 8px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 9px rgba(212,175,85,.85); animation: bombillo 1.8s ease-in-out infinite; }
-.traffic-lights i:nth-child(2) { background: #f1d98d; animation-delay: .6s; }
-.traffic-lights i:nth-child(3) { background: var(--gold-soft); animation-delay: 1.2s; }
-@keyframes bombillo { 50% { opacity: .4; box-shadow: 0 0 3px rgba(212,175,85,.3); } }
-.site-browserbar b { padding: 9px 20px; border: 1px solid rgba(212,175,85,.5); border-radius: 3px; color: var(--gold); background: #090807; font-family: monospace; font-size: 10.5px; font-weight: 400; letter-spacing: .13em; text-transform: uppercase; box-shadow: inset 0 0 14px rgba(212,175,85,.09); }
-.site-browserbar a { justify-self: end; position: relative; padding: 8px 15px; color: var(--ink); background: var(--gold); border-radius: 2px; font-size: 9px; font-weight: 800; letter-spacing: .16em; transition: .25s;
-  background-image: radial-gradient(circle 3.5px at 0 50%, #171310 97%, transparent), radial-gradient(circle 3.5px at 100% 50%, #171310 97%, transparent); }
-.site-browserbar a:hover, .site-browserbar a:focus-visible { background-color: #f1d98d; box-shadow: 0 0 18px rgba(212,175,85,.5); }
-.site-shot { position: relative; display: block; flex: 1; min-height: 0; overflow: hidden; background: #111; }
+/* el FRONTON de la marquesina: escalonado con sunburst, eyebrow de funcion y el
+   nombre del cliente en el cartel */
+.frame-marquesina { position: relative; min-height: clamp(76px, 11vh, 112px); display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 5px; padding: 10px 22px 12px; overflow: hidden;
+  clip-path: polygon(0 100%, 0 46%, 7% 46%, 7% 22%, 16% 22%, 16% 0, 84% 0, 84% 22%, 93% 22%, 93% 46%, 100% 46%, 100% 100%);
+  background: linear-gradient(180deg, #221a12, #120e0a 78%); border-bottom: 1px solid rgba(212,175,85,.55); }
+.frame-marquesina::before { content: ""; position: absolute; inset: 0; background: repeating-conic-gradient(from -90deg at 50% 118%, rgba(212,175,85,.13) 0 3deg, transparent 3deg 9deg); }
+.frame-marquesina p { position: relative; margin: 0; color: var(--gold-soft); font-size: 8.5px; font-weight: 700; letter-spacing: .32em; text-transform: uppercase; }
+.frame-marquesina p span { color: var(--gold); }
+.frame-marquesina h3 { position: relative; margin: 0; max-width: 100%; overflow: hidden; color: var(--cream); font-family: Georgia, "Times New Roman", serif; font-size: clamp(1.5rem, 2.4vw, 2.2rem); font-weight: 400; letter-spacing: .02em; white-space: nowrap; text-overflow: ellipsis; text-shadow: 0 0 22px rgba(212,175,85,.35); }
+.frame-bombillos { flex: none; height: 12px; display: flex; flex-direction: column; justify-content: space-between; padding: 2px 10px; background: #0d0a07; border-bottom: 1px solid rgba(212,175,85,.4); }
+.frame-bombillos i { height: 4px; background: radial-gradient(circle 1.8px at 9px 50%, rgba(246,220,140,.9), rgba(246,220,140,.12) 70%, transparent) repeat-x; background-size: 24px 4px; animation: bombillo 1.8s ease-in-out infinite; }
+.frame-bombillos i:nth-child(2) { background-position-x: 12px; opacity: .75; animation-delay: .9s; }
+@keyframes bombillo { 50% { opacity: .35; } }
+.frame-url { position: absolute; left: 50%; bottom: 14px; transform: translateX(-50%); padding: 7px 16px; border: 1px solid rgba(212,175,85,.55); background: rgba(9,8,7,.85); color: var(--gold); font-family: monospace; font-size: 10.5px; font-weight: 400; letter-spacing: .15em; text-transform: uppercase; }
+.frame-base { position: relative; flex: none; height: 28px; border-top: 1px solid rgba(212,175,85,.45); background: linear-gradient(180deg, #171310, #0d0a07); }
+.frame-base::before { content: ""; position: absolute; left: 12px; right: 12px; top: 5px; height: 3px; background: linear-gradient(90deg, transparent, rgba(212,175,85,.5) 18%, #f1d98d 50%, rgba(212,175,85,.5) 82%, transparent); }
+.frame-boleto { position: absolute; right: 24px; top: -9px; padding: 9px 16px; transform: rotate(-4deg); color: var(--ink); background-color: var(--gold); font-size: 9px; font-weight: 800; letter-spacing: .17em; box-shadow: 0 8px 16px rgba(0,0,0,.5); transition: .25s;
+  background-image: radial-gradient(circle 3.5px at 0 50%, #100d0a 97%, transparent), radial-gradient(circle 3.5px at 100% 50%, #100d0a 97%, transparent); }
+.frame-boleto:hover, .frame-boleto:focus-visible { transform: rotate(-2deg) translateY(-2px); background-color: #f1d98d; box-shadow: 0 0 18px rgba(212,175,85,.55); }
+/* chaflanes art-deco + halo de neon siguiendo el contorno (drop-shadow respeta
+   el clip-path; un box-shadow se recortaria) */
+.site-shot { position: relative; display: block; flex: 1; min-height: 0; overflow: hidden; background: #111;
+  clip-path: polygon(14px 0, calc(100% - 14px) 0, 100% 14px, 100% calc(100% - 14px), calc(100% - 14px) 100%, 14px 100%, 0 calc(100% - 14px), 0 14px);
+  filter: drop-shadow(0 0 6px rgba(212,175,85,.35)); }
 /* vineta de proyeccion: leve sombra arriba, vineta radial y pie oscuro para la placa */
 .site-shot::after { content: ""; position: absolute; inset: 0; pointer-events: none;
   background: linear-gradient(180deg, rgba(8,7,6,.24), transparent 16%, transparent 60%, rgba(8,7,6,.88)),
               radial-gradient(125% 105% at 50% 42%, transparent 60%, rgba(5,4,3,.38)); }
 .site-shot img { object-fit: cover; object-position: top; }
-.site-caption { min-height: 78px; padding: 14px 22px; display: flex; align-items: end; justify-content: space-between; gap: 24px; border-top: 1px solid rgba(212,175,85,.26); background: linear-gradient(180deg, #14100c, #0d0c0a); }
-.site-caption span { display: inline-block; padding: 3px 9px; border: 1px solid rgba(212,175,85,.5); color: var(--gold); font-size: 9px; letter-spacing: .16em; }
-.site-caption h3 { margin: 5px 0 0; font-family: Georgia, serif; font-size: clamp(1.8rem, 3vw, 3rem); font-weight: 400; }
-.site-caption p { margin: 0; color: rgba(246,232,196,.42); font-family: monospace; font-size: 10px; }
 /* Rollo de pelicula: cinta 35mm con los fotogramas del catalogo. Corre con la misma
    timeline del teatro; el paso (celda+gap) vive en --paso para poder achicarla en
    pantallas cortas sin desincronizar el keyframe. */
@@ -364,7 +369,8 @@ h1 em, .section-heading h2 em, .method-intro h2 em, .contact-stage h2 em { color
   .telon-cenefa { min-height: 66px; }
   .telon-cenefa::after { height: 20px; background-size: 56px 20px; }
   .portfolio-screen { top: max(12vh, 102px); bottom: 19%; }
-  .site-caption h3 { font-size: clamp(1.4rem, 2.2vw, 2rem); }
+  .frame-marquesina { min-height: 62px; gap: 3px; }
+  .frame-marquesina h3 { font-size: 1.3rem; }
   .film-strip { bottom: 3%; padding: 10px 0; }
   .film-cells { --paso: 100px; gap: 14px; padding-left: calc(50% - 43px); }
   .film-cell { width: 86px; height: 50px; }
@@ -499,9 +505,11 @@ footer a { justify-self: end; }
   .portfolio-voltio { left: -8vw; width: 56vw; }
   .portfolio-voltio span { display: none; }
   .film-strip { width: 92vw; bottom: 4%; }
-  .site-browserbar { height: 54px; grid-template-columns: auto 1fr auto; gap: 12px; padding-inline: 14px; }
-  .site-browserbar b { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 8px 10px; }
-  .site-caption { min-height: 74px; padding: 14px 16px; }
+  .frame-marquesina { min-height: 62px; }
+  .frame-marquesina h3 { font-size: 1.25rem; }
+  .frame-marquesina p { letter-spacing: .2em; }
+  .frame-url { bottom: 10px; font-size: 9px; padding: 6px 10px; max-width: 84%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .frame-boleto { right: 10px; }
   .site-caption p { display: none; }
   .portfolio-instruction { display: none; }
   .method-intro { margin-bottom: 60px; }

@@ -289,15 +289,19 @@ export default function Home() {
                     key={item.number}
                     style={{ "--rango": `contain ${i * 10}% contain ${(i + 1) * 10}%` } as React.CSSProperties}
                   >
-                    <div className="site-browserbar">
-                      <span className="traffic-lights" aria-hidden="true"><i /><i /><i /></span>
-                      <b>{item.domain}</b>
-                      <a href={item.url} target="_blank" rel="noreferrer" aria-label={`Visitar ${item.name}`}>VISITAR ↗</a>
-                    </div>
+                    {/* A · Marquesina Palace: el nombre del cliente va EN el cartel */}
+                    <header className="frame-marquesina">
+                      <p><span>Función {item.number} / 10</span> · En proyección</p>
+                      <h3>{item.name}</h3>
+                    </header>
+                    <div className="frame-bombillos" aria-hidden="true"><i /><i /></div>
                     <a className="site-shot" href={item.url} target="_blank" rel="noreferrer" aria-label={`Abrir sitio de ${item.name}`}>
                       <Image src={item.image} alt={`Vista previa del sitio ${item.name}`} fill sizes="(max-width: 680px) 88vw, 72vw" />
+                      <b className="frame-url">{item.domain}</b>
                     </a>
-                    <div className="site-caption"><div><span>{item.number} / 10</span><h3>{item.name}</h3></div><p>{item.domain}</p></div>
+                    <footer className="frame-base">
+                      <a className="frame-boleto" href={item.url} target="_blank" rel="noreferrer" aria-label={`Visitar ${item.name}`}>VISITAR ↗</a>
+                    </footer>
                   </article>
                 ))}
               </div>
