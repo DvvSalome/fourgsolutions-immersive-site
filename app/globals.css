@@ -345,10 +345,15 @@ h1 em, .section-heading h2 em, .method-intro h2 em, .contact-stage h2 em { color
 
 /* --- LA TORMENTA: vela oscura + lluvia + relampagos, todo scroll-driven --- */
 .voyage-tormenta { position: absolute; z-index: 5; inset: 0; pointer-events: none; opacity: 0; background: linear-gradient(180deg, rgba(7,9,18,.82), rgba(7,9,18,.5) 58%, rgba(7,9,18,.12)); }
-/* patron VERTICAL con period exacto (26px) y el DIV rotado: lluvia inclinada sin costura */
+/* GOTAS de verdad: una elipse vertical por tile (radial-gradient), tres capas con
+   tiles de anchos primos entre si — sin eso las gotas se alinean en filas y rotadas
+   parecen persianas (bug pagado dos veces). El DIV rotado inclina la caida. */
 .voyage-lluvia { position: absolute; z-index: 5; inset: -22%; pointer-events: none; opacity: 0; transform: rotate(13deg);
-  background-image: linear-gradient(180deg, transparent 0 56%, rgba(212,202,178,.2) 56% 82%, transparent 82%);
-  background-size: 3px 26px; }
+  background-image:
+    radial-gradient(1.4px 13px at 11px 30px, rgba(214,206,184,.5) 55%, transparent 100%),
+    radial-gradient(1.2px 10px at 29px 74px, rgba(214,206,184,.36) 55%, transparent 100%),
+    radial-gradient(1.7px 16px at 47px 118px, rgba(214,206,184,.28) 55%, transparent 100%);
+  background-size: 41px 96px, 59px 134px, 73px 172px; }
 .voyage-relampago { position: absolute; z-index: 6; inset: 0; pointer-events: none; opacity: 0;
   background: radial-gradient(85% 65% at 58% 16%, rgba(246,240,214,.85), rgba(246,240,214,.3) 52%, transparent 76%); }
 .voyage-rayo { position: absolute; z-index: 6; right: 26vw; top: 3%; width: min(13vw, 170px); pointer-events: none; opacity: 0; filter: drop-shadow(0 0 14px rgba(246,240,214,.9)); }
@@ -383,13 +388,13 @@ h1 em, .section-heading h2 em, .method-intro h2 em, .contact-stage h2 em { color
   .constelacion-estrella:nth-of-type(4) { animation-range: cover 26% cover 30%; }
   /* tormenta: entra, pega dos veces y escampa antes del tesoro */
   .voyage-tormenta { animation: tormenta-vela linear both; animation-timeline: --voyage; animation-range: cover 34% cover 68%; }
-  .voyage-lluvia { animation: tormenta-vela linear both, lluvia-cae .38s linear infinite; animation-timeline: --voyage, auto; animation-range: cover 36% cover 66%, normal; }
+  .voyage-lluvia { animation: tormenta-vela linear both, lluvia-cae .55s linear infinite; animation-timeline: --voyage, auto; animation-range: cover 36% cover 66%, normal; }
   .voyage-relampago, .voyage-rayo { animation: relampago linear both; animation-timeline: --voyage; animation-range: cover 38% cover 62%; }
 }
 @keyframes constelacion-dibuja { to { stroke-dashoffset: 0; } }
 @keyframes estrella-enciende { to { opacity: 1; } }
 @keyframes tormenta-vela { 0%, 100% { opacity: 0; } 28%, 76% { opacity: 1; } }
-@keyframes lluvia-cae { to { background-position: 0 26px; } }
+@keyframes lluvia-cae { to { background-position: 0 96px, 0 134px, 0 172px; } }
 @keyframes relampago { 0%, 15%, 22%, 52%, 60%, 100% { opacity: 0; } 17%, 19% { opacity: .9; } 55%, 57% { opacity: .75; } }
 @keyframes voyage-sail { from { transform: translateX(-30%); } to { transform: translateX(115%); } }
 @keyframes voyage-appear { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }

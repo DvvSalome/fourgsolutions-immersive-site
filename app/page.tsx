@@ -72,6 +72,7 @@ export default function Home() {
   const audioRef = useRef<HTMLAudioElement>(null);
   const sfxRef = useRef<Sfx | null>(null);
   const telonSono = useRef(false);
+  const palancaTimer = useRef<number | null>(null);
 
   const sfx = () => (sfxRef.current ??= crearSfx());
 
@@ -113,8 +114,10 @@ export default function Home() {
     const alScroll = () => {
       const r = voyage.getBoundingClientRect();
       const p = (window.innerHeight - r.top) / (window.innerHeight + r.height);
-      // los truenos de la tormenta, en los mismos puntos que los flashes CSS
-      if ((truenos === 0 && p >= 0.42) || (truenos === 1 && p >= 0.55)) {
+      // los truenos de la tormenta, en los mismos puntos que los flashes CSS.
+      // El guard importa: tras un hot-reload, sfxRef puede conservar un objeto
+      // viejo sin esta clave y el scroll handler no debe reventar por eso.
+      if (s.trueno && ((truenos === 0 && p >= 0.42) || (truenos === 1 && p >= 0.55))) {
         truenos += 1;
         s.trueno.currentTime = 0;
         s.trueno.play().catch(() => {});
@@ -422,8 +425,17 @@ export default function Home() {
                 poster="/video/layers/voltio-palanca-poster.png"
                 umbral={0.6}
                 unaVez
-                onPlay={() => sfx().palanca.play().catch(() => {})}
-                onEnded={() => { setPalancaLista(true); sfx().campana.play().catch(() => {}); }}
+                onPlay={() => {
+                  sfx().palanca.play().catch(() => {});
+                  // la ciudad enciende EN el momento del jalon (~2.6s del clip),
+                  // no al final del video (feedback: quedaban 5s de pose con la
+                  // ciudad apagada)
+                  if (palancaTimer.current !== null) return;
+                  palancaTimer.current = window.setTimeout(() => {
+                    setPalancaLista(true);
+                    sfx().campana.play().catch(() => {});
+                  }, 2600);
+                }}
               />
             </div>
             <div className="contact-copy">
