@@ -42,11 +42,14 @@ ESCENAS = {
         # EL GRAN ENCENDIDO + LA FABRICA. El crop del skyline es el bbox del still
         # e10 (1242:622:51:154 en 1344x768) escalado a los 1280x720 del video, para
         # que el encuadre del PNG apagado y el video encendido coincidan sin salto.
+        # dur 6.0: Veo hizo CICLO (enciende y vuelve a apagar); se corta en el pico
+        # (t=5.8 con destellos en las agujas) para que el hold final quede iluminado
         "v10.mp4": ("skyline-enciende.webm", True, False,
-                    {"crop": "crop=1184:592:48:146,"}),
+                    {"crop": "crop=1184:592:48:146,", "dur": 6.0}),
         "v11.mp4": ("voltio-palanca.webm", True, False,
                     {"poster": "primero"}),
-        "v12.mp4": ("fabrica-banda.webm", True, True),
+        "v12.mp4": ("fabrica-banda.webm", True, True,
+                    {"crop": "crop=1144:466:70:82,"}),
     },
     # El 4o campo (opcional) son ajustes por capa, aprendidos componiendo la escena:
     #   crop:    Veo le metio barras de cine SOLO al barco (74/72px) — fuera ANTES del key
@@ -157,7 +160,8 @@ def main():
         else:
             filtro = "scale=1280:-2,format=yuv420p"
             print(f"  {master} -> {final}  (sin recorte: negro + blend screen)")
-        sh(f'ffmpeg -y -loglevel error -i "{m}" -vf "{filtro}" -an '
+        dur = f'-t {ajustes["dur"]} ' if ajustes.get("dur") else ""
+        sh(f'ffmpeg -y -loglevel error -i "{m}" {dur}-vf "{filtro}" -an '
            f'-c:v libvpx-vp9 -b:v 0 -crf 30 "{salida}"')
         # Poster: para los loops (y el telon, ver arriba) es el frame 0; para Voltio
         # es el ULTIMO cuadro — el estado en que la capa descansa.
