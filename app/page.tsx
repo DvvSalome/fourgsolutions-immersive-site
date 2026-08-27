@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import CapaVideo from "./CapaVideo";
+import { selectedWork } from "./trabajos";
 import { useEffect, useRef, useState } from "react";
 
 /* Efectos de sonido de las escenas. Se crean una sola vez y se "desbloquean" con el
@@ -51,18 +52,6 @@ const systems = [
   },
 ];
 
-const selectedWork = [
-  { number: "01", name: "Gestiones Eléctricas", domain: "gestioneselectricas.com", url: "https://gestioneselectricas.com", image: "/assets/sites/gestioneselectricas-com.jpg" },
-  { number: "02", name: "Turnkey Clothing", domain: "turnkey-clothing.vercel.app", url: "https://turnkey-clothing.vercel.app", image: "/assets/sites/turnkey-clothing-vercel-app.jpg" },
-  { number: "03", name: "Certitradición", domain: "certitradicion.com", url: "https://certitradicion.com", image: "/assets/sites/certitradicion-com.jpg" },
-  { number: "04", name: "Barbas y Bigotes", domain: "barbasybigotes.com", url: "https://barbasybigotes.com", image: "/assets/sites/barbasybigotes-com.jpg" },
-  { number: "05", name: "Adiós Vellos", domain: "adiosvellos-web.vercel.app", url: "https://adiosvellos-web.vercel.app", image: "/assets/sites/adiosvellos-web-vercel-app.jpg" },
-  { number: "06", name: "Tapi Cascos", domain: "tapicascos-next.vercel.app", url: "https://tapicascos-next.vercel.app", image: "/assets/sites/tapicascos-next-vercel-app.jpg" },
-  { number: "07", name: "Plethora Consulting", domain: "plethora-consulting.com", url: "https://plethora-consulting.com", image: "/assets/sites/plethora-consulting-com.jpg" },
-  { number: "08", name: "Indubienes", domain: "indubienes.com", url: "https://indubienes.com", image: "/assets/sites/indubienes-com.jpg" },
-  { number: "09", name: "Indubienes Tower", domain: "indubienes-tower.vercel.app", url: "https://indubienes-tower.vercel.app", image: "/assets/sites/indubienes-tower-vercel-app.jpg" },
-  { number: "10", name: "Luup", domain: "luup-web-site-one.vercel.app", url: "https://luup-web-site-one.vercel.app", image: "/assets/sites/luup-web-site-one-vercel-app.jpg" },
-];
 
 export default function Home() {
   const [entered, setEntered] = useState(false);
@@ -177,6 +166,7 @@ export default function Home() {
             <a href="#trabajos">Trabajos</a>
             <a href="#metodo">Método</a>
             <a href="#nosotros">Nosotros</a>
+            <a href="/catalogo">Cartelera</a>
           </nav>
           <a className="nav-cta" href="#contacto">Encender proyecto <span aria-hidden="true">↗</span></a>
         </header>
@@ -316,7 +306,12 @@ export default function Home() {
                     </header>
                     <div className="frame-bombillos" aria-hidden="true"><i /><i /></div>
                     <a className="site-shot" href={item.url} target="_blank" rel="noreferrer" aria-label={`Abrir sitio de ${item.name}`}>
-                      <Image src={item.image} alt={`Vista previa del sitio ${item.name}`} fill sizes="(max-width: 680px) 88vw, 72vw" />
+                      <span className="dispositivo">
+                        <span className="dispositivo-pantalla">
+                          <Image src={item.image} alt={`Vista previa del sitio ${item.name}`} fill sizes="(max-width: 680px) 88vw, 60vw" />
+                        </span>
+                        <span className="dispositivo-base" aria-hidden="true" />
+                      </span>
                       <b className="frame-url">{item.domain}</b>
                     </a>
                     <footer className="frame-base">

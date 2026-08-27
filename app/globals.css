@@ -243,16 +243,22 @@ h1 em, .section-heading h2 em, .method-intro h2 em, .contact-stage h2 em { color
 .frame-boleto { position: absolute; right: 24px; top: -9px; padding: 9px 16px; transform: rotate(-4deg); color: var(--ink); background-color: var(--gold); font-size: 9px; font-weight: 800; letter-spacing: .17em; box-shadow: 0 8px 16px rgba(0,0,0,.5); transition: .25s;
   background-image: radial-gradient(circle 3.5px at 0 50%, #100d0a 97%, transparent), radial-gradient(circle 3.5px at 100% 50%, #100d0a 97%, transparent); }
 .frame-boleto:hover, .frame-boleto:focus-visible { transform: rotate(-2deg) translateY(-2px); background-color: #f1d98d; box-shadow: 0 0 18px rgba(212,175,85,.55); }
-/* chaflanes art-deco + halo de neon siguiendo el contorno (drop-shadow respeta
-   el clip-path; un box-shadow se recortaria) */
-.site-shot { position: relative; display: block; flex: 1; min-height: 0; overflow: hidden; background: #111;
-  clip-path: polygon(14px 0, calc(100% - 14px) 0, 100% 14px, 100% calc(100% - 14px), calc(100% - 14px) 100%, 14px 100%, 0 calc(100% - 14px), 0 14px);
-  filter: drop-shadow(0 0 6px rgba(212,175,85,.35)); }
-/* vineta de proyeccion: leve sombra arriba, vineta radial y pie oscuro para la placa */
-.site-shot::after { content: ""; position: absolute; inset: 0; pointer-events: none;
-  background: linear-gradient(180deg, rgba(8,7,6,.24), transparent 16%, transparent 60%, rgba(8,7,6,.88)),
-              radial-gradient(125% 105% at 50% 42%, transparent 60%, rgba(5,4,3,.38)); }
-.site-shot img { object-fit: cover; object-position: top; }
+/* PROYECCION v4 (rediseno): el sitio ya no va pegado crudo con vineta (los sitios
+   claros se veian flotando sucios) — se presenta DENTRO de un portatil sobre el
+   escenario iluminado, con base, sombra y reflejo. El recorrido completo queda. */
+.site-shot { position: relative; display: flex; align-items: center; justify-content: center; flex: 1; min-height: 0; overflow: hidden;
+  background: radial-gradient(90% 120% at 50% 8%, rgba(212,175,85,.16), rgba(212,175,85,.04) 46%, transparent 72%), #0b0a08; }
+.dispositivo { position: relative; display: block; width: min(76%, 940px); max-height: 86%; aspect-ratio: 16 / 9.6; }
+.dispositivo-pantalla { position: absolute; inset: 0 0 7% 0; overflow: hidden; border: 2px solid #1c1712; border-bottom-width: 0; border-radius: 10px 10px 0 0; background: #111;
+  box-shadow: 0 0 0 1px rgba(212,175,85,.35), 0 24px 44px rgba(0,0,0,.55); }
+.dispositivo-pantalla::before { content: ""; position: absolute; z-index: 2; left: 50%; top: 5px; width: 5px; height: 5px; transform: translateX(-50%); border-radius: 50%; background: #2a221a; box-shadow: inset 0 0 2px #000; }
+.dispositivo-pantalla img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.dispositivo-base { position: absolute; left: -7%; right: -7%; bottom: 4.2%; height: 3%; border-radius: 3px 3px 8px 8px;
+  background: linear-gradient(180deg, #2b231a, #16110c 68%, #0d0a07); box-shadow: 0 0 0 1px rgba(212,175,85,.3), 0 16px 26px rgba(0,0,0,.5); }
+.dispositivo-base::after { content: ""; position: absolute; left: 50%; top: 0; width: 13%; height: 42%; transform: translateX(-50%); border-radius: 0 0 8px 8px; background: #0d0a07; }
+/* reflejo del portatil sobre el piso del escenario */
+.dispositivo::after { content: ""; position: absolute; left: 6%; right: 6%; bottom: -1.5%; height: 5%; border-radius: 50%;
+  background: radial-gradient(50% 100% at 50% 0, rgba(212,175,85,.2), transparent 75%); filter: blur(4px); }
 /* Rollo de pelicula: cinta 35mm con los fotogramas del catalogo. Corre con la misma
    timeline del teatro; el paso (celda+gap) vive en --paso para poder achicarla en
    pantallas cortas sin desincronizar el keyframe. */
@@ -535,6 +541,36 @@ footer a { justify-self: end; }
   .system-card.reveal { transform: translateX(70px) rotate(1.4deg); animation-name: card-ensamble; }
   @keyframes card-ensamble { to { opacity: 1; transform: none; } }
 }
+
+/* --- LA CARTELERA (/catalogo): el vestibulo con los posters de estreno --- */
+.cartelera { position: relative; min-height: 100svh; padding: 60px max(6vw, 44px) 80px; background: radial-gradient(120% 50% at 50% -8%, rgba(96,24,19,.4), transparent 60%), radial-gradient(circle at 50% 120%, rgba(212,175,85,.08), transparent 40%), #0a0908; }
+.cartelera-topbar { max-width: 1440px; margin: 0 auto 70px; display: flex; align-items: center; justify-content: space-between; }
+.cartelera-head { max-width: 900px; margin: 0 auto; text-align: center; }
+.cartelera-head .chapter { justify-content: center; color: var(--gold); }
+.cartelera-head .chapter span { color: var(--cream); }
+.cartelera-head h1 { margin: 0; color: var(--cream); font-family: Georgia, "Times New Roman", serif; font-size: clamp(3.4rem, 7vw, 6.6rem); font-weight: 400; letter-spacing: -.04em; line-height: .95; }
+.cartelera-head h1 em { color: var(--gold); }
+.cartelera-sub { max-width: 640px; margin: 26px auto 0; color: rgba(246,232,196,.55); line-height: 1.65; }
+.cartelera-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 26px; max-width: 1440px; margin: 70px auto 0; }
+.poster { position: relative; display: flex; flex-direction: column; overflow: hidden; border: 1px solid rgba(212,175,85,.4); background: #0d0c0a; opacity: 0; transform: translateY(26px); animation: poster-entra .7s cubic-bezier(.2,.7,.2,1) both; transition: transform .35s ease, border-color .35s ease, box-shadow .35s ease; }
+.poster:hover, .poster:focus-visible { transform: translateY(-8px); border-color: rgba(212,175,85,.85); box-shadow: 0 0 12px rgba(212,175,85,.35), 0 0 44px rgba(212,175,85,.16), 0 30px 50px rgba(0,0,0,.55); }
+@keyframes poster-entra { to { opacity: 1; transform: translateY(0); } }
+/* la hilera de bombillos del poster se enciende al pasar el cursor */
+.poster-luces { height: 10px; margin: 8px 10px 0; background: radial-gradient(circle 1.6px at 9px 50%, rgba(246,220,140,.35), rgba(246,220,140,.06) 70%, transparent) repeat-x; background-size: 24px 10px; transition: filter .35s ease, opacity .35s ease; opacity: .6; }
+.poster:hover .poster-luces { opacity: 1; filter: drop-shadow(0 0 5px rgba(246,220,140,.9)) brightness(1.9); }
+.poster-shot { position: relative; display: block; height: 320px; margin: 8px 10px 0; overflow: hidden; border: 1px solid rgba(212,175,85,.28); background: #111; }
+.poster-shot img { object-fit: cover; object-position: top; transition: object-position 6s cubic-bezier(.25,.6,.3,1); }
+.poster:hover .poster-shot img { object-position: bottom; }
+.poster-placa { display: flex; flex-direction: column; gap: 5px; padding: 16px 18px 18px; }
+.poster-placa small { color: var(--gold-soft); font-size: 8.5px; font-weight: 700; letter-spacing: .3em; text-transform: uppercase; }
+.poster-placa b { color: var(--cream); font-family: Georgia, "Times New Roman", serif; font-size: 24px; font-weight: 400; }
+.poster-placa > span { color: rgba(246,232,196,.42); font-family: monospace; font-size: 10px; letter-spacing: .1em; }
+.poster-boleto { position: absolute; right: 14px; bottom: 16px; padding: 8px 13px; transform: rotate(-4deg); color: var(--ink); background-color: var(--gold); font-size: 8.5px; font-weight: 800; letter-spacing: .16em; opacity: 0; transition: opacity .3s ease, transform .3s ease; box-shadow: 0 8px 14px rgba(0,0,0,.45);
+  background-image: radial-gradient(circle 3px at 0 50%, #0d0c0a 97%, transparent), radial-gradient(circle 3px at 100% 50%, #0d0c0a 97%, transparent); }
+.poster:hover .poster-boleto { opacity: 1; transform: rotate(-2deg) translateY(-3px); }
+.cartelera-pie { max-width: 1440px; margin: 70px auto 0; text-align: center; }
+.cartelera-pie a { color: rgba(246,232,196,.55); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; transition: color .25s; }
+.cartelera-pie a:hover { color: var(--gold); }
 
 @media (max-width: 980px) {
   .topbar { padding: 20px 38px; grid-template-columns: 1fr auto; }

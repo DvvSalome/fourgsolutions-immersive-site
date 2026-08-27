@@ -284,3 +284,14 @@ Canvas de decision: claude.ai/code/artifact/d43a0694 (auditoria + 4 direcciones)
 - **NOSOTROS (capitulo 04)**: "el elenco" — los posters con alfa de los cinco Voltios
   como creditos de pelicula (anfitrion/operador/presentador/vigia/el-que-enciende) +
   tres principios. Cero cifras inventadas: el copy es identidad, no numeros.
+
+### Proyeccion v4 + LA CARTELERA (/catalogo)
+
+- **Proyeccion v4**: el pantallazo ya no va crudo con vineta (los sitios CLAROS se
+  veian flotando sucios) — cada pagina se presenta dentro de un PORTATIL dibujado en
+  CSS (marco+camara+base+reflejo) sobre el piso del escenario iluminado por el
+  proyector. El cine-recorrido sigue aplicando a la imagen de la pantalla.
+- **/catalogo — LA CARTELERA**: pagina nueva, el vestibulo del cine. Posters de
+  estreno por cada sitio (marquesina de bombillos que se enciende al hover, recorrido
+  completo del pantallazo al hover, boleto VISITAR emergente, entrada escalonada).
+  Los trabajos viven en app/trabajos.ts: UNA fuente para el teatro y la cartelera.
