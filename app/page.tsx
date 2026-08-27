@@ -8,7 +8,7 @@ import { useEffect, useRef, useState } from "react";
    clic de entrada (un play mudo): sin ese truco, Chrome bloquea los play() que llegan
    despues por scroll, que no cuentan como gesto del usuario. */
 type Sfx = {
-  telon: HTMLAudioElement; ooh: HTMLAudioElement; olas: HTMLAudioElement; cofre: HTMLAudioElement;
+  telon: HTMLAudioElement; ooh: HTMLAudioElement; olas: HTMLAudioElement;
   riser: HTMLAudioElement; palanca: HTMLAudioElement; campana: HTMLAudioElement; cinta: HTMLAudioElement;
   trueno: HTMLAudioElement;
 };
@@ -22,7 +22,6 @@ const crearSfx = (): Sfx => {
     telon: mk("/audio/sfx/telon-whoosh.mp3", 0.5),
     ooh: mk("/audio/sfx/publico-ooh.mp3", 0.35),
     olas: mk("/audio/sfx/olas.mp3", 0.22, true),
-    cofre: mk("/audio/sfx/cofre.mp3", 0.5),
     riser: mk("/audio/sfx/proyector-riser.mp3", 0.26),
     palanca: mk("/audio/sfx/palanca-spark.mp3", 0.5),
     campana: mk("/audio/sfx/encendido-campana.mp3", 0.42),
@@ -89,15 +88,14 @@ export default function Home() {
     });
   };
 
-  // Sonidos de la travesia: olas mientras la escena esta en pantalla, y el cofre
-  // cuando el tesoro aparece (mismo 74% del recorrido que usa la animacion CSS).
+  // Sonidos de la travesia: olas mientras la escena esta en pantalla y los truenos
+  // de la tormenta en los mismos puntos que los flashes CSS.
   useEffect(() => {
     if (!entered) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const voyage = document.querySelector(".voyage-story");
     if (!voyage) return;
     const s = sfx();
-    let cofreSono = false;
     const io = new IntersectionObserver(
       ([entry]) => { if (entry.isIntersecting) s.olas.play().catch(() => {}); else s.olas.pause(); },
       { threshold: 0.12 },
@@ -122,7 +120,6 @@ export default function Home() {
         s.trueno.currentTime = 0;
         s.trueno.play().catch(() => {});
       }
-      if (!cofreSono && p >= 0.74) { cofreSono = true; s.cofre.play().catch(() => {}); }
     };
     window.addEventListener("scroll", alScroll, { passive: true });
     return () => {
@@ -367,22 +364,14 @@ export default function Home() {
                 <circle className="constelacion-estrella" cx="205" cy="132" r="2.4" />
                 <circle className="constelacion-estrella" cx="128" cy="262" r="3.2" />
               </svg>
-              {/* LA TORMENTA: vela oscura, lluvia, relampago y rayo (truenos por JS) */}
+              {/* LA TORMENTA: vela oscura, relampago y rayo (truenos por JS) */}
               <div className="voyage-tormenta" aria-hidden="true" />
-              <div className="voyage-lluvia" aria-hidden="true" />
               <div className="voyage-relampago" aria-hidden="true" />
               <svg className="voyage-rayo" viewBox="0 0 220 320" aria-hidden="true">
                 <path d="M120 8 L70 128 L108 136 L52 258 L142 118 L102 112 L158 8 Z" fill="rgba(246,240,214,.95)" />
               </svg>
               <div className="voyage-flag" aria-hidden="true">
                 <CapaVideo src="/video/layers/bandera-loop.webm" poster="/video/layers/bandera-loop-poster.png" loop />
-              </div>
-              {/* el islote del cofre aparece JUNTO al tesoro (misma animacion) */}
-              <div className="voyage-isla-cofre" aria-hidden="true">
-                <Image src="/img/isla-pirata.png" alt="" width={772} height={313} />
-              </div>
-              <div className="voyage-chest" aria-hidden="true">
-                <CapaVideo src="/video/layers/cofre-loop.webm?v=2" poster="/video/layers/cofre-loop-poster.png" loop />
               </div>
               <div className="voyage-ship" aria-hidden="true">
                 <CapaVideo src="/video/layers/barco-loop.webm?v=3" poster="/video/layers/barco-loop-poster.png" loop />

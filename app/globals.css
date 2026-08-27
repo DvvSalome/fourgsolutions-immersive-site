@@ -321,12 +321,6 @@ h1 em, .section-heading h2 em, .method-intro h2 em, .contact-stage h2 em { color
   background: linear-gradient(180deg, rgba(6,6,5,.12), rgba(6,6,5,.45) 78%, #060605),
               url("/img/travesia-fondo2.jpg") center top / cover no-repeat, #0b0d14; }
 .voyage-flag { position: absolute; z-index: 2; right: 3vw; bottom: 30%; width: min(30vw, 420px); opacity: 0; pointer-events: none; }
-/* el cofre aparece A LA IZQUIERDA del pirata, justo donde apunta su catalejo */
-.voyage-chest { position: absolute; z-index: 4; right: 14vw; bottom: 23%; width: min(19vw, 260px); opacity: 0; pointer-events: none; }
-/* el mismo islote del pirata, volteado, para que el tesoro no flote en el agua.
-   El flip va en el IMG: voyage-appear anima transform y pisaria un scaleX del div */
-.voyage-isla-cofre { position: absolute; z-index: 3; right: 11.5vw; bottom: 16%; width: min(25vw, 330px); opacity: 0; pointer-events: none; filter: drop-shadow(0 10px 16px rgba(0,0,0,.5)); }
-.voyage-isla-cofre img { width: 100%; height: auto; transform: scaleX(-1); }
 .voyage-ship { position: absolute; z-index: 3; left: 0; bottom: 22%; width: min(52vw, 720px); transform: translateX(-30%); pointer-events: none;
   filter: drop-shadow(0 30px 34px rgba(0,0,0,.5)); }
 /* el narrador pirata, plantado en su islote en la esquina de proa */
@@ -337,7 +331,7 @@ h1 em, .section-heading h2 em, .method-intro h2 em, .contact-stage h2 em { color
 .voyage-waves { position: absolute; z-index: 5; left: 0; right: 0; bottom: -2px; height: 32%; pointer-events: none;
   /* el master de olas llena su cuadro: sin mask, la cresta termina en una linea recta */
   -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 30%); mask-image: linear-gradient(180deg, transparent 0, #000 30%); }
-.voyage-flag video, .voyage-chest video, .voyage-ship video { width: 100%; height: auto; }
+.voyage-flag video, .voyage-ship video { width: 100%; height: auto; }
 /* el barco se MECE siempre (vida); la tormenta lo hace sentir mas dramatico */
 .voyage-ship video { animation: barco-mece 5.5s ease-in-out infinite; transform-origin: 50% 85%; }
 @keyframes barco-mece { 50% { transform: rotate(2.4deg) translateY(6px); } }
@@ -348,17 +342,8 @@ h1 em, .section-heading h2 em, .method-intro h2 em, .contact-stage h2 em { color
 .constelacion-trazo { stroke: rgba(212,175,85,.8); stroke-width: 1.4; stroke-linejoin: round; stroke-dasharray: 360; stroke-dashoffset: 360; filter: drop-shadow(0 0 4px rgba(212,175,85,.65)); }
 .constelacion-estrella { fill: #f6e8c4; opacity: .18; filter: drop-shadow(0 0 6px rgba(246,220,140,.95)); }
 
-/* --- LA TORMENTA: vela oscura + lluvia + relampagos, todo scroll-driven --- */
+/* --- LA TORMENTA: vela oscura + relampagos, todo scroll-driven --- */
 .voyage-tormenta { position: absolute; z-index: 5; inset: 0; pointer-events: none; opacity: 0; background: linear-gradient(180deg, rgba(7,9,18,.82), rgba(7,9,18,.5) 58%, rgba(7,9,18,.12)); }
-/* GOTAS de verdad: una elipse vertical por tile (radial-gradient), tres capas con
-   tiles de anchos primos entre si — sin eso las gotas se alinean en filas y rotadas
-   parecen persianas (bug pagado dos veces). El DIV rotado inclina la caida. */
-.voyage-lluvia { position: absolute; z-index: 5; inset: -22%; pointer-events: none; opacity: 0; transform: rotate(13deg);
-  background-image:
-    radial-gradient(1.4px 13px at 11px 30px, rgba(214,206,184,.5) 55%, transparent 100%),
-    radial-gradient(1.2px 10px at 29px 74px, rgba(214,206,184,.36) 55%, transparent 100%),
-    radial-gradient(1.7px 16px at 47px 118px, rgba(214,206,184,.28) 55%, transparent 100%);
-  background-size: 41px 96px, 59px 134px, 73px 172px; }
 .voyage-relampago { position: absolute; z-index: 6; inset: 0; pointer-events: none; opacity: 0;
   background: radial-gradient(85% 65% at 58% 16%, rgba(246,240,214,.85), rgba(246,240,214,.3) 52%, transparent 76%); }
 .voyage-rayo { position: absolute; z-index: 6; right: 26vw; top: 3%; width: min(13vw, 170px); pointer-events: none; opacity: 0; filter: drop-shadow(0 0 14px rgba(246,240,214,.9)); }
@@ -377,8 +362,6 @@ h1 em, .section-heading h2 em, .method-intro h2 em, .contact-stage h2 em { color
   .voyage-stage { position: sticky; top: 4vh; }
   .voyage-ship { animation: voyage-sail linear both; animation-timeline: --voyage; animation-range: cover 0% cover 100%; }
   .voyage-flag { animation: voyage-appear linear both; animation-timeline: --voyage; animation-range: cover 62% cover 78%; }
-  .voyage-chest { animation: voyage-treasure linear both; animation-timeline: --voyage; animation-range: cover 74% cover 92%; }
-  .voyage-isla-cofre { animation: voyage-appear linear both; animation-timeline: --voyage; animation-range: cover 72% cover 88%; }
   .voyage-step { opacity: 0; transform: translateY(26px); animation: voyage-step linear both; animation-timeline: --voyage; }
   .voyage-step[data-paso="1"] { animation-range: cover 6% cover 18%; }
   .voyage-step[data-paso="2"] { animation-range: cover 26% cover 38%; }
@@ -393,17 +376,14 @@ h1 em, .section-heading h2 em, .method-intro h2 em, .contact-stage h2 em { color
   .constelacion-estrella:nth-of-type(4) { animation-range: cover 26% cover 30%; }
   /* tormenta: entra, pega dos veces y escampa antes del tesoro */
   .voyage-tormenta { animation: tormenta-vela linear both; animation-timeline: --voyage; animation-range: cover 34% cover 68%; }
-  .voyage-lluvia { animation: tormenta-vela linear both, lluvia-cae .55s linear infinite; animation-timeline: --voyage, auto; animation-range: cover 36% cover 66%, normal; }
   .voyage-relampago, .voyage-rayo { animation: relampago linear both; animation-timeline: --voyage; animation-range: cover 38% cover 62%; }
 }
 @keyframes constelacion-dibuja { to { stroke-dashoffset: 0; } }
 @keyframes estrella-enciende { to { opacity: 1; } }
 @keyframes tormenta-vela { 0%, 100% { opacity: 0; } 28%, 76% { opacity: 1; } }
-@keyframes lluvia-cae { to { background-position: 0 96px, 0 134px, 0 172px; } }
 @keyframes relampago { 0%, 15%, 22%, 52%, 60%, 100% { opacity: 0; } 17%, 19% { opacity: .9; } 55%, 57% { opacity: .75; } }
 @keyframes voyage-sail { from { transform: translateX(-30%); } to { transform: translateX(115%); } }
 @keyframes voyage-appear { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
-@keyframes voyage-treasure { from { opacity: 0; transform: translateY(40px) scale(.9); } to { opacity: 1; transform: none; } }
 @keyframes voyage-step { from { opacity: 0; transform: translateY(26px); } to { opacity: 1; transform: none; } }
 
 /* En pantallas angostas las tarjetas dejan de flotar sobre el mar */
@@ -413,9 +393,7 @@ h1 em, .section-heading h2 em, .method-intro h2 em, .contact-stage h2 em { color
   .voyage-step h3 { font-size: 17px; }
   .voyage-ship { width: 74vw; bottom: 26%; }
   .voyage-flag { width: 44vw; }
-  .voyage-chest { width: 30vw; right: 6vw; }
   .voyage-isla { width: 42vw; right: 0; }
-  .voyage-isla-cofre { width: 38vw; right: 3vw; }
   .voyage-voltio { width: 30vw; right: 7vw; bottom: 12%; }
   .elenco { grid-template-columns: repeat(2, 1fr); gap: 12px; }
   .retrato img { height: 150px; }
@@ -439,7 +417,7 @@ h1 em, .section-heading h2 em, .method-intro h2 em, .contact-stage h2 em { color
 /* Sin soporte (o movil): escena fija con todo visible y pasos en flujo normal */
 @supports not (animation-timeline: view()) {
   .voyage-ship { transform: translateX(60%); }
-  .voyage-flag, .voyage-chest, .voyage-isla-cofre { opacity: 1; }
+  .voyage-flag { opacity: 1; }
   .voyage-steps { position: relative; left: auto; top: auto; max-width: none; padding: 40px max(7vw, 48px) 70px; }
 }
 /* marca de agua con el LOGO real, no un "4GS" en Georgia (feedback) */
